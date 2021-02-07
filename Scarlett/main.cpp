@@ -4,7 +4,7 @@
 #include <queue>
 #include <filesystem>
 #include <omp.h>
-#include "Subreddit.hpp"
+#include "Reddit/Subreddit.hpp"
 #include "ParseOptions.hpp"
 #include "exceptions.hpp"
 int main(int argc, char* argv[])
