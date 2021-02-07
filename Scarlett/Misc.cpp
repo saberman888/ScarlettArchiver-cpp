@@ -21,4 +21,17 @@ namespace ScarlettArchiver
 		handle.Cleanup();
 		return result;
 	}
+
+	void Write(const nlohmann::json& src, const std::filesystem::path dest, const std::string filename)
+	{
+		std::filesystem::create_directories(dest);
+		std::ofstream out(dest.string() + "/" + filename, std::ios::out);
+		out << src.dump(4);
+	}	
+	
+	void Write(const std::string& buff, std::string filename)
+	{
+		std::ofstream out(filename, std::ios::out);
+		out << buff;
+	}
 }

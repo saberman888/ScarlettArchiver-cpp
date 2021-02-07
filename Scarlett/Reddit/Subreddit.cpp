@@ -1,20 +1,20 @@
-#include "Scarlett.hpp"
+#include "Reddit/Subreddit.hpp"
 #include <iostream>
 
 namespace ScarlettArchiver {
 
-	Scarlett::Scarlett(int argc, char* argv[])
+	Subreddit::Subreddit(int argc, char* argv[])
 	{
 		struct ScarlettOptions::POptions cmdOptions = ScarlettOptions::ParseOptions(argc, argv);
 		sub = std::make_unique<SubredditMetadata>(cmdOptions);
-		salog = spdlog::get("Scarlett Archiver Log");
+		salog = GetGlobalLogger();
 		salog->info("Scarlett Constructor initiated");
 
 		SubStorePath = std::filesystem::path("subreddits") / sub.get()->Subreddit;
 		salog->info("Storing at " + SubStorePath.string());
 	}
 
-	nlohmann::json Scarlett::Next()
+	nlohmann::json Subreddit::Next()
 	{
 
 		salog->info("Fetching subreddit posts...");
@@ -38,7 +38,7 @@ namespace ScarlettArchiver {
 	}
 
 
-	void Scarlett::Read(const nlohmann::json& source) {
+	void Subreddit::Read(const nlohmann::json& source) {
 #pragma omp parallel section
 		{
 			SubredditMetadata tempStats;
@@ -91,39 +91,4 @@ namespace ScarlettArchiver {
 			}
 		}
 	}
-
-	void Scarlett::Write(const nlohmann::json& src, std::string filename)
-	{
-		std::filesystem::create_directories(SubStorePath);
-		salog->info("Writing to " + SubStorePath.string());
-
-		std::ofstream out(SubStorePath.string() + "/" + filename, std::ios::out);
-		out << src.dump(4);
-	}
-
-	void Scarlett::Write(const std::string& buff, std::string filename)
-	{
-		std::ofstream out(filename, std::ios::out);
-		out << buff;
-	}
-
-	void Scarlett::WriteMetadata()
-	{
-		salog->info("Writing metadata...");
-		nlohmann::json metadata = {
-			{"startdate", sub->StartDate},
-			{"enddate", sub->EndDate},
-			{"subreddit", sub->Subreddit},
-			{"stoppingPoint", sub->DatePointer},
-			{"stats", {
-				{"Galleries", sub->Galleries},
-				{"SelfPosts", sub->SelfPosts},
-				{"Links", sub->Links},
-				{"Videos", sub->Videos}
-				}
-			}
-		};
-		Write(metadata, SubStorePath.string() + "/metadata.json");
-	}
-
 }

@@ -3,9 +3,11 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <filesystem>
+#include <fstream>
 
 #include "BasicRequest.hpp"
-#include "Logger.hpp"
+#include "nlohmann/json.hpp"
 
 /*
 * A header file for misc functions and single functions that don't fit in any other header file
@@ -22,6 +24,7 @@ namespace ScarlettArchiver
 
 	State Download(const std::string URL);
 
-
+	void Write(const nlohmann::json& src, const std::filesystem::path dest, const std::string filename);
+	void Write(const std::string& buff, std::string filename);
 
 }

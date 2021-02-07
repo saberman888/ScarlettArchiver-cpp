@@ -19,5 +19,9 @@ namespace ScarlettArchiver
 		err,
 		crit
 	};
+	inline std::shared_ptr<spdlog::logger> GetGlobalLogger()
+	{
+		return spdlog::get("Scarlett Archiver Log");
+	}
 	void write(std::shared_ptr<spdlog::logger> log, SevLevel sl, std::string msg);
 };

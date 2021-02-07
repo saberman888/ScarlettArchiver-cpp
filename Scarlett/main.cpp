@@ -4,14 +4,14 @@
 #include <queue>
 #include <filesystem>
 #include <omp.h>
-#include "Scarlett.hpp"
+#include "Subreddit.hpp"
 #include "ParseOptions.hpp"
 #include "exceptions.hpp"
 int main(int argc, char* argv[])
 {
 	using namespace ScarlettArchiver; 
 	InitLogs();
-	Scarlett sc(argc, argv);
+	Subreddit sc(argc, argv);
 	int j = 0;
 	std::filesystem::path savePath = "subreddits";
 	do
