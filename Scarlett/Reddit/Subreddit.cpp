@@ -3,14 +3,13 @@
 
 namespace ScarlettArchiver {
 
-	Subreddit::Subreddit(int argc, char* argv[])
-	{
-		struct ScarlettOptions::POptions cmdOptions = ScarlettOptions::ParseOptions(argc, argv);
+	Subreddit::Subreddit(const struct ScarlettOptions::POptions& cmdOptions)
+	{	
 		sub = std::make_unique<SubredditMetadata>(cmdOptions);
 		salog = GetGlobalLogger();
 		salog->info("Scarlett Constructor initiated");
 
-		SubStorePath = std::filesystem::path("subreddits") / sub.get()->Subreddit;
+		SubStorePath = std::filesystem::path("subreddits") / sub->Subreddit;
 		salog->info("Storing at " + SubStorePath.string());
 	}
 
@@ -19,19 +18,23 @@ namespace ScarlettArchiver {
 
 		salog->info("Fetching subreddit posts...");
 
+		// Copy DatePointer into before and increment it by 24 hours so, we can use it in our PushShift request
+		struct tm before = sub->DatePointer;
+		before.tm_mday += 1;
+
 		// Retrieve the next batch of posts by plugging StartDate into after and StartDate incremented by 24 hours into before.
 		// I want to be more specific when I have SearchSubmissions call for these twenty four hours instead of plugging in EndDate into before because,
 		// I think It might retrieve more data
 		auto Returnjson = PushShift::SearchSubmissions(StringMap{
-		  {"after", std::to_string(sub->DatePointer)},
-		  {"before", std::to_string(sub->DatePointer + TwentyFourHours)},
+		  {"after", std::to_string(mktime(&sub->DatePointer))},
+		  {"before", std::to_string(mktime(&before))},
 		  {"metadata", "true"},
 		  {"size", "500"},
 		  {"subreddit", sub->Subreddit}
 			});
 
 		// Increment CurrentPointedDate by 24 hours so we can ready for the next call.
-		sub->DatePointer += TwentyFourHours;
+		sub->DatePointer.tm_mday += 1;
 		salog->info("Incrementing by 24 hours for next fetch");
 
 		return Returnjson;
@@ -79,7 +82,7 @@ namespace ScarlettArchiver {
 				}
 #pragma omp critical (Postappending)
 				{
-					Write(json, "element.json");
+					ScarlettArchiver::Write(json, SubStorePath, "element.json");
 					salog->info("Added element to Vec");
 					posts.push_back(element);
 				}

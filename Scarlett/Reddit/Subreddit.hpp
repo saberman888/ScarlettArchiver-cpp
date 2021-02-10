@@ -9,6 +9,7 @@
 #include "Video.hpp"
 #include "SelfPost.hpp"
 #include "Galleries.hpp"
+#include "Retriever.hpp"
 
 #include <boost/archive/text_oarchive.hpp>
 
@@ -27,10 +28,10 @@
 
 
 namespace ScarlettArchiver {
-	class Subreddit
+	class Subreddit : public Retriever 
 	{
 	public:
-		Subreddit(int argc, char* argv[]);
+		Subreddit(const struct ScarlettOptions::POptions& cmdOptions);
 
 		// Where we're going to keep our subreddit metadata
 		std::unique_ptr<SubredditMetadata> sub;
@@ -62,7 +63,7 @@ namespace ScarlettArchiver {
 		}
 
 	
-		std::vector< std::shared_ptr<RedditAsset::RedditCommon> > posts;	
+		std::vector< std::shared_ptr<RedditAsset::RedditCommon> > posts;
 
 		// Where we're going to store sub paths
 		std::filesystem::path SubStorePath;

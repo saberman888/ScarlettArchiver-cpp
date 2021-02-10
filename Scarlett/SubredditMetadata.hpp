@@ -67,6 +67,11 @@ namespace ScarlettArchiver
 		*/
 		void UpdateStats(const SubredditMetadata& src);
 		
+		/**
+		* Writes the data stored in the class such as, Start date, End date and the statistics in metadata.json
+		* 
+		* @param destination - Destination path for metadata.json
+		*/
 		void WriteMetadata(const std::filesystem::path destination);
 
 
@@ -78,9 +83,8 @@ namespace ScarlettArchiver
 		 @param Dates in string format with the provided date formats: YYYY:MM:DD, YYYY-MM-DD, YYYY.MM.DD, YYYY/MM/DD or YYYYMMDD
 		*/
 		void InitializeDates(std::optional<std::string> Start = std::nullopt, std::optional<std::string> End = std::nullopt);
+
+		// A handle to access the global logger
 		std::shared_ptr<spdlog::logger> salog;
-
-		// TODO: Expand the available date formats SM can take
-
 	};
 };
