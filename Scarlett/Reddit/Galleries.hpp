@@ -33,6 +33,9 @@ namespace ScarlettArchiver::RedditAsset
 		*/
 		const std::vector<std::string> GetImages();
 		static bool IsGallery(const nlohmann::json& json); 
+
+		bool operator==(const Gallery& other);
+		bool operator!=(const Gallery& other);
 	private:
 		/**
 		 Reads Json data into Gallery. If it's a Reddit album then, it reads the provided json. If it's an Imgur album, it justs calls RedditCommon::Read only; 

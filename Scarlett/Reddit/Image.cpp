@@ -31,5 +31,15 @@ namespace ScarlettArchiver::RedditAsset
 		}
 	}
 
+	bool Link::operator==(const Link& other)
+	{
+		return RedditCommon::operator==(other);
+	}
+
+	bool Link::operator!=(const Link& other)
+	{
+		return RedditCommon::operator!=(other);
+	}
+
 
 };

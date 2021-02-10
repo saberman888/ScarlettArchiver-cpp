@@ -50,7 +50,17 @@ namespace ScarlettArchiver::RedditAsset
 		if (json.contains("is_gallery") && json.at("is_gallery").get<bool>() && json.at("gallery_data").is_object())
 			return true;
 		return false;
-	}	
+	}
+	bool Gallery::operator==(const Gallery& other)
+	{
+		return RedditCommon::operator==(other);
+	}
+
+	bool Gallery::operator!=(const Gallery& other)
+	{
+		return RedditCommon::operator!=(other);
+	}
+
 	
 };
 

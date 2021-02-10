@@ -28,6 +28,9 @@ namespace ScarlettArchiver::RedditAsset
 		* Returns the post's URL if it's a normal image. If it's an image from Imgur, it returns a direct image using the Imgur API
 		*/
 		std::string GetImage();
+
+		bool operator==(const Link& other);
+		bool operator!=(const Link& other);
 	private:
 		std::string ImgurClientId;
 

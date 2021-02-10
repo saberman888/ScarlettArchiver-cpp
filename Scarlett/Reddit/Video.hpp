@@ -28,7 +28,10 @@ namespace ScarlettArchiver::RedditAsset
 		/**
 		* Checks if the provided json has an is_video tag, and if it is in fact: a boolean.
 		*/
-		static bool IsVideo(const nlohmann::json& json); 
+		static bool IsVideo(const nlohmann::json& json);
+
+		bool operator==(const Video& other);
+		bool operator!=(const Video& other);
 	private:
 		std::string DashPlaylistUrl, AudioURL;
 		bool HasAudio;

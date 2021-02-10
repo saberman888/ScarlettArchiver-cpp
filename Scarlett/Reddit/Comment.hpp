@@ -13,6 +13,9 @@ namespace ScarlettArchiver::RedditAsset
 	public:
 		Comment(const nlohmann::json& json);
 		std::string Text;
+
+		bool operator==(const Comment& other);
+		bool operator!=(const Comment& other);
 	private:
 		void Read(const nlohmann::json& json);
 	};

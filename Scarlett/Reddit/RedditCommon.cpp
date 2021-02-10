@@ -2,6 +2,14 @@
 
 namespace ScarlettArchiver::RedditAsset
 {
+	bool RedditCommon::operator==(const RedditCommon& other)
+	{
+		return (URL == other.URL && Id == other.Id && Author == other.Author && Permalink == other.Permalink && Title == other.Title && Domain == other.Domain);
+	}
+	bool RedditCommon::operator!=(const RedditCommon& other)
+	{
+		return !this->operator==(other);
+	}
 	void RedditCommon::initLog()
 	{
 		log = spdlog::get("Scarlett Archiver Log");
@@ -27,21 +35,9 @@ namespace ScarlettArchiver::RedditAsset
 			log->info("Permalink: " + Permalink);
 
 			Title = json.at("title").get<std::string>();
-			if (json.contains("domain"))
+			if (json.contains("domain") && json.at("domain").is_string())
 			{
-				if (json.at("domain").is_null())
-				{	
-					Domain = "self.reddit";
-				}
-				else {
-					Domain = json.at("domain").get<std::string>();
-				}
-
-			}
-			else {
-				log->info("No domain found for element: " + Id);
-				log->warn("Setting domain to self.reddit");
-				Domain = "self.reddit";
+				Domain = json.at("domain").get<std::string>();
 			}
 			CreatedUTC = json.at("created_utc").get<time_t>();
 		}
@@ -52,6 +48,11 @@ namespace ScarlettArchiver::RedditAsset
 			std::throw_with_nested(ScarlettArchiver::ScarlettPostException("Failed to extract JSON", this->Id));
 
 		}
+	}
+
+	RedditCommon::RedditCommon() : SerializeAs(SerializationMethod::Text)
+	{
+		RedditCommon::NumOfInstances += 1;
 	}
 
 	void RedditCommon::SerializeTo(SerializationMethod sm)

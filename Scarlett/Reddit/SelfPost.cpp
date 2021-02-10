@@ -9,6 +9,16 @@ namespace ScarlettArchiver::RedditAsset
 		SelfPost::Read(json);
 	}
 
+	bool SelfPost::operator==(const SelfPost& other)
+	{
+		return (RedditCommon::operator==(other) && Text != other.Text);
+	}
+
+	bool SelfPost::operator!=(const SelfPost& other)
+	{
+		return (RedditCommon::operator!=(other) && other.Text != Text);
+	}
+
 	void SelfPost::Read(const nlohmann::json& json) {
 		try {
 			RedditCommon::Read(json);

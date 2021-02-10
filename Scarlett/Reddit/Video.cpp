@@ -97,6 +97,16 @@ namespace ScarlettArchiver::RedditAsset
 		return (json.contains("is_video") && json.at("is_video").is_boolean() && json.at("is_video").get<bool>());
 	}
 
+	bool Video::operator==(const Video& other)
+	{
+		return (RedditCommon::operator==(other) && other.HasAudio == HasAudio && other.DashPlaylistUrl == DashPlaylistUrl);
+	}
+
+	bool Video::operator!=(const Video& other)
+	{
+		return !this->operator==(other);
+	}
+
 	void Video::Read(const nlohmann::json& json, bool ReadDomain)
 	{
 		try {

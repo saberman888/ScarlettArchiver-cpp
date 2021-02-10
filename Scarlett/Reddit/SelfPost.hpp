@@ -20,6 +20,8 @@ namespace ScarlettArchiver::RedditAsset
 		SelfPost(const nlohmann::json& json);
 
 		std::string Text;
+		bool operator==(const SelfPost& other);
+		bool operator!=(const SelfPost& other);
 		static inline bool IsSelfPost(const nlohmann::json& json)
 		{
 			return (json.contains("is_self") && json.at("is_self").get<bool>());

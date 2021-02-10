@@ -7,6 +7,7 @@
 #include <fstream>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#include <omp.h>
 /*#include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/nvp.hpp>*/
@@ -33,9 +34,9 @@ namespace ScarlettArchiver::RedditAsset
 	{
 	public:
 		/**
-		* An empty constructor because, boost's serialization requires it.
+		* A constructor with an empty signature. It only initializes SerializeAs and increments NumberOfInstances
 		*/
-		RedditCommon(){}
+		RedditCommon();
 		void SerializeTo(SerializationMethod sm = SerializationMethod::Text);
 
 		/**
@@ -46,6 +47,9 @@ namespace ScarlettArchiver::RedditAsset
 		// Time the post was created in Unix Epoch Time
 		time_t CreatedUTC;
 
+		virtual bool operator==(const RedditCommon& other);
+		virtual bool operator!=(const RedditCommon& other);
+
 		/**
 		* Serializes the class using Boost's serialization library and writes it to a file
 		* @param A directory to put the serializes class and a filename
@@ -53,7 +57,8 @@ namespace ScarlettArchiver::RedditAsset
 		//void Write(std::filesystem::path destination, std::string filename);
 		std::shared_ptr<spdlog::logger> log;
 		void initLog();
-
+#pragma omp atomic
+		static int NumOfInstances;
 	protected:
 		/**
 		* Parses and assigns values from Reddit's json into the class' values
@@ -73,7 +78,6 @@ namespace ScarlettArchiver::RedditAsset
 		}
 
 		SerializationMethod SerializeAs;
-
 		template<class Archive>
 		void TextSerialize(Archive& ar, const unsigned int version)
 		{

@@ -7,7 +7,18 @@ namespace ScarlettArchiver::RedditAsset
 		Comment::Read(json);
 	}
 
+	bool Comment::operator==(const Comment& other)
+	{
+		return (RedditCommon::operator==(other) && other.Text == Text);
+	}
+
+	bool Comment::operator!=(const Comment& other)
+	{
+		return (RedditCommon::operator!=(other) && Text != other.Text);
+	}
+
 	void Comment::Read(const nlohmann::json& json) {
+		this->Domain = "self.";
 		try {
 			RedditCommon::Read(json);
 			if(json.contains("body"))
