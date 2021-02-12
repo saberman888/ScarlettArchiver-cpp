@@ -50,11 +50,6 @@ namespace ScarlettArchiver::RedditAsset
 		}
 	}
 
-	RedditCommon::RedditCommon() : SerializeAs(SerializationMethod::Text)
-	{
-		RedditCommon::NumOfInstances += 1;
-	}
-
 	void RedditCommon::SerializeTo(SerializationMethod sm)
 	{
 		SerializeAs = sm;

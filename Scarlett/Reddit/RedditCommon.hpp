@@ -36,7 +36,7 @@ namespace ScarlettArchiver::RedditAsset
 		/**
 		* A constructor with an empty signature. It only initializes SerializeAs and increments NumberOfInstances
 		*/
-		RedditCommon();
+		RedditCommon() : SerializeAs(SerializationMethod::Text), CreatedUTC(0) {}
 		void SerializeTo(SerializationMethod sm = SerializationMethod::Text);
 
 		/**
@@ -57,8 +57,6 @@ namespace ScarlettArchiver::RedditAsset
 		//void Write(std::filesystem::path destination, std::string filename);
 		std::shared_ptr<spdlog::logger> log;
 		void initLog();
-#pragma omp atomic
-		static int NumOfInstances;
 	protected:
 		/**
 		* Parses and assigns values from Reddit's json into the class' values
