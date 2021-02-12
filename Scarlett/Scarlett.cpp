@@ -2,12 +2,13 @@
 
 namespace ScarlettArchiver
 {
-	Scarlett::Scarlett(int argc, char* argv[]) 
+	Scarlett::Scarlett(int argc, char* argv[])
 	{
 		InitLogs();
 
 		Options = ScarlettOptions::ParseOptions(argc, argv);
 		sub = std::make_shared<Subreddit>(Options);
+		log = GetGlobalLogger();
 	}
 	void Scarlett::Run()
 	{
@@ -16,11 +17,11 @@ namespace ScarlettArchiver
 				auto NextIteration = sub->Next();
 				sub->Read(NextIteration);
 
-#pragma omp parallel for
-				for (std::vector<std::shared_ptr<RedditAsset::RedditCommon>>::iterator it = sub->posts.begin(); it != sub->posts.end(); it++)
-				{
-					sub->Write(sub->SubStorePath, (*it)->Id + ".txt", *it);
+				if (sub->posts.size() >= 300 || !sub->HasNext()) {
+					log->info("300 posts reached. Writing them all");
+					sub->WriteAll();
 				}
+
 			}
 			catch (ScarlettPostException& e) {
 				printException(e);
@@ -35,6 +36,6 @@ namespace ScarlettArchiver
 				printException(e);
 			}
 
-		} while (!sub->HasNext());
+		} while (sub->HasNext());
 	}
 }

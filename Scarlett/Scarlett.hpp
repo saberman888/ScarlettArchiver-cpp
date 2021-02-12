@@ -11,5 +11,7 @@ namespace ScarlettArchiver
 		void Run();
 		struct ScarlettOptions::POptions Options;
 		std::shared_ptr<Subreddit> sub;
+		std::shared_ptr<spdlog::logger> log;
+
 	};
 }
