@@ -4,7 +4,7 @@
 namespace ScarlettArchiver {
 
 	Subreddit::Subreddit(const struct ScarlettOptions::POptions& cmdOptions)
-	{	
+	{
 		sub = std::make_unique<SubredditMetadata>(cmdOptions);
 		salog = GetGlobalLogger();
 		salog->info("Scarlett Constructor initiated");
@@ -42,7 +42,7 @@ namespace ScarlettArchiver {
 
 
 	void Subreddit::Read(const nlohmann::json& source) {
-#pragma omp parallel section
+#pragma omp parallel sections
 		{
 			SubredditMetadata tempStats;
 #pragma omp parallel for
@@ -90,8 +90,18 @@ namespace ScarlettArchiver {
 #pragma omp critical()
 			{
 				salog->info("Updated stats");
-				sub.get()->UpdateStats(tempStats);
+				sub->UpdateStats(tempStats);
 			}
 		}
+	}
+	void Subreddit::WriteAll()
+	{
+#pragma omp parallel for
+		for (std::vector<std::shared_ptr<RedditAsset::RedditCommon>>::iterator it = posts.begin(); it != posts.end(); it++)
+		{
+			Write(SubStorePath, (*it)->Id + ".txt", *it);
+		}
+		posts.clear();
+		posts.shrink_to_fit();
 	}
 }

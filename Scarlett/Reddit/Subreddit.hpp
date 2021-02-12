@@ -28,7 +28,7 @@
 
 
 namespace ScarlettArchiver {
-	class Subreddit : public Retriever 
+	class Subreddit 
 	{
 	public:
 		Subreddit(const struct ScarlettOptions::POptions& cmdOptions);
@@ -52,12 +52,18 @@ namespace ScarlettArchiver {
 		}
 	
 		void Read(const nlohmann::json& source);
+		void WriteAll();
 
 		template<class T>
 		void Write(std::filesystem::path destination, std::string filename, std::shared_ptr<T> post)
 		{
 			static_assert(std::is_base_of<RedditAsset::RedditCommon, T>::value, "post does not derive from RedditAssett::RedditCommon");
-			std::ofstream out(destination.string() + "/" + filename);
+
+			destination /= BasicRequest::UTCToString(post->CreatedUTC, "%Y");
+			destination /= BasicRequest::UTCToString(post->CreatedUTC, "%m");
+			std::filesystem::create_directories(destination);
+
+			std::ofstream out(destination.string() +"/" + filename);
 			boost::archive::text_oarchive bta(out);
 			bta << *post.get();
 		}
