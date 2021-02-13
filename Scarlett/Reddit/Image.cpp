@@ -22,12 +22,12 @@ namespace ScarlettArchiver::RedditAsset
 		log->info(Id + ": Getting Image");
 		if (!ImgurClientId.empty()) {
 			log->info(Id + ": Resolving the URL through the Imgur API");
-			return ImgurAccess::GetImage(URL,
+			return ImgurAccess::GetImage(URL.value(),
 				ImgurClientId);
 		}
 		else {
 			log->info(Id + ": Image returned");
-			return URL;
+			return *URL;
 		}
 	}
 

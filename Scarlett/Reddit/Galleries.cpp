@@ -42,7 +42,7 @@ namespace ScarlettArchiver::RedditAsset
 			return Images;
 		}
 		else {
-			return ImgurAccess::ResolveAlbumURLs(URL, ImgurClientId);
+			return ImgurAccess::ResolveAlbumURLs(URL.value(), ImgurClientId);
 		}
 	}
 	bool Gallery::IsGallery(const nlohmann::json& json)

@@ -59,9 +59,9 @@ namespace ScarlettArchiver::RedditAsset
 
 	bool Video::Download(std::filesystem::path destination)
 	{
-		size_t ending = URL.rfind("/");
-		std::string audio_url = URL.substr(0, ending + 1);
-		if (ScarlettArchiver::contains(URL, ".mp4"))
+		size_t ending = URL->rfind("/");
+		std::string audio_url = URL->substr(0, ending + 1);
+		if (ScarlettArchiver::contains(URL.value(), ".mp4"))
 		{
 			AudioURL = audio_url + "DASH_audio.mp4";
 		}
@@ -70,7 +70,7 @@ namespace ScarlettArchiver::RedditAsset
 		}
 		log->info("Video audio URL: " + AudioURL);
 
-		auto video = ScarlettArchiver::Download(URL);
+		auto video = ScarlettArchiver::Download(URL.value());
 		if (!video.AllGood())
 		{
 			std::cerr << "Error, Failed to download Video" << std::endl;

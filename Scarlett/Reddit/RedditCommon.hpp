@@ -3,6 +3,7 @@
 #include <string>
 #include <ctime>
 #include <filesystem>
+#include <optional>
 #include "nlohmann/json.hpp"
 #include <fstream>
 #include <boost/archive/text_iarchive.hpp>
@@ -36,13 +37,15 @@ namespace ScarlettArchiver::RedditAsset
 		/**
 		* A constructor with an empty signature. It only initializes SerializeAs and increments NumberOfInstances
 		*/
-		RedditCommon() : CreatedUTC(0), SerializeAs(SerializationMethod::Text) {}
+		RedditCommon() : URL(std::nullopt), Title(std::nullopt), Domain(std::nullopt), CreatedUTC(0), SerializeAs(SerializationMethod::Text) {}
 		void SerializeTo(SerializationMethod sm = SerializationMethod::Text);
 
 		/**
 			Common values that are shared between: Links, Self Posts, Images, Videos, Galleries and Comments
+			URL, Title and Domain are optional values because, these tags are absent from Comments
 		*/
-		std::string URL, Id, Author, Permalink, Title, Domain;
+		std::string Id, Author, Permalink;
+		std::optional<std::string> URL, Title, Domain;
 
 		// Time the post was created in Unix Epoch Time
 		time_t CreatedUTC;
@@ -79,12 +82,12 @@ namespace ScarlettArchiver::RedditAsset
 		template<class Archive>
 		void TextSerialize(Archive& ar, const unsigned int version)
 		{
-			ar& URL;
+			ar& URL.value();
 			ar& Id;
 			ar& Author;
 			ar& Permalink;
-			ar& Title;
-			ar& Domain;
+			ar& Title.value();
+			ar& Domain.value();
 			ar& CreatedUTC;
 		}
 

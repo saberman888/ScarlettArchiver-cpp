@@ -17,13 +17,6 @@ namespace ScarlettArchiver::RedditAsset
 	void RedditCommon::Read(const nlohmann::json& json)
 	{
 		try {
-			if (json.contains("link_url"))
-			{
-				URL = json.at("link_url").get<std::string>();
-			}
-			else {
-				URL = json.at("url").get<std::string>();
-			}
 
 			Id = json.at("id").get<std::string>();
 			log->info("ID: " + Id);
@@ -34,12 +27,21 @@ namespace ScarlettArchiver::RedditAsset
 			Permalink = json.at("permalink").get<std::string>();
 			log->info("Permalink: " + Permalink);
 
-			Title = json.at("title").get<std::string>();
-			if (json.contains("domain") && json.at("domain").is_string())
-			{
-				Domain = json.at("domain").get<std::string>();
-			}
+			if(json.contains("title"))
+				Title = json.at("title").get<std::string>(); 
+
 			CreatedUTC = json.at("created_utc").get<time_t>();
+
+			if (json.contains("link_url"))
+			{
+				URL = json.at("link_url").get<std::string>();
+			}
+			else if(json.contains("url")){
+				URL = json.at("url").get<std::string>();
+			}
+			
+			if (json.contains("domain") && json.at("domain").is_string())
+				Domain = json.at("domain").get<std::string>();
 		}
 		catch (nlohmann::json::exception& e) {
 			log->error("Exception triggered: nlohmann::json");
