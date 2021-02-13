@@ -36,7 +36,7 @@ namespace ScarlettArchiver::RedditAsset
 		/**
 		* A constructor with an empty signature. It only initializes SerializeAs and increments NumberOfInstances
 		*/
-		RedditCommon() : SerializeAs(SerializationMethod::Text), CreatedUTC(0) {}
+		RedditCommon() : CreatedUTC(0), SerializeAs(SerializationMethod::Text) {}
 		void SerializeTo(SerializationMethod sm = SerializationMethod::Text);
 
 		/**

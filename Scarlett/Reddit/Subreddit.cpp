@@ -42,57 +42,55 @@ namespace ScarlettArchiver {
 
 
 	void Subreddit::Read(const nlohmann::json& source) {
-#pragma omp parallel sections
-		{
-			SubredditMetadata tempStats;
+		SubredditMetadata tempStats;
 #pragma omp parallel for
-			for (nlohmann::json json : source.at("data"))
-			{
-				salog->info("Reading Point: " + json.at("id").get<std::string>());
-				std::cout << "Reading Point: " << json.at("id").get<std::string>() << std::endl;
-				std::shared_ptr<RedditAsset::RedditCommon> element;
+		for (nlohmann::json json : source.at("data"))
+		{
+			salog->info("Reading Point: " + json.at("id").get<std::string>());
+			std::cout << "Reading Point: " << json.at("id").get<std::string>() << std::endl;
+			std::shared_ptr<RedditAsset::RedditCommon> element;
 
-				salog->info("Reading json...");
-				if (RedditAsset::Gallery::IsGallery(json))
-				{
-					salog->info("Found a Gallery");
-					element = std::make_shared<RedditAsset::Gallery>(json);
-					tempStats.Galleries += 1;
-				}
-				else if (RedditAsset::Video::IsVideo(json)) {
-					salog->info("Found a Video");
-					element = std::make_shared<RedditAsset::Video>(json);
-					tempStats.Videos += 1;
+			salog->info("Reading json...");
+			if (RedditAsset::Gallery::IsGallery(json))
+			{
+				salog->info("Found a Gallery");
+				element = std::make_shared<RedditAsset::Gallery>(json);
+				tempStats.Galleries += 1;
+			}
+			else if (RedditAsset::Video::IsVideo(json)) {
+				salog->info("Found a Video");
+				element = std::make_shared<RedditAsset::Video>(json);
+				tempStats.Videos += 1;
 #pragma omp critical (getvideoinfo)
-					{
-						salog->info("Getting dash info");
-						auto Directvideo = std::dynamic_pointer_cast<RedditAsset::Video>(element);
-						Directvideo.get()->GetVideoInfo();
-					}
-				}
-				else if (RedditAsset::SelfPost::IsSelfPost(json)) {
-					salog->info("Found a Self Post");
-					element = std::make_shared<RedditAsset::SelfPost>(json);
-					tempStats.SelfPosts += 1;
-				}
-				else {
-					salog->info("Found a Link");
-					element = std::make_shared<RedditAsset::Link>(json);
-					tempStats.Links += 1;
-				}
-#pragma omp critical (Postappending)
 				{
-					ScarlettArchiver::Write(json, SubStorePath, "element.json");
-					salog->info("Added element to Vec");
-					posts.push_back(element);
+					salog->info("Getting dash info");
+					auto Directvideo = std::dynamic_pointer_cast<RedditAsset::Video>(element);
+					Directvideo.get()->GetVideoInfo();
 				}
 			}
-#pragma omp critical()
+			else if (RedditAsset::SelfPost::IsSelfPost(json)) {
+				salog->info("Found a Self Post");
+				element = std::make_shared<RedditAsset::SelfPost>(json);
+				tempStats.SelfPosts += 1;
+			}
+			else {
+				salog->info("Found a Link");
+				element = std::make_shared<RedditAsset::Link>(json);
+				tempStats.Links += 1;
+			}
+#pragma omp critical (Postappending)
 			{
-				salog->info("Updated stats");
-				sub->UpdateStats(tempStats);
+				ScarlettArchiver::Write(json, SubStorePath, "element.json");
+				salog->info("Added element to Vec");
+				posts.push_back(element);
 			}
 		}
+#pragma omp critical(updateStats)
+		{
+			salog->info("Updated stats");
+			sub->UpdateStats(tempStats);
+		}
+
 	}
 	void Subreddit::WriteAll()
 	{

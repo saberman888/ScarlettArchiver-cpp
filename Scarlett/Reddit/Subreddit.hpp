@@ -9,8 +9,6 @@
 #include "Video.hpp"
 #include "SelfPost.hpp"
 #include "Galleries.hpp"
-#include "Retriever.hpp"
-
 #include <boost/archive/text_oarchive.hpp>
 
 #include <ctime>
