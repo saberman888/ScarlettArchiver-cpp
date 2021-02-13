@@ -15,15 +15,15 @@ namespace ScarlettArchiver
 		ScarlettException(std::string message) : message(message.c_str()){}
 		std::string postId;
 		const char* message;
-		virtual const char* what() const;
+		virtual const char* what();
 	};
 
 	class ScarlettPostException : public ScarlettException
 	{
 	public:
 		std::string postId;
-		ScarlettPostException(const std::string message, const std::string postid) : ScarlettException(message.c_str()), postId(postId){}
-		const char* what() const;
+		ScarlettPostException(const std::string message, const std::string postid) : ScarlettException(message.c_str()), postId(postid){}
+		const char* what();
 	};
 
 	class PostRetrievalFailure : public ScarlettException	{
@@ -35,12 +35,7 @@ namespace ScarlettArchiver
 		}
 
 		State respinfo;
-		const char* what() const;
+		const char* what();
 	};
 
-
-	void printException(const std::exception& e, int level = 0);
-	void printException(const ScarlettException& e, int level = 0);
-	void printException(const PostRetrievalFailure& e, int level = 0);
-	void printException(const ScarlettPostException& e, int level = 0);
 }
