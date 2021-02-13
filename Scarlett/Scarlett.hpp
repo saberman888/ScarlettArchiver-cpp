@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Reddit/Subreddit.hpp"
+#include <iosfwd>
 
 namespace ScarlettArchiver
 {

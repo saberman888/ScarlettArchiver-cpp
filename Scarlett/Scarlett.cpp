@@ -1,4 +1,5 @@
 #include "Scarlett.hpp"
+#include <iostream>
 
 namespace ScarlettArchiver
 {
@@ -22,18 +23,10 @@ namespace ScarlettArchiver
 					sub->WriteAll();
 				}
 
-			}
-			catch (ScarlettPostException& e) {
-				printException(e);
-			}
-			catch (PostRetrievalFailure& e) {
-				printException(e);
-			}
-			catch (ScarlettException& e) {
-				printException(e);
+
 			}
 			catch (std::exception& e) {
-				printException(e);
+				std::cerr << e.what() << std::endl;
 			}
 
 		} while (sub->HasNext());
