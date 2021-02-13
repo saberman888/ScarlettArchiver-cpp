@@ -7,11 +7,22 @@
 #include <vector>
 
 #include "RedditCommon.hpp"
-#include "CommentListing.hpp"
 #include "BasicRequest.hpp"
+#include "Listing.hpp"
+#include "Misc.hpp"
 
 namespace ScarlettArchiver::RedditAsset
 {
+	class CommentListing : public Listing {
+	public:
+		CommentListing(const std::string ParentId);
+
+		nlohmann::json Next();
+		void Read(const nlohmann::json& json);
+	private:
+		std::string ParentId;
+	}; 
+	
 	class Comment : public RedditCommon
 	{
 	public:
@@ -23,5 +34,5 @@ namespace ScarlettArchiver::RedditAsset
 		bool operator!=(const Comment& other);
 	private:
 		void Read(const nlohmann::json& json);
-	};
+	};	
 };
