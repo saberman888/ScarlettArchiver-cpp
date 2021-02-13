@@ -5,7 +5,9 @@ namespace ScarlettArchiver::RedditAsset
 	Comment::Comment(const nlohmann::json& json) : Text("[deleted]") {
 		RedditCommon::initLog();
 		Comment::Read(json);
+		replies = std::make_unique<CommentListing>(Id);
 	}
+	
 
 	bool Comment::operator==(const Comment& other)
 	{
