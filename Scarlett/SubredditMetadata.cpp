@@ -55,7 +55,8 @@ namespace ScarlettArchiver
 			if (End == std::nullopt)
 			{
 				// If End isn't either, assign it to today's date in UTC
-				this->EndDate = *std::gmtime((time_t)0);
+				time_t current = 0;
+				this->EndDate = *std::gmtime(&current);
 			}
 		}
 		else {
@@ -70,7 +71,7 @@ namespace ScarlettArchiver
 			
 			*/
 			std::string format;
-			if (match("20[0-9][0-9](-|\.|:|\/)?[0-1]?[1-9](-|\.|:|\/)?[0-3]?[0-9]"))
+			if (match("20[0-9][0-9](-|\\.|:|\\/)?[0-1]?[1-9](-|\\.|:|\\/)?[0-3]?[0-9]"))
 			{
 				if (match("20[0-9][0-9][0-1][0-9][0-3][0-9]"))
 				{
