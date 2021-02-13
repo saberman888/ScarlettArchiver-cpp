@@ -3,3 +3,14 @@
 ################################################################################
 
 /Kdevelop/Scarlett
+/out/build
+/.vs
+/CMakeCache.txt
+/CMakeLists.txt.user
+/CMakeSettings.json
+/Makefile
+/cmake_install.cmake
+/Scarlett/Makefile
+/CppShift/cmake_install.cmake
+/CppShift/Makefile
+/Scarlett/cmake_install.cmake
