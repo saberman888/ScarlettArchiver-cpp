@@ -37,14 +37,28 @@ namespace ScarlettArchiver::RedditAsset
 
     void CommentListing::Read(const nlohmann::json& json)
     {
-        for (auto com : json.at("data").at("children"))
+        ScarlettArchiver::Write(json, std::filesystem::path("logs"), "elem.json");
+        for (auto elem : json.at("data").at("children"))
         {
-            try {
-                auto tempComment = std::make_unique<RedditAsset::Comment>(com.at("data"));
+            ScarlettArchiver::Write(elem.at("data"), "logs", "innerelement.json");
+            try {                
+                
+                auto com = elem.at("data");
+                // If it has an array called children, it's probably a 'more children' object, or in other words keys to more comments
+                if (com.contains("children") && com.at("children").is_array())
+                {
+                // TODO: Implement Reddit API components to use more children object
+                continue;
+                }
+                
+                auto tempComment = std::make_unique<RedditAsset::Comment>(com);
+                
+                if (com.at("replies").is_object() && com.at("replies").is_structured()) {
+                    auto innerchildren = com.at("replies").at("data").at("children");
+                    tempComment->replies->Read(com.at("replies"));
+                }
+
                 items.push_back(std::move(tempComment));
-                auto innerchildren = com.at("data").at("replies").at("data").at("children");
-                if (!innerchildren.empty())
-                    tempComment->replies->Read(com.at("data").at("replies"));
             }
             catch (nlohmann::json::exception& e) {
                 scarlettNestedThrow("Failed to parse comment JSON from CommentListing, " + ParentId + ", " + std::string(e.what()));
