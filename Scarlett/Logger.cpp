@@ -17,31 +17,4 @@ namespace ScarlettArchiver
 		}
 	}
 
-	void write(std::shared_ptr<spdlog::logger> log, SevLevel sl, std::string msg)
-	{
-		switch (sl)
-		{
-		case trace:
-			log->trace(msg);
-			break;
-		case debug:
-			log->debug(msg);
-			break;
-		case info:
-			log->info(msg);
-			break;
-		case warn:
-			log->warn(msg);
-			break;
-		case err:
-			log->error(msg);
-			break;
-		case crit:
-			log->critical(msg);
-			break;
-		default:
-			log->warn(msg);
-			break;
-		}
-	}
 }
