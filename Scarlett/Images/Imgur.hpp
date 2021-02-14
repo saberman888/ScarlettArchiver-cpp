@@ -1,6 +1,7 @@
 #pragma once
 
 #include "StringOps.hpp"
+#include "exceptions.hpp"
 #include "nlohmann/json.hpp"
 #include "BasicRequest.hpp"
 #include <string>

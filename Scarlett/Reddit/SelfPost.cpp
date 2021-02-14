@@ -26,9 +26,7 @@ namespace ScarlettArchiver::RedditAsset
 				Text = json.at("selftext").get<std::string>();
 		}
 		catch (nlohmann::json::exception& e) {
-			log->error("Exception triggered: nlohmann::json");
-			log->error("Rethrowing..");
-			std::throw_with_nested(ScarlettArchiver::ScarlettPostException("Failed to extract JSON", this->Id));
+			scarlettNestedThrow("Failed to extract JSON from SelfPost, " + std::string(e.what()));
 		}
 	}
 

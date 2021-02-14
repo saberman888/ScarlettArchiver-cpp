@@ -1,41 +1,40 @@
 #pragma once
 
 #include <string>
+#include <stdexcept>
 #include <exception>
 #include <cstring>
 #include <iosfwd>
+#include <memory>
+#include <optional>
 #include "BasicRequest.hpp"
+#include "Logger.hpp"
+
+#if defined(__FUNCTION__)
+#define __func__ __FUNCTION__
+#endif
 
 namespace ScarlettArchiver
 {
-	class ScarlettException : public std::exception
+	class ScarlettException : public std::runtime_error
 	{
 	public:
-		ScarlettException(const char* message) : message(message) {}
-		ScarlettException(std::string message) : message(message.c_str()){}
-		std::string postId;
-		const char* message;
-		virtual const char* what();
-	};
-
-	class ScarlettPostException : public ScarlettException
-	{
-	public:
-		std::string postId;
-		ScarlettPostException(const std::string message, const std::string postid) : ScarlettException(message.c_str()), postId(postid){}
-		const char* what();
-	};
-
-	class PostRetrievalFailure : public ScarlettException	{
-	public:
-		PostRetrievalFailure(const std::string message) : ScarlettException(message) {}
-		PostRetrievalFailure(const State& result) : ScarlettException(result.Message) {
-			respinfo.Message = result.Message;
-			respinfo.HttpState = result.HttpState;
+		ScarlettException(const std::string& message, unsigned int line, const std::string& func) : std::runtime_error("[" + std::string(func) + ":" + std::to_string(line) + "]: " + message){
+			this->message = "[" + std::string(func) + ":" + std::to_string(line) + "]: " + message;
 		}
-
-		State respinfo;
-		const char* what();
+		const char* what()
+		{
+			return message.c_str();
+		}
+	private:
+		std::string message;
 	};
+
+
+	void printException(const std::exception& e, int level = 0);
+	void printException(ScarlettException& se, int level = 0);
+
+#define scarlettThrow(msg) throw ScarlettException(msg, __LINE__, __func__);
+#define scarlettNestedThrow(msg) std::throw_with_nested(ScarlettException(msg, __LINE__, __func__));
 
 }

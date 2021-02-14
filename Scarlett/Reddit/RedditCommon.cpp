@@ -44,10 +44,7 @@ namespace ScarlettArchiver::RedditAsset
 				Domain = json.at("domain").get<std::string>();
 		}
 		catch (nlohmann::json::exception& e) {
-			log->error("Exception triggered: nlohmann::json");
-			log->error(e.what());
-			log->info("Rethrowing...");
-			std::throw_with_nested(ScarlettArchiver::ScarlettPostException("Failed to extract JSON", this->Id));
+			scarlettNestedThrow("Failed to parse JSON for RedditCommon, " + std::string(e.what()));
 
 		}
 	}

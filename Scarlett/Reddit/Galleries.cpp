@@ -29,7 +29,7 @@ namespace ScarlettArchiver::RedditAsset
 					Images.push_back(imageURL);
 				}
 				catch (nlohmann::json::exception& e) {
-					std::throw_with_nested(ScarlettArchiver::ScarlettPostException("Failed to extract JSON", this->Id));
+					scarlettNestedThrow("Failed to parse JSON for Gallery, " + std::string(e.what()));
 				}
 			}
 		}

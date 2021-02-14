@@ -3,19 +3,43 @@
 
 namespace ScarlettArchiver
 {
-	const char* PostRetrievalFailure::what()
+
+	void printException(const std::exception& e, int level)
 	{
-		return "PostRetrievalFailure: exception triggered";
+		std::cerr << std::string(level, ' ') << "[exception]: " << e.what() << '\n';		
+		auto log = GetGlobalLogger();
+		log->error(std::string(level, ' ') + "[exception]: " + e.what());
+		try {
+			std::rethrow_if_nested(e);
+			
+		}
+		catch (const ScarlettException& e) {
+			printException(e, level + 1);
+		}
+		catch (const std::exception& e) {
+			printException(e, level + 1);
+		}
+		catch (...) {
+
+		}
 	}
 
-	const char* ScarlettException::what()
+	void printException(ScarlettException& se, int level)
 	{
-		return message;
-	}
-
-	const char* ScarlettPostException::what()
-	{
-		return "ScarlettPostException: exception triggered";
+		std::cerr << std::string(level, ' ') << "[scarlett exception]: " << se.what() << std::endl; 
+		auto log = GetGlobalLogger();
+		log->error(std::string(level, ' ') + "[exception]: " + se.what());
+		try {
+			std::rethrow_if_nested(se);
+		}
+		catch (ScarlettException& e) {
+			printException(e, level + 1);
+		}
+		catch (const std::exception& e) {
+			printException(e, level + 1);
+		}
+		catch (...) {
+		}
 	}
 
 };

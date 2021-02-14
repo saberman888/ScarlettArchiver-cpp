@@ -20,14 +20,13 @@ namespace ScarlettArchiver::RedditAsset
 	}
 
 	void Comment::Read(const nlohmann::json& json) {
-		this->Domain = "self.";
 		try {
 			RedditCommon::Read(json);
 			if(json.contains("body"))
 				Text = json.at("body").get<std::string>();
 		}
 		catch (nlohmann::json::exception& e) {
-			std::throw_with_nested(ScarlettArchiver::ScarlettPostException("Failed to extract JSON", this->Id));
+			scarlettNestedThrow("Failed to extract JSON for Comment, " + std::string(e.what()));
 		}
 	}
 
@@ -40,10 +39,16 @@ namespace ScarlettArchiver::RedditAsset
     {
         for (auto com : json.at("data").at("children"))
         {
-            auto tempComment = std::make_unique<RedditAsset::Comment>(com.at("data"));
-            items.push_back(std::move(tempComment));
-            if (!com.at("data").at("replies").at("data").at("children").empty())
-                tempComment->replies->Read(com.at("data").at("replies"));
+            try {
+                auto tempComment = std::make_unique<RedditAsset::Comment>(com.at("data"));
+                items.push_back(std::move(tempComment));
+                auto innerchildren = com.at("data").at("replies").at("data").at("children");
+                if (!innerchildren.empty())
+                    tempComment->replies->Read(com.at("data").at("replies"));
+            }
+            catch (nlohmann::json::exception& e) {
+                scarlettNestedThrow("Failed to parse comment JSON from CommentListing, " + ParentId + ", " + std::string(e.what()));
+            }
         }
     }
 
@@ -57,11 +62,12 @@ namespace ScarlettArchiver::RedditAsset
                 return json.at(1);
             }
             catch (nlohmann::json::exception& e) {
-                throw;
+                scarlettNestedThrow("Failed to parse JSON for Comment, " + std::string(e.what()));
             }
         }
         else {
-            throw ScarlettArchiver::ScarlettException("Failed to get comment data from " + ParentId);
+            std::string msg = "Failed to download additional comments for a post, " + std::to_string(data.HttpState) + ", " + data.Message;
+            scarlettThrow(msg);
         }
         return nlohmann::json();
 

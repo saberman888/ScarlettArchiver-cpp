@@ -30,10 +30,7 @@ namespace ScarlettArchiver::RedditAsset
 				log->info("DASH URL: " + DashPlaylistUrl);
 			}
 			catch (nlohmann::json::exception& e) {
-				log->error("Exception triggered: nlohmann::json");
-				log->error(e.what());
-				log->error("Rethrowing...");
-				std::throw_with_nested(ScarlettArchiver::ScarlettPostException("Failed to extract JSON", this->Id));
+				scarlettNestedThrow("Failed to extract JSON from Video, " + std::string(e.what()));
 			}
 
 			log->info("Success!");
@@ -51,9 +48,7 @@ namespace ScarlettArchiver::RedditAsset
 			}
 		}
 		else {
-			log->error("Failed to download DASH");
-			log->info("Throwing exception");
-			throw ScarlettArchiver::ScarlettException("Failed to download DASH");
+			scarlettThrow("Failed to download DASH");
 		}
 	}
 
@@ -117,7 +112,7 @@ namespace ScarlettArchiver::RedditAsset
 			//DashPlaylistUrl = redditVideo.at("dash_url").get<std::string>();
 		}
 		catch (nlohmann::json::exception& e) {
-			std::throw_with_nested(ScarlettArchiver::ScarlettPostException("Failed to extract JSON", this->Id));
+			scarlettNestedThrow("Failed to extract JSON, " + std::string(e.what()));
 		}
 	}
 

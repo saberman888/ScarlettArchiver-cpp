@@ -31,8 +31,8 @@ namespace ScarlettArchiver
 					data = root.at("data").at("link").get <std::string>();
 				}
 			}
-			catch (nlohmann::json::out_of_range&) {
-				throw;
+			catch (nlohmann::json::exception e) {
+				scarlettNestedThrow("Failed to parse JSON from Imgur Link, " + std::string(e.what()));
 			}
 			return data;
 		}
@@ -47,8 +47,8 @@ namespace ScarlettArchiver
 					URLs.push_back(elem.at("link").get<std::string>());
 				}
 			}
-			catch (nlohmann::json::exception&) {
-				throw;
+			catch (nlohmann::json::exception& e) {
+				scarlettNestedThrow("Failed to parse JSON from Imgur Link, " + std::string(e.what()));
 			}
 			return URLs;
 		}
