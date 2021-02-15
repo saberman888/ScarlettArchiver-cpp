@@ -13,12 +13,13 @@
 
 namespace ScarlettArchiver::RedditAsset
 {
-	class CommentListing : public Listing {
+	class CommentListing : public Listing<RedditCommon> {
 	public:
 		CommentListing(const std::string ParentId);
 
 		nlohmann::json Next();
 		void Read(const nlohmann::json& json);
+		size_t size();
 	private:
 		std::string ParentId;
 	}; 

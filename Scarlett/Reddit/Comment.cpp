@@ -66,6 +66,20 @@ namespace ScarlettArchiver::RedditAsset
         }
     }
 
+    size_t CommentListing::size()
+    {
+        size_t vsize = items.size();
+        if (!items.empty())
+        {
+            for (auto& elem : items)
+            {
+                auto cElem = dynamic_cast<Comment*>(elem.get());
+                vsize += cElem->replies->size();
+            }
+        }
+        return vsize;
+    }
+
     nlohmann::json CommentListing::Next()
     {
         auto data = Download("https://reddit.com/" + ParentId + ".json");
