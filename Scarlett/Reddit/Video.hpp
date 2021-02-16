@@ -2,7 +2,7 @@
 
 #include "nlohmann/json.hpp"
 #include "StringOps.hpp"
-#include "RedditCommon.hpp"
+#include "Comment.hpp"
 #include "Misc.hpp"
 
 #include <string>
@@ -25,6 +25,8 @@ namespace ScarlettArchiver::RedditAsset
 		bool Download(std::filesystem::path destination);
 		void Mux(std::filesystem::path destination);
 
+		std::shared_ptr<CommentListing> replies;
+
 		/**
 		* Checks if the provided json has an is_video tag, and if it is in fact: a boolean.
 		*/
@@ -36,7 +38,6 @@ namespace ScarlettArchiver::RedditAsset
 		std::string DashPlaylistUrl, AudioURL;
 		bool HasAudio;
 
-		bool CheckForAudio();
 		void Read(const nlohmann::json& json, bool ReadDomain = true); 
 		
 		friend class boost::serialization::access;

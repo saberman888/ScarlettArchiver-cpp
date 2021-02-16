@@ -7,6 +7,7 @@ namespace ScarlettArchiver::RedditAsset
 	SelfPost::SelfPost(const nlohmann::json& json) : Text("[deleted]") {
 		RedditCommon::initLog();
 		SelfPost::Read(json);
+		replies = std::make_shared<CommentListing>(this->Id);
 	}
 
 	bool SelfPost::operator==(const SelfPost& other)

@@ -14,6 +14,7 @@
 #include <boost/serialization/nvp.hpp>*/
 #include "exceptions.hpp"
 #include "Logger.hpp"
+#include "Comment.hpp"
 
 
 

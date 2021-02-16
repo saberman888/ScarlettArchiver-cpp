@@ -9,6 +9,7 @@ namespace ScarlettArchiver::RedditAsset
 		RedditCommon::initLog();
 		RedditCommon::Read(json);
 		RedditCommon::SerializeTo(sm);
+		replies = std::make_shared<CommentListing>(this->Id);
 	}
 
 	Link::Link(const nlohmann::json& json, std::string
@@ -16,6 +17,7 @@ namespace ScarlettArchiver::RedditAsset
 	{
 		RedditCommon::Read(json); 
 		RedditCommon::SerializeTo(sm);
+		replies = std::make_shared<CommentListing>(this->Id);
 	}
 
 	std::string Link::GetImage() {

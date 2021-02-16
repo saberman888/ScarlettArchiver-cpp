@@ -3,7 +3,7 @@
 #include <string>
 #include <filesystem>
 #include <fstream>
-#include "RedditCommon.hpp"
+#include "Comment.hpp"
 #include <boost/serialization/export.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -20,6 +20,7 @@ namespace ScarlettArchiver::RedditAsset
 		SelfPost(const nlohmann::json& json);
 
 		std::string Text;
+		std::shared_ptr<CommentListing> replies;
 		bool operator==(const SelfPost& other);
 		bool operator!=(const SelfPost& other);
 		static inline bool IsSelfPost(const nlohmann::json& json)

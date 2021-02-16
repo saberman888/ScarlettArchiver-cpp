@@ -23,6 +23,7 @@ namespace ScarlettArchiver::RedditAsset
 		*/
 		Link(const nlohmann::json& json, std::string
 			ImgurClientId, SerializationMethod sm = SerializationMethod::Text);
+		std::shared_ptr<CommentListing> replies;
 
 		/**
 		* Returns the post's URL if it's a normal image. If it's an image from Imgur, it returns a direct image using the Imgur API

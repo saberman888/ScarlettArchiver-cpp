@@ -6,12 +6,14 @@ namespace ScarlettArchiver::RedditAsset
 {
 	Gallery::Gallery(const nlohmann::json& json)
 	{
-		Read(json);
+		Read(json);	
+		replies = std::make_shared<CommentListing>(this->Id);
 	}
 
 	Gallery::Gallery(const nlohmann::json& json, std::string ImgurClientId) : ImgurClientId(ImgurClientId)
 	{
 		Read(json);
+		replies = std::make_shared<CommentListing>(this->Id);
 	}
 
 	void Gallery::Read(const nlohmann::json& json)

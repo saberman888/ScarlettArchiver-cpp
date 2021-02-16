@@ -10,6 +10,7 @@ namespace ScarlettArchiver::RedditAsset
 	{
 		RedditCommon::initLog();
 		Read(json);
+		replies = std::make_shared<CommentListing>(this->Id);
 	}
 
 	void Video::GetVideoInfo()

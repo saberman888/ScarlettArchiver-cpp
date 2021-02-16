@@ -6,7 +6,7 @@
 #include "StringOps.hpp"
 #include "Images/Imgur.hpp"
 #include "Image.hpp"
-#include "RedditCommon.hpp"
+#include "Comment.hpp"
 #include "nlohmann/json.hpp"
 
 #include <boost/serialization/export.hpp>
@@ -26,6 +26,7 @@ namespace ScarlettArchiver::RedditAsset
 		// Initializes and then passes a json string into Read(const std::string& json)
 		Gallery(const nlohmann::json& json);
 		Gallery(const nlohmann::json& json, std::string ImgurClientId);
+		std::shared_ptr<CommentListing> replies;
 
 		/**
 		 This simply returns a vector full of Image URLs if its not an Imgur URL.
