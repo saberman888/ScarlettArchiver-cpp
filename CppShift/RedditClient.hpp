@@ -4,7 +4,8 @@
 #include <vector>
 #include <array>
 #include <sstream>
-
+#include "BasicRequest.hpp"
+#include "nlohmann/json.hpp"
 namespace Reddit {
 	enum Scopes
 	{
@@ -50,14 +51,17 @@ namespace Reddit {
 	public:
 		friend AppInfo& operator<<(AppInfo& ai, const Scopes s);
 		AppInfo(const std::string Id, const std::string UserAgent, const std::string RedirectURI = "localhost:8080", const Duration dt = Temporary);
-		AppInfo(const std::string Id, const std::string Secret, const std::string UserAgent, const std::string RedirectURL = "localhost:8080", const Duration dt = Temporary);
+		AppInfo(const std::string Id, const std::string Secret, const std::string UserAgent, const std::string RedirectURI = "localhost:8080", const Duration dt = Temporary);
+		void setUserCredentials(const std::string Username, const std::string Password);
 		inline bool Authorized();
 
 		bool RevokeAccess();
 		inline bool Revokable();
 		void DisableRevoke();
 	private:
-		std::string Id, RedirectURI, Secret, ResponseCode;
+		bool Perform();
+		const std::string Id, RedirectURI, Secret, ResponseCode;
+		const std::string Username, Password, UserAgent;
 		Duration dt;
 		bool IsAuthorized, IsRevokable;
 		std::vector<Scopes> Scope;
@@ -84,9 +88,10 @@ namespace Reddit {
 		};
 	};
 
-	using ScriptClient = AppInfo<Script>;
-	using AppClient = AppInfo<Implicit>;
-	using UserlessClient = AppInfo<Userless>;
+	using ScriptClient = AppInfo<Client::Script>;
+	using AppClient = AppInfo<Client::Implicit>;
+	using UserlessClient = AppInfo<Client::Userless>;
+	using CompactClient = AppInfo<Client::Compact>;
 
 	template<Client C>
 	AppInfo<C>& operator<<(AppInfo<C>& ai, const Scopes s)
@@ -101,8 +106,13 @@ namespace Reddit {
 	{}
 
 	template<Client C>
-	inline AppInfo<C>::AppInfo(const std::string Id, const std::string Secret, const std::string UserAgent, const std::string RedirectURL, const Duration dt) : Id(Id), Secret(Secret), UserAgent(UserAgent), RedirectURL(RedirectURI), dt(dt)
-	{
+	inline AppInfo<C>::AppInfo(const std::string Id, const std::string Secret, const std::string UserAgent, const std::string RedirectURI, const Duration dt) : Id(Id), Secret(Secret), UserAgent(UserAgent), RedirectURI(RedirectURI), dt(dt)
+	{}
+
+	template<Client C>
+	inline void AppInfo<C>::setUserCredentials(const std::string Username, const std::string Password)	{
+		this->Username = Username;
+		this->Password = Password;
 	}
 
 	template<Client C>
@@ -128,6 +138,46 @@ namespace Reddit {
 	inline void AppInfo<C>::DisableRevoke()
 	{
 		//TODO: Implement disable revocation
+	}
+
+	template<Client C>
+	inline bool AppInfo<C>::Perform()
+	{
+
+	}
+
+	template<>
+	inline bool AppInfo<Client::Userless>::Perform()
+	{
+		auto uniqueId = BasicRequest::UTCToString(0, "%Y%m%d%H%M%S");
+		BasicRequest handle;
+		handle.Setup("https://www.reddit.com/api/v1/access_token", true);
+		handle.SetURLParameters({
+			{"grant_type", "https://oauth.reddit.com/grants/installed_client&\device_id=" + uniqueId}
+			});
+		auto result = handle.SendRequest();
+		return false;
+	}
+
+	template<>
+	inline bool AppInfo<Client::Script>::Perform()
+	{
+		BasicRequest handle;
+		handle.Setup("https://oauth.reddit.com/api/v1/access_token", true);
+		handle.SetURLParameters({
+			{"grant_type", "password"},
+			{"username", Username},
+			{"password", Password}
+			});
+		handle.SetCreds(Id + ":" + Secret);
+		auto result = handle.SendRequest();
+		if (!result.AllGood())
+		{
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 }
