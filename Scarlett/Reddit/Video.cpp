@@ -5,12 +5,15 @@ BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Video);
 
 namespace ScarlettArchiver::RedditAsset
 {
-	Video::Video(const nlohmann::json& json) : DashPlaylistUrl(), AudioURL(),
-		HasAudio(false)
+	Video::Video(const nlohmann::json& json) : HasAudio(false)
 	{
-		RedditCommon::initLog();
+
 		Read(json);
-		replies = std::make_shared<CommentListing>(this->Id);
+	}
+
+	Video::Video()
+	{
+		GetVideoInfo();
 	}
 
 	void Video::GetVideoInfo()
@@ -24,6 +27,8 @@ namespace ScarlettArchiver::RedditAsset
 				log->info("Reading...");
 				nlohmann::json root = nlohmann::json::parse(redditVideo.buffer);
 				auto post = root.at(0).at("data").at("children").at(0).at("data");
+
+				Link::Read(post);
 
 				auto redditVideo = post.at("secure_media").at("reddit_video");
 				//URL = redditVideo.at("fallback_url").get<std::string>();
@@ -55,9 +60,9 @@ namespace ScarlettArchiver::RedditAsset
 
 	bool Video::Download(std::filesystem::path destination)
 	{
-		size_t ending = URL->rfind("/");
-		std::string audio_url = URL->substr(0, ending + 1);
-		if (ScarlettArchiver::contains(URL.value(), ".mp4"))
+		size_t ending = URL.rfind("/");
+		std::string audio_url = URL.substr(0, ending + 1);
+		if (ScarlettArchiver::contains(URL, ".mp4"))
 		{
 			AudioURL = audio_url + "DASH_audio.mp4";
 		}
@@ -66,7 +71,7 @@ namespace ScarlettArchiver::RedditAsset
 		}
 		log->info("Video audio URL: " + AudioURL);
 
-		auto video = ScarlettArchiver::Download(URL.value());
+		auto video = ScarlettArchiver::Download(URL);
 		if (!video.AllGood())
 		{
 			std::cerr << "Error, Failed to download Video" << std::endl;
@@ -93,20 +98,19 @@ namespace ScarlettArchiver::RedditAsset
 		return (json.contains("is_video") && json.at("is_video").is_boolean() && json.at("is_video").get<bool>());
 	}
 
-	bool Video::operator==(const Video& other)
+	bool Video::operator==(Video& other)
 	{
-		return (RedditCommon::operator==(other) && other.HasAudio == HasAudio && other.DashPlaylistUrl == DashPlaylistUrl);
+		return (Link::operator==(other) && other.HasAudio == HasAudio && other.DashPlaylistUrl == DashPlaylistUrl);
 	}
 
-	bool Video::operator!=(const Video& other)
+	bool Video::operator!=(Video& other)
 	{
-		return !this->operator==(other);
+		return (Link::operator!=(other) && other.HasAudio == HasAudio && other.DashPlaylistUrl == DashPlaylistUrl);
 	}
 
-	void Video::Read(const nlohmann::json& json, bool ReadDomain)
+	void Video::Read(const nlohmann::json& json)
 	{
 		try {
-			RedditCommon::Read(json);
 			// TODO: PushShift doesn't preserve media json structure that holds the information to get the dash file
 			//auto redditVideo = json.at("media").at("reddit_video");
 			//URL = redditVideo.at("fallback_url").get<std::string>();

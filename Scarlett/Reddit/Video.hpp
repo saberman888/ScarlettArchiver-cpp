@@ -2,6 +2,7 @@
 
 #include "nlohmann/json.hpp"
 #include "StringOps.hpp"
+#include "Link.hpp"
 #include "Comment.hpp"
 #include "Misc.hpp"
 
@@ -16,35 +17,33 @@
 
 namespace ScarlettArchiver::RedditAsset
 {
-	class Video : public RedditCommon
+	class Video : public Link
 	{
 	public:
-		Video(){}
+		Video();
 		Video(const nlohmann::json& json);
 		void GetVideoInfo();
 		bool Download(std::filesystem::path destination);
 		void Mux(std::filesystem::path destination);
-
-		std::shared_ptr<CommentListing> replies;
 
 		/**
 		* Checks if the provided json has an is_video tag, and if it is in fact: a boolean.
 		*/
 		static bool IsVideo(const nlohmann::json& json);
 
-		bool operator==(const Video& other);
-		bool operator!=(const Video& other);
+		bool operator==(Video& other);
+		bool operator!=(Video& other);
 	private:
 		std::string DashPlaylistUrl, AudioURL;
 		bool HasAudio;
 
-		void Read(const nlohmann::json& json, bool ReadDomain = true); 
+		void Read(const nlohmann::json& json); 
 		
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
-			ar& boost::serialization::base_object<RedditCommon>(*this);
+			ar& boost::serialization::base_object<Link>(*this);
 			ar& AudioURL;
 			ar& DashPlaylistUrl;
 			ar& HasAudio;
