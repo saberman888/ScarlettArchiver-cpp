@@ -4,22 +4,13 @@ BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Gallery);
 
 namespace ScarlettArchiver::RedditAsset
 {
-	Gallery::Gallery(const nlohmann::json& json)
-	{
+	Gallery::Gallery(const nlohmann::json& json, const std::optional<std::string> ImgurClientId) : Link(json, ImgurClientId)	{
 		Read(json);	
-		replies = std::make_shared<CommentListing>(this->Id);
-	}
-
-	Gallery::Gallery(const nlohmann::json& json, std::string ImgurClientId) : ImgurClientId(ImgurClientId)
-	{
-		Read(json);
-		replies = std::make_shared<CommentListing>(this->Id);
 	}
 
 	void Gallery::Read(const nlohmann::json& json)
 	{
-		RedditCommon::Read(json);
-		if (ImgurClientId.empty()) {
+		if (ImgurClientId == std::nullopt) {
 			for (auto& image : json.at("gallery_data").at("items"))
 			{
 				try {
@@ -39,12 +30,12 @@ namespace ScarlettArchiver::RedditAsset
 
 	const std::vector<std::string> Gallery::GetImages()
 	{
-        if (ImgurClientId.empty())
+        if (ImgurClientId == std::nullopt)
 		{
 			return Images;
 		}
 		else {
-			return ImgurAccess::ResolveAlbumURLs(URL.value(), ImgurClientId);
+			return ImgurAccess::ResolveAlbumURLs(URL, ImgurClientId.value());
 		}
 	}
 	bool Gallery::IsGallery(const nlohmann::json& json)
@@ -53,14 +44,14 @@ namespace ScarlettArchiver::RedditAsset
 			return true;
 		return false;
 	}
-	bool Gallery::operator==(const Gallery& other)
+	bool Gallery::operator==(Gallery& other)
 	{
-		return RedditCommon::operator==(other);
+		return Linkable::operator==(other) && Postable::operator==(other);
 	}
 
-	bool Gallery::operator!=(const Gallery& other)
+	bool Gallery::operator!=(Gallery& other)
 	{
-		return RedditCommon::operator!=(other);
+		return Linkable::operator!=(other) && Postable::operator==(other);
 	}
 
 	
