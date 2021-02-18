@@ -15,4 +15,10 @@ namespace ScarlettArchiver
 	{
 		return spdlog::get("Scarlett Archiver Log");
 	}
+
+	struct Logger
+	{
+		Logger();
+		std::shared_ptr<spdlog::logger> log;
+	};
 };

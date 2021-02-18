@@ -17,4 +17,9 @@ namespace ScarlettArchiver
 		}
 	}
 
+	Logger::Logger()
+	{
+		log = spdlog::get("Scarlett Archiver Log");
+	}
+
 }
