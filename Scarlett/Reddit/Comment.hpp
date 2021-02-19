@@ -6,7 +6,6 @@
 #include <optional>
 
 #include "BasicRequest.hpp"
-#include "Listing.hpp"
 #include "Misc.hpp"
 #include "TextPost.hpp"
 #include "exceptions.hpp"
