@@ -2,7 +2,8 @@
 
 #include <string>
 #include <optional>
-#include "RedditCommon.hpp"
+#include "Linkable.hpp"
+#include "Postable.hpp"
 #include "Images/Imgur.hpp"
 #include <boost/serialization/export.hpp>
 #include <boost/archive/text_iarchive.hpp>
