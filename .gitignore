@@ -16,3 +16,6 @@
 /Scarlett/cmake_install.cmake
 */CMakeFiles/*
 CMakeFiles
+VS
+out
+Kdevelop
