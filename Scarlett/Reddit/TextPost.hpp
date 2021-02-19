@@ -3,13 +3,15 @@
 #include <string>
 #include <filesystem>
 #include <fstream>
-#include "RedditCommon.hpp"
+#include "Linkable.hpp"
+#include "Postable.hpp"
 #include <boost/serialization/export.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 
 namespace ScarlettArchiver::RedditAsset
 {
+
 	class TextPost : public Postable, private Linkable
 	{
 	public:
@@ -17,24 +19,19 @@ namespace ScarlettArchiver::RedditAsset
 		* An empty constructor because, boost's serialization requires it.
 		*/
 		TextPost(){}
-		TextPost(const nlohmann::json& json, const std::optional<std::string> ParentId = std::nullopt);
+		TextPost(const nlohmann::json& json);
 
 		bool operator==(TextPost& other);
 		bool operator!=(TextPost& other);
 
 		const std::string Text;
-		std::optional<std::string> ParentId;
-
-		static inline bool IsSelfPost(const nlohmann::json& json)
+		static inline bool IsTextPost(const nlohmann::json& json)
 		{
 			return (json.contains("is_self") && json.at("is_self").get<bool>());
 		}
-
-	private:
-		/**
-		* Parses and assigns values from Reddit's json into the class' values
-		*/
+	protected:
 		void Read(const nlohmann::json& json);
+	private:
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)

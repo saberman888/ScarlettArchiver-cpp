@@ -1,39 +1,31 @@
 #pragma once
 
 #include <string>
-#include <filesystem>
-#include <fstream>
 #include <memory>
 #include <vector>
+#include <optional>
 
-#include "RedditCommon.hpp"
 #include "BasicRequest.hpp"
 #include "Listing.hpp"
 #include "Misc.hpp"
+#include "TextPost.hpp"
+#include "exceptions.hpp"
 
 namespace ScarlettArchiver::RedditAsset
 {
-	class CommentListing : public Listing<RedditCommon> {
-	public:
-		CommentListing(const std::string ParentId);
-
-		nlohmann::json Next();
-		void Read(const nlohmann::json& json);
-		size_t size();
-	private:
-		std::string ParentId;
-	}; 
 	
-	class Comment : public RedditCommon
+	class Comment : public TextPost
 	{
 	public:
-		Comment(const nlohmann::json& json);
-		std::unique_ptr<CommentListing> replies;
-		std::string Text;
+		Comment(const std::string& ParentId);
+		Comment(const nlohmann::json& json, std::optional<std::string> ParentId = std::nullopt);
+		std::vector<std::unique_ptr<Comment>> replies; 
+		void GetRedditComments();
+		void GetPushShiftComments();
 
-		bool operator==(const Comment& other);
-		bool operator!=(const Comment& other);
 	private:
+		std::optional<std::string> ParentId;
 		void Read(const nlohmann::json& json);
 	};	
+	using CommentTree = std::vector<std::unique_ptr<Comment>>;
 };
