@@ -14,3 +14,4 @@
 /CppShift/cmake_install.cmake
 /CppShift/Makefile
 /Scarlett/cmake_install.cmake
+*/CMakeFiles/*
