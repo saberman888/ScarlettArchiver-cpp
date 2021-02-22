@@ -27,8 +27,9 @@ namespace ScarlettArchiver::RedditAsset
 	bool Postable::timediff(time_t end, time_t begin)
 	{
 		return std::difftime(
-			max(end, begin),
-			min(end, begin)
+			//max(end, begin),
+			( end > begin ? end : begin),
+			(end < begin ? end : begin)
 		) == 0;
 	}
 };
