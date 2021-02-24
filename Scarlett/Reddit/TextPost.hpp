@@ -9,34 +9,63 @@
 
 namespace ScarlettArchiver::RedditAsset
 {
-
-	class TextPost : public Postable, private Linkable
+	/*
+	* TextPost serves as a base class for posts and comments with text in them.
+	*/
+	class TextPost : public Postable
 	{
 	public:
 		/**
 		* An empty constructor because, boost's serialization requires it.
 		*/
-		TextPost(){}
+		TextPost() {}
 		TextPost(const nlohmann::json& json);
 
 		bool operator==(TextPost& other);
 		bool operator!=(TextPost& other);
 
-		const std::string Text;
-		static inline bool IsTextPost(const nlohmann::json& json)
+		std::string Text;
+
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive& ar, const unsigned int version)
+		{
+			ar& boost::serialization::base_object<Postable>(*this);
+			ar& Text;
+		}
+
+		void Read(const nlohmann::json& json);
+	};
+
+	/*
+	* SelfPost takes TextPost with Linkable traits, and that serves as a class for self posts
+	*/
+	class SelfPost : public TextPost, public Linkable
+	{
+	public:
+		/**
+		* An empty constructor because, boost's serialization requires it.
+		*/
+		SelfPost(){}
+		SelfPost(const nlohmann::json& json);
+
+		bool operator==(SelfPost& other);
+		bool operator!=(SelfPost& other);
+
+
+		static inline bool IsSelfPost(const nlohmann::json& json)
 		{
 			return (json.contains("is_self") && json.at("is_self").get<bool>());
 		}
-	protected:
-		void Read(const nlohmann::json& json);
-	private:
+
+
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
 			ar& boost::serialization::base_object<Linkable>(*this);
-			ar& boost::serialization::base_object<Postable>(*this);
-			ar& Text;
-		}
+			ar& boost::serialization::base_object<TextPost>(*this);
+		}	
+
 	};
 };

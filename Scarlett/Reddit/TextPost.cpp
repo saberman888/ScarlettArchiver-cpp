@@ -1,23 +1,22 @@
 #include "TextPost.hpp"
-BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::TextPost);
+BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::SelfPost);
 
 
 namespace ScarlettArchiver::RedditAsset
 {
 	TextPost::TextPost(const nlohmann::json& json) : Text("[deleted]") {
-		Linkable::Read(json);
 		Postable::Read(json);
 		Read(json);
 	}
 
 	bool TextPost::operator==(TextPost& other)
 	{
-		return (Linkable::operator==(other) && Postable::operator==(other)) && Text == other.Text;
+		return Postable::operator==(other) && Text == other.Text;
 	}
 
 	bool TextPost::operator!=(TextPost& other)
 	{
-		return (Linkable::operator!=(other) && Postable::operator!=(other)) && other.Text != Text;
+		return Postable::operator!=(other) && other.Text != Text;
 	}
 
 	void TextPost::Read(const nlohmann::json& json) {
@@ -32,6 +31,22 @@ namespace ScarlettArchiver::RedditAsset
 		catch (nlohmann::json::exception& e) {
 			scarlettNestedThrow("Failed to extract JSON from SelfPost, " + std::string(e.what()));
 		}
+	}
+
+	SelfPost::SelfPost(const nlohmann::json& json) : TextPost(json)
+	{
+		Linkable::Read(json);
+		TextPost::Read(json);
+	}
+
+	bool SelfPost::operator==(SelfPost& other)
+	{
+		return TextPost::operator==(other) && Linkable::operator==(other);
+	}
+
+	bool SelfPost::operator!=(SelfPost& other)
+	{
+		return TextPost::operator!=(other) && Linkable::operator!=(other);
 	}
 
 };
