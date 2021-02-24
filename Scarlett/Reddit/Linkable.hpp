@@ -3,7 +3,7 @@
 #include <string>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
-#include "nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 #include "exceptions.hpp"
 
 namespace ScarlettArchiver::RedditAsset
@@ -23,7 +23,7 @@ namespace ScarlettArchiver::RedditAsset
 		std::string URL;
 		virtual bool operator==(const Linkable& other);
 		virtual bool operator!=(const Linkable& other);
-	private:
+
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
@@ -33,7 +33,6 @@ namespace ScarlettArchiver::RedditAsset
 			ar& URL;
 		}
 
-	protected:
 		void Read(const nlohmann::json& json);
 	};
 

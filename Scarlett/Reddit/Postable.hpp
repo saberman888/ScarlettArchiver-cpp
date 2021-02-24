@@ -27,7 +27,7 @@ namespace ScarlettArchiver::RedditAsset
 		{
 			return *std::gmtime(&CreatedUTC);
 		}
-	private:
+
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
@@ -38,7 +38,7 @@ namespace ScarlettArchiver::RedditAsset
 			ar& Permalink;
 		}
 
-	protected:
+
 		void Read(const nlohmann::json& json);
 		bool timediff(time_t end, time_t begin);
 	};
