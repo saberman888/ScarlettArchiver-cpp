@@ -2,7 +2,6 @@
 
 #include "BasicRequest.hpp"
 #include "nlohmann/json.hpp"
-//#include "curlpp/cURLpp.hpp"
 #include <vector>
 #include <string>
 #include <map>

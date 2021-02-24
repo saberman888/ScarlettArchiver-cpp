@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(CppShift)
+project(Vun)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(CURL REQUIRED)
