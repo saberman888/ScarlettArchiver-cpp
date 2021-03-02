@@ -1,7 +1,9 @@
 #pragma once
 
-#include "BasicRequest.hpp"
+#include "helpers.hpp"
 #include "nlohmann/json.hpp"
+#include <cpprest/http_client.h>
+#include <ppltasks.h>
 #include <vector>
 #include <string>
 #include <map>
@@ -12,6 +14,9 @@
 #include <thread>
 
 typedef std::map<std::string, std::string> StringMap;
+namespace HttpClient = web::http::client;
+namespace OAuth2 = web::http::oauth2::experimental;
+namespace conv = utility::conversions;
 
 namespace PushShift {
 		nlohmann::json SearchSubmissions(const std::map<std::string, std::string>& URLComponents);
