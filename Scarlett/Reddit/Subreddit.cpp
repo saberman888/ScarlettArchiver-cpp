@@ -48,18 +48,18 @@ namespace ScarlettArchiver {
 		{
 			salog->info("Reading Point: " + json.at("id").get<std::string>());
 			std::cout << "Reading Point: " << json.at("id").get<std::string>() << std::endl;
-			std::shared_ptr<RedditAsset::RedditCommon> element;
 
 			salog->info("Reading json...");
 			if (RedditAsset::Gallery::IsGallery(json))
 			{
 				salog->info("Found a Gallery");
-				element = std::make_shared<RedditAsset::Gallery>(json);
+				auto element = std::make_shared<RedditAsset::Gallery>(json);
 				tempStats.Galleries += 1;
+				Add(element);
 			}
 			else if (RedditAsset::Video::IsVideo(json)) {
 				salog->info("Found a Video");
-				element = std::make_shared<RedditAsset::Video>(json);
+				auto element = std::make_shared<RedditAsset::Video>(json);
 				tempStats.Videos += 1;
 #pragma omp critical (getvideoinfo)
 				{
@@ -67,22 +67,19 @@ namespace ScarlettArchiver {
 					auto Directvideo = std::dynamic_pointer_cast<RedditAsset::Video>(element);
 					Directvideo.get()->GetVideoInfo();
 				}
+				Add(element);
 			}
 			else if (RedditAsset::SelfPost::IsSelfPost(json)) {
 				salog->info("Found a Self Post");
-				element = std::make_shared<RedditAsset::SelfPost>(json);
+				auto element = std::make_shared<RedditAsset::SelfPost>(json);
 				tempStats.SelfPosts += 1;
+				Add(element);
 			}
 			else {
 				salog->info("Found a Link");
-				element = std::make_shared<RedditAsset::Link>(json);
+				auto element = std::make_shared<RedditAsset::Link>(json);
 				tempStats.Links += 1;
-			}
-#pragma omp critical (Postappending)
-			{
-				ScarlettArchiver::Write(json, SubStorePath, "element.json");
-				salog->info("Added element to Vec");
-				posts.push_back(element);
+				Add(element);
 			}
 		}
 #pragma omp critical(updateStats)
@@ -95,9 +92,9 @@ namespace ScarlettArchiver {
 	void Subreddit::WriteAll()
 	{
 #pragma omp parallel for
-		for (std::vector<std::shared_ptr<RedditAsset::RedditCommon>>::iterator it = posts.begin(); it != posts.end(); it++)
+		for (std::vector<std::shared_ptr<RedditAsset::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
 		{
-			Write(SubStorePath, (*it)->Id + ".txt", *it);
+			//Write(SubStorePath, (*it)->Id + ".txt", *it);
 		}
 		posts.clear();
 		posts.shrink_to_fit();

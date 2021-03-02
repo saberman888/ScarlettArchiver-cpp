@@ -5,9 +5,9 @@
 #include "Misc.hpp"
 #include "SubredditMetadata.hpp"
 #include "Logger.hpp"
-#include "Image.hpp"
+#include "Link.hpp"
 #include "Video.hpp"
-#include "SelfPost.hpp"
+#include "TextPost.hpp"
 #include "Galleries.hpp"
 #include <boost/archive/text_oarchive.hpp>
 
@@ -26,7 +26,7 @@
 
 
 namespace ScarlettArchiver {
-	class Subreddit 
+	class Subreddit
 	{
 	public:
 		Subreddit(const struct ScarlettOptions::POptions& cmdOptions);
@@ -41,33 +41,40 @@ namespace ScarlettArchiver {
 
 		/*
 		*	Calls directly to SubredditMetadata's HasNext
-		* 
+		*
 		*	@see SubredditMetadata::HasNext()
 		*/
 		inline bool HasNext()
 		{
 			return sub->HasNext();
 		}
-	
+
+		template<class T>
+		void Add(T post) {
+#pragma omp critical
+			{
+				posts.push_back(post);
+			}
+		}
 		void Read(const nlohmann::json& source);
 		void WriteAll();
 
 		template<class T>
 		void Write(std::filesystem::path destination, std::string filename, std::shared_ptr<T> post)
 		{
-			static_assert(std::is_base_of<RedditAsset::RedditCommon, T>::value, "post does not derive from RedditAssett::RedditCommon");
+			static_assert((std::is_base_of<RedditAsset::Linkable, T>::value || std::is_base_of<RedditAsset::Link, T>::value), "post does not derive from RedditAsset::Linkabgle");
 
 			destination /= BasicRequest::UTCToString(post->CreatedUTC, "%Y");
 			destination /= BasicRequest::UTCToString(post->CreatedUTC, "%m");
 			std::filesystem::create_directories(destination);
 
-			std::ofstream out(destination.string() +"/" + filename);
+			std::ofstream out(destination.string() + "/" + filename);
 			boost::archive::text_oarchive bta(out);
 			bta << *post.get();
 		}
 
-	
-		std::vector< std::shared_ptr<RedditAsset::RedditCommon> > posts;
+
+		std::vector< std::shared_ptr<RedditAsset::Linkable> > posts;
 
 		// Where we're going to store sub paths
 		std::filesystem::path SubStorePath;

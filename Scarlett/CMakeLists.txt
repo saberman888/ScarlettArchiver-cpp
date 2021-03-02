@@ -25,6 +25,6 @@ if(NDEBUG)
 endif()
 
 include_directories(${CMAKE_SOURCE_DIR})
-add_executable(Scarlett exceptions.cpp Logger.cpp Misc.cpp StringOps.cpp SubredditMetadata.cpp Images/Imgur.cpp Reddit/RedditCommon.cpp Reddit/Comment.cpp Reddit/SelfPost.cpp Reddit/Image.cpp Reddit/Video.cpp Reddit/Galleries.cpp Reddit/Subreddit.cpp ParseOptions.cpp Scarlett.cpp main.cpp)
+add_executable(Scarlett exceptions.cpp Logger.cpp Misc.cpp StringOps.cpp SubredditMetadata.cpp Images/Imgur.cpp Reddit/Linkable.cpp Reddit/Postable.cpp Reddit/Comment.cpp Reddit/TextPost.cpp Reddit/Link.cpp Reddit/Video.cpp Reddit/Galleries.cpp Reddit/Subreddit.cpp ParseOptions.cpp Scarlett.cpp main.cpp)
 
 target_link_libraries(Scarlett LINK_PUBLIC CURL::libcurl CppShift spdlog::spdlog OpenMP::OpenMP_CXX nlohmann_json::nlohmann_json Boost::program_options Boost::serialization)

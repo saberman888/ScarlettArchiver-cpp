@@ -8,6 +8,6 @@
 #include "exceptions.hpp"
 int main(int argc, char* argv[])
 {
-	ScarlettArchiver::Scarlett sc(argc, argv);
-	sc.Run();
+	//ScarlettArchiver::Scarlett sc(argc, argv);
+	//sc.Run();
 }
