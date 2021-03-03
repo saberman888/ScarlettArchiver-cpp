@@ -12,21 +12,17 @@ namespace ScarlettArchiver
 		return (char*)(s + input.tellg());
 	}
 	
-	State Download(const std::string URL)
+	web::http::http_response Download(const std::string URL)
 	{
-		BasicRequest handle;
-		handle.Setup(URL);
-		handle.SetOpt(CURLOPT_FOLLOWLOCATION, 1L);
-		State result = handle.SendRequest();
-		handle.Cleanup();
-		return result;
+		web::http::client::http_client client(conv::to_string_t(URL));
+		return client.request(web::http::methods::GET).get();
 	}
 
-	void Write(const nlohmann::json& src, const std::filesystem::path dest, const std::string filename)
+	void Write(const JSON::value& src, const std::filesystem::path dest, const std::string filename)
 	{
 		std::filesystem::create_directories(dest);
 		std::ofstream out(dest.string() + "/" + filename, std::ios::out);
-		out << src.dump(4);
+		out << ToU8String(src.to_string());
 	}	
 	
 	void Write(const std::string& buff, std::string filename)
