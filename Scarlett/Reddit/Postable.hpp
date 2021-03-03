@@ -5,8 +5,12 @@
 #include <algorithm>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
-#include "nlohmann/json.hpp"
+#include <cpprest/json.h>
+#include "cpprest/details/basic_types.h"
 #include "exceptions.hpp"
+
+namespace JSON = web::json;
+typedef std::wstring String;
 
 namespace ScarlettArchiver::RedditAsset
 {
@@ -18,9 +22,9 @@ namespace ScarlettArchiver::RedditAsset
 	public:
 		Postable() {}
 		time_t CreatedUTC;
-		std::string Author;
-		std::string Id;
-		std::string Permalink;
+		String Author;
+		String Id;
+		String Permalink;
 		virtual bool operator==(Postable& other);
 		virtual bool operator!=(Postable& other);
 		inline struct tm GetUTCTime()
@@ -39,7 +43,7 @@ namespace ScarlettArchiver::RedditAsset
 		}
 
 
-		void Read(const nlohmann::json& json);
+		void Read(const JSON::value& json);
 		bool timediff(time_t end, time_t begin);
 	};
 

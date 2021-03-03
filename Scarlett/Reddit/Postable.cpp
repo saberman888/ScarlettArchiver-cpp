@@ -12,15 +12,15 @@ namespace ScarlettArchiver::RedditAsset
 		return (!timediff(CreatedUTC, other.CreatedUTC) && (Author != other.Author) && (Id != other.Id) && (Permalink != other.Permalink));
 	}
 
-	void Postable::Read(const nlohmann::json& json)
+	void Postable::Read(const JSON::value& json)
 	{
 		try {
-			json.at("author").get_to(Author);
-			json.at("id").get_to(Id);
-			json.at("permalink").get_to(Permalink);
-			json.at("creatd_utc").get_to(CreatedUTC);
+			Author = json.at(L"author").as_string();
+			Id = json.at(L"Id").as_string();
+			Permalink = json.at(L"permalink").as_string();
+			CreatedUTC = json.at(L"created_utc").as_integer();
 		}
-		catch (const nlohmann::json::exception& e) {
+		catch (const JSON::json_exception& e) {
 			scarlettNestedThrow(e.what());
 		}
 	}

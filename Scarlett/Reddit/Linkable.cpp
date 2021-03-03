@@ -10,20 +10,20 @@ namespace ScarlettArchiver::RedditAsset
 	{
 		return ((Domain != other.Domain) && (Title != other.Title) && (URL != other.URL));
 	}
-	void Linkable::Read(const nlohmann::json& json)
+	void Linkable::Read(const JSON::value& json)
 	{
 		try {
-			json.at("domain").get_to(Domain);
-			json.at("title").get_to(Title);
-			if (json.contains("url"))
+			Domain = json.at(L"domain").as_string();
+			Title = json.at(L"title").as_string();
+			if (json.has_string_field(L"url"))
 			{
-				json.at("url").get_to(URL);
+				URL = json.at(L"url").as_string();
 			}
 			else {
-				json.at("link_url").get_to(URL);
+				URL = json.at(L"link_url").as_string();
 			}
 		}
-		catch (const nlohmann::json::exception& e) {
+		catch (const JSON::json_exception& e) {
 			scarlettNestedThrow(e.what());
 		}
 	}

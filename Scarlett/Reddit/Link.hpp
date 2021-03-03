@@ -18,19 +18,19 @@ namespace ScarlettArchiver::RedditAsset
 		* An empty constructor because, boost's serialization requires it.
 		*/
 		Link(){}
-		Link(const nlohmann::json& json, const std::optional<std::string> ImgurClientId = std::nullopt);
+		Link(const JSON::value& json, const std::optional<std::string> ImgurClientId = std::nullopt);
 
 		/**
 		* Returns the post's URL if it's a normal image. If it's an image from Imgur, it returns a direct image using the Imgur API
 		*/
-		std::string GetContent();
+		String GetContent();
 
-		std::string Hint;
+		String Hint;
 
 		bool operator==(Link& other);
 		bool operator!=(Link& other);
 	protected:
-		void Read(const nlohmann::json& json);
+		void Read(const JSON::value& json);
 		std::optional<std::string> ImgurClientId;
 	private:
 		

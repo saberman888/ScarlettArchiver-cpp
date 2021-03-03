@@ -3,8 +3,11 @@
 #include <string>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
-#include <nlohmann/json.hpp>
+#include <cpprest/json.h>
 #include "exceptions.hpp"
+
+namespace JSON = web::json;
+typedef std::wstring String;
 
 namespace ScarlettArchiver::RedditAsset
 {
@@ -18,9 +21,9 @@ namespace ScarlettArchiver::RedditAsset
 		* Empty constructor for boost serialization
 		*/
 		Linkable() {}
-		std::string Domain;
-		std::string Title;
-		std::string URL;
+		String Domain;
+		String Title;
+		String URL;
 		virtual bool operator==(const Linkable& other);
 		virtual bool operator!=(const Linkable& other);
 
@@ -33,7 +36,7 @@ namespace ScarlettArchiver::RedditAsset
 			ar& URL;
 		}
 
-		void Read(const nlohmann::json& json);
+		void Read(const JSON::value& json);
 	};
 
 };
