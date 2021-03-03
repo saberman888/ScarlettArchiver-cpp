@@ -18,9 +18,11 @@ namespace HttpClient = web::http::client;
 namespace OAuth2 = web::http::oauth2::experimental;
 namespace conv = utility::conversions;
 
+typedef web::http::http_response Response;
+
 namespace PushShift {
-		nlohmann::json SearchSubmissions(const std::map<std::string, std::string>& URLComponents);
-		nlohmann::json SearchComments(const std::map<std::string, std::string>& URLComponents);
+		Response SearchSubmissions(const std::map<std::string, std::string>& URLComponents);
+		Response SearchComments(const std::map<std::string, std::string>& URLComponents);
 };
 
 
