@@ -36,7 +36,7 @@ namespace Vun::Reddit
 
 
 	template<Client C>
-	RedditAuthorization<C>::RedditAuthorization(const AccessData ad)
+	RedditAuthorization<C>::RedditAuthorization(const struct AccessData& ad)
 	{
 		ClientId = ad.ClientId;
 		Secret = ad.Secret;

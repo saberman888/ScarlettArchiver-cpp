@@ -54,7 +54,7 @@ namespace Vun::Reddit
 	class RedditAuthorization
 	{
 	public:
-		RedditAuthorization(const struct AccessData ad);
+		RedditAuthorization(const struct AccessData& ad);
 		inline std::shared_ptr<HttpClient::http_client> getClient()
 		{
 			return client;
