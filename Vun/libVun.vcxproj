@@ -165,13 +165,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BasicRequest.cpp" />
     <ClCompile Include="helpers.cpp" />
     <ClCompile Include="PushShift.cpp" />
     <ClCompile Include="Reddit.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BasicRequest.hpp" />
     <ClInclude Include="helpers.hpp" />
     <ClInclude Include="PushShift.hpp" />
     <ClInclude Include="Reddit.hpp" />
