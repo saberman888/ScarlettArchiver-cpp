@@ -11,6 +11,7 @@ namespace PushShift {
 
 		builder.append_query(conv::to_string_t(Vun::Helpers::GenerateParamData(URLComponents)));
 		auto result = req.request(web::http::methods::GET, builder.to_string()).get();
+		return result;
 	}
 	
 	Response SearchSubmissions(const std::map<std::string, std::string>& URLComponents)
