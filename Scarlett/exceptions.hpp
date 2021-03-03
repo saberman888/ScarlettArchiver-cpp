@@ -7,7 +7,6 @@
 #include <iosfwd>
 #include <memory>
 #include <optional>
-#include "BasicRequest.hpp"
 #include "Logger.hpp"
 
 #if defined(__FUNCTION__)
