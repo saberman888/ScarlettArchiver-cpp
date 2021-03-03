@@ -37,7 +37,7 @@ namespace ScarlettArchiver {
 		/*
 			Retrieves the posts from the next 24 hours, and increments StartDate by 24 hours for another iteration.
 		*/
-		nlohmann::json Next();
+		JSON::value Next();
 
 		/*
 		*	Calls directly to SubredditMetadata's HasNext

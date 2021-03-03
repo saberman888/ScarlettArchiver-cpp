@@ -13,7 +13,7 @@ namespace ScarlettArchiver {
 		salog->info("Storing at " + SubStorePath.string());
 	}
 
-	nlohmann::json Subreddit::Next()
+	JSON::value Subreddit::Next()
 	{
 
 		salog->info("Fetching subreddit posts...");
@@ -25,7 +25,7 @@ namespace ScarlettArchiver {
 		// Retrieve the next batch of posts by plugging StartDate into after and StartDate incremented by 24 hours into before.
 		// I want to be more specific when I have SearchSubmissions call for these twenty four hours instead of plugging in EndDate into before because,
 		// I think It might retrieve more data
-		auto Returnjson = PushShift::SearchSubmissions(StringMap{
+		auto result = PushShift::SearchSubmissions(StringMap{
 		  {"after", std::to_string(mktime(&sub->DatePointer))},
 		  {"before", std::to_string(mktime(&before))},
 		  {"metadata", "true"},
@@ -33,11 +33,16 @@ namespace ScarlettArchiver {
 		  {"subreddit", sub->Subreddit}
 			});
 
+		if (result.status_code() != 200)
+		{
+			scarlettThrow("Failed to fetch data from PushShift, code: " + result.status_code());
+		} 
+
 		// Increment CurrentPointedDate by 24 hours so we can ready for the next call.
 		sub->DatePointer.tm_mday += 1;
 		salog->info("Incrementing by 24 hours for next fetch");
 
-		return Returnjson;
+		return result.extract_json().get();
 	}
 
 
