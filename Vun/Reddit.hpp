@@ -67,7 +67,6 @@ namespace Vun::Reddit
 		HttpClient::http_client_config clientConfig;
 		void InitConnection();
 		std::vector<RedditScope> scopes;
-		std::string GenerateRandomString();
 		std::string GenerateScope();
 	};
 
