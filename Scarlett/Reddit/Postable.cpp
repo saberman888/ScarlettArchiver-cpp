@@ -15,10 +15,10 @@ namespace ScarlettArchiver::RedditAsset
 	void Postable::Read(const JSON::value& json)
 	{
 		try {
-			Author = json.at(L"author").as_string();
-			Id = json.at(L"Id").as_string();
-			Permalink = json.at(L"permalink").as_string();
-			CreatedUTC = json.at(L"created_utc").as_integer();
+			Author = ToU8String(json.at(L"author").as_string());
+			Id = ToU8String(json.at(L"Id").as_string());
+			Permalink = ToU8String(json.at(L"permalink").as_string());
+			CreatedUTC = static_cast<time_t>(json.at(L"created_utc").as_integer());
 		}
 		catch (const JSON::json_exception& e) {
 			scarlettNestedThrow(e.what());

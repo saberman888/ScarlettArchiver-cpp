@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <cpprest/json.h>
 
 namespace ScarlettArchiver {
 	inline bool contains(const std::string& lhs, const std::string rhs)
@@ -10,4 +11,9 @@ namespace ScarlettArchiver {
 	}
 	std::vector<std::string> splitString(std::string data, char delimeter);
 	std::string SearchAndReplace(std::string Input, const std::string ToBeReplaced, const std::string Replacement);
+	
+	inline std::string ToU8String(const std::wstring& source){
+		return utility::conversions::to_utf8string(source);
+	}
+
 }

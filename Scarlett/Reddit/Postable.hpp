@@ -8,9 +8,9 @@
 #include <cpprest/json.h>
 #include "cpprest/details/basic_types.h"
 #include "exceptions.hpp"
+#include "StringOps.hpp"
 
 namespace JSON = web::json;
-typedef std::wstring String;
 
 namespace ScarlettArchiver::RedditAsset
 {
@@ -22,9 +22,9 @@ namespace ScarlettArchiver::RedditAsset
 	public:
 		Postable() {}
 		time_t CreatedUTC;
-		String Author;
-		String Id;
-		String Permalink;
+		std::string Author;
+		std::string Id;
+		std::string Permalink;
 		virtual bool operator==(Postable& other);
 		virtual bool operator!=(Postable& other);
 		inline struct tm GetUTCTime()

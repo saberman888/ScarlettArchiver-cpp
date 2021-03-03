@@ -4,7 +4,7 @@ BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Link);
 
 namespace ScarlettArchiver::RedditAsset
 {
-	Link::Link(const nlohmann::json& json, std::optional<std::string> ImgurClientId) : ImgurClientId(ImgurClientId)
+	Link::Link(const JSON::value& json, std::optional<std::string> ImgurClientId) : ImgurClientId(ImgurClientId)
 	{
 		Linkable::Read(json);
 		Postable::Read(json);
@@ -33,12 +33,12 @@ namespace ScarlettArchiver::RedditAsset
 		return Linkable::operator!=(other) && Postable::operator!=(other);
 	}
 
-	void Link::Read(const nlohmann::json& json)
+	void Link::Read(const JSON::value& json)
 	{
 		try {
-			Hint = json.at("post_hint").get_to(Hint);
+			Hint = ToU8String(json.at(L"post_hint").as_string());
 		}
-		catch (const nlohmann::json::exception& e) {
+		catch (const JSON::json_exception& e) {
 			scarlettNestedThrow(e.what());
 		}
 	}
