@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Reddit/Subreddit.hpp"
-#include "RedditClient.hpp"
 #include <iosfwd>
 
 namespace ScarlettArchiver
@@ -15,7 +14,5 @@ namespace ScarlettArchiver
 		struct ScarlettOptions::POptions Options;
 		std::shared_ptr<Subreddit> sub;
 		std::shared_ptr<spdlog::logger> log;
-		//std::unique_ptr<Reddit::UserlessClient> cl;
-
 	};
 }
