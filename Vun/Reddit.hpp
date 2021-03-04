@@ -76,4 +76,21 @@ namespace Vun::Reddit
 		au.scopes.push_back(rs);
 		return au;
 	}
+
+
+	template<Client C>
+	class RedditClient : public RedditAuthorization<C>
+	{
+	public:
+		RedditClient(const struct AccessData& ad);
+		//std::enable_if_t< std::is_same(C, Client::Implicit), bool>::type Authorize();
+	private:
+		std::shared_ptr<HttpClient::http_client> client;
+	};
+
+	template<Client C>
+	inline RedditClient<C>::RedditClient(const AccessData& ad) : RedditAuthorization(ad)
+	{
+		client = RedditAuthorization::getClient();
+	}
 };
