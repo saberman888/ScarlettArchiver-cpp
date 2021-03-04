@@ -4,50 +4,51 @@ namespace ScarlettArchiver
 {
 	namespace ImgurAccess
 	{
-		static State ImgurGet(std::string endpoint, std::string ClientId)
+		static Response ImgurGet(std::string endpoint, std::string ClientId)
 		{
 			std::string URL = "https://api.imgur.com" + endpoint;
 
-			BasicRequest handle;
-			handle.Setup(URL);
-			std::string ImgurHeader =
-				"Authorization: Client-ID "
-				+ ClientId;
+			static HttpClient::http_client client(L"https://api.imgur.com/");
 
-			handle.SetHeaders(ImgurHeader);
-			handle.SetOpt(CURLOPT_FOLLOWLOCATION, 1L);
-			State result = handle.SendRequest();
-			handle.Cleanup();
-			return result;
+			Http::http_request req(Http::methods::GET);
+			auto headers = req.headers();
+
+			std::string lefthandHeader = " CLIENT-ID " + ClientId;
+
+			headers.add(L"Authorization", conv::to_string_t(lefthandHeader));
+			req.set_request_uri(conv::to_string_t(endpoint));
+			return client.request(req).get();
 		}
 
-		static std::string ParseImage(std::string json)
+		static std::string ParseImage(JSON::value json)
 		{
-			std::string data;
+			std::string link;
 			try {
-				nlohmann::json root = nlohmann::json::parse(json);
-				if (root.contains("data"))
+				if (json.has_field(L"data"))
 				{
-					data = root.at("data").at("link").get <std::string>();
+					link = conv::to_utf8string(json.at(L"data").at(L"link").as_string());
 				}
 			}
-			catch (nlohmann::json::exception e) {
+			catch (JSON::json_exception& e) {
 				scarlettNestedThrow("Failed to parse JSON from Imgur Link, " + std::string(e.what()));
 			}
-			return data;
+			return link;
 		}
-		static std::vector<std::string> ParseAlbum(std::string json)
+		static std::vector<std::string> ParseAlbum(JSON::value json)
 		{
 			std::vector<std::string> URLs;
 			try {
-				nlohmann::json root = nlohmann::json::parse(json);
-				nlohmann::json images = root.at("data").at("images");
-				for (auto& elem : images)
+				if (json.at(L"data").at(L"images").is_array())
 				{
-					URLs.push_back(elem.at("link").get<std::string>());
+					JSON::array images = json.at(L"data").at(L"images").as_array();
+					for (auto& elem : images)
+					{
+						auto link = conv::to_utf8string(elem.as_string());
+						URLs.push_back(link);
+					}
 				}
 			}
-			catch (nlohmann::json::exception& e) {
+			catch (JSON::json_exception& e) {
 				scarlettNestedThrow("Failed to parse JSON from Imgur Link, " + std::string(e.what()));
 			}
 			return URLs;
@@ -57,9 +58,13 @@ namespace ScarlettArchiver
 		{
 			std::string endpoint = "/3/image/" + GetHash(ImageHash);
 			auto result = ImgurGet(endpoint, ClientId);
-			if (result.HttpState == 200)
+			if (result.status_code() == 200)
 			{
-				return ParseImage(result.buffer);
+				auto link = ParseImage(result.extract_json().get());
+				return link;
+			}
+			else {
+				scarlettThrow("Failed to get Imgur image link from API: " + ImageHash);
 			}
 			return std::string();
 		}
@@ -69,11 +74,15 @@ namespace ScarlettArchiver
 			std::string endpoint = "/3/album/" + GetHash(Album) + "/images";
 			std::vector<std::string> Images;
 			auto result = ImgurGet(endpoint, ClientId);
-			if (result.AllGood())
+			if (result.status_code() == 200)
 			{
-				Images = ParseAlbum(result.buffer);
+				auto links = ParseAlbum(result.extract_json().get());
+				return links;
 			}
-			return Images;
+			else {
+				scarlettThrow("Failed to get Imgur album data from API: " + Album);
+			}
+			return std::vector<std::string>();
 		}
 
 		std::vector<std::string> ResolveAlbumURLs(std::string URL, std::string ClientId)
