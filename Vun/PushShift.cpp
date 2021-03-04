@@ -1,11 +1,11 @@
 #include "PushShift.hpp"
 #include <fstream>
 #include <iostream>
-namespace PushShift {
+namespace Vun::PushShift {
 
 	static Response PushShiftGet(std::string endpoint, const std::map<std::string, std::string>& URLComponents)
 	{
-		HttpClient::http_client req(U("api.pushshift.io"));
+		static HttpClient::http_client req(L"api.pushshift.io");
 
 		web::uri_builder builder(conv::to_string_t(endpoint));
 
