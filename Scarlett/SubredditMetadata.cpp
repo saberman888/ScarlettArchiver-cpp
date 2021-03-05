@@ -106,7 +106,8 @@ namespace ScarlettArchiver
 	void SubredditMetadata::WriteMetadata(std::filesystem::path destination)
 	{
 		salog->info("Writing metadata...");
-		nlohmann::json metadata = {
+		// TODO: Reimplement this
+		/*nlohmann::json metadata = {
 			{"startdate", mktime(&StartDate)},
 			{"enddate", mktime(&EndDate)},
 			{"subreddit", Subreddit},
@@ -118,7 +119,7 @@ namespace ScarlettArchiver
 				{"Videos", Videos}
 				}
 			}
-		};
-		Write(metadata, destination, "metadata.json");
+		};*/
+		//Write(metadata, destination, "metadata.json");
 	}
 }
