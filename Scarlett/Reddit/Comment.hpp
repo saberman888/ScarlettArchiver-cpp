@@ -4,10 +4,14 @@
 #include <memory>
 #include <vector>
 #include <optional>
-
 #include "Misc.hpp"
 #include "TextPost.hpp"
 #include "exceptions.hpp"
+#include <boost/config.hpp>
+#include <boost/serialization/export.hpp>
+#include <boost/serialization/base_object.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 
 namespace ScarlettArchiver::RedditAsset
 {
@@ -21,19 +25,18 @@ namespace ScarlettArchiver::RedditAsset
 		void GetRedditComments();
 		void GetPushShiftComments();
 
+	private:
+		Comment(){}
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
 			ar& boost::serialization::base_object<TextPost>(*this);
-			if (ParentId)
-				ar& ParentId.value();
-			else
-				ar& std::string();
+			auto ParentIdstr = ParentId.value_or("(null)");
+			ar& ParentIdstr;
 		}
 
 
-	private:
 		std::optional<std::string> ParentId;
 		void Read(const JSON::value& json);
 	};	
