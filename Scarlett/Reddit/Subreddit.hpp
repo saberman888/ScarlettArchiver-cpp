@@ -62,10 +62,12 @@ namespace ScarlettArchiver {
 		template<class T>
 		void Write(std::filesystem::path destination, std::string filename, std::shared_ptr<T> post)
 		{
-			static_assert((std::is_base_of<RedditAsset::Linkable, T>::value || std::is_base_of<RedditAsset::Link, T>::value), "post does not derive from RedditAsset::Linkabgle");
+			static_assert((std::is_base_of<RedditAsset::Linkable, T>::value || std::is_base_of<RedditAsset::Link, T>::value), "post does not derive from RedditAsset::Linkable");
 
-			destination /= BasicRequest::UTCToString(post->CreatedUTC, "%Y");
-			destination /= BasicRequest::UTCToString(post->CreatedUTC, "%m");
+			auto tempTime = std::gmtime(post->CreatedUTC);
+
+			destination /= std::to_string(tempTime->tm_year);
+			destination /= std::to_string(tempTime->tm_mon);
 			std::filesystem::create_directories(destination);
 
 			std::ofstream out(destination.string() + "/" + filename);
