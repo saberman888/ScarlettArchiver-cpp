@@ -1,6 +1,5 @@
 #pragma once
 
-#include "nlohmann/json.hpp"
 #include "StringOps.hpp"
 #include "Link.hpp"
 #include "Comment.hpp"
@@ -21,7 +20,7 @@ namespace ScarlettArchiver::RedditAsset
 	{
 	public:
 		Video();
-		Video(const nlohmann::json& json);
+		Video(const JSON::value& json);
 		void GetVideoInfo();
 		bool Download(std::filesystem::path destination);
 		void Mux(std::filesystem::path destination);
@@ -29,7 +28,7 @@ namespace ScarlettArchiver::RedditAsset
 		/**
 		* Checks if the provided json has an is_video tag, and if it is in fact: a boolean.
 		*/
-		static bool IsVideo(const nlohmann::json& json);
+		static bool IsVideo(const JSON::value& json);
 
 		bool operator==(Video& other);
 		bool operator!=(Video& other);
@@ -37,7 +36,7 @@ namespace ScarlettArchiver::RedditAsset
 		std::string DashPlaylistUrl, AudioURL;
 		bool HasAudio;
 
-		void Read(const nlohmann::json& json); 
+		void Read(const JSON::value& json); 
 		
 		friend class boost::serialization::access;
 		template<class Archive>
