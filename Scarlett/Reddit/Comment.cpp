@@ -1,5 +1,5 @@
 #include "Comment.hpp"
-//BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::CommentTree);
+BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Comment);
 
 namespace ScarlettArchiver::RedditAsset
 {
@@ -7,25 +7,24 @@ namespace ScarlettArchiver::RedditAsset
     Comment::Comment(const std::string& ParentId) : ParentId(ParentId)
     {
     }
-	Comment::Comment(const nlohmann::json& json, std::optional<std::string> ParentId) : ParentId(ParentId)
+	Comment::Comment(const JSON::value& json, std::optional<std::string> ParentId) : ParentId(ParentId)
 	{
 		TextPost::Read(json);
 	}
     void Comment::GetRedditComments()
     {
 		auto data = Download("https://reddit.com/" + ParentId.value() + ".json");
-		if (data.AllGood())
+		if (data.status_code() == 200)
 		{
 			try {
-				nlohmann::json json = nlohmann::json::parse(data.buffer);
-				Read(json.at(1));
+				Read(data.extract_json().get().at(1));
 			}
-			catch (nlohmann::json::exception& e) {
+			catch (JSON::json_exception& e) {
 				scarlettNestedThrow("Failed to parse JSON for Comment, " + std::string(e.what()));
 			}
 		}
 		else {
-			std::string msg = "Failed to download additional comments for a post, " + std::to_string(data.HttpState) + ", " + data.Message;
+			std::string msg = "Failed to download additional comments for a post, " + std::to_string(data.status_code());
 			scarlettThrow(msg);
 		}
     }
@@ -35,17 +34,17 @@ namespace ScarlettArchiver::RedditAsset
 		// TODO: Implementing getting the comments from pushsshift
 	}
 
-	void Comment::Read(const nlohmann::json& json)
+	void Comment::Read(const JSON::value& json)
 	{
 		ScarlettArchiver::Write(json, std::filesystem::path("logs"), "elem.json");
-		for (auto elem : json.at("data").at("children"))
+		for (auto elem : json.at(L"data").at(L"children").as_array())
 		{
-			ScarlettArchiver::Write(elem.at("data"), "logs", "innerelement.json");
+			ScarlettArchiver::Write(elem.at(L"data"), "logs", "innerelement.json");
 			try {
 
-				auto com = elem.at("data");
+				auto com = elem.at(L"data");
 				// If it has an array called children, it's probably a 'more children' object, or in other words keys to more comments
-				if (com.contains("children") && com.at("children").is_array())
+				if (com.has_field(L"children") && com.at(L"children").is_array())
 				{
 					// TODO: Implement Reddit API components to use more children object
 					continue;
@@ -53,13 +52,13 @@ namespace ScarlettArchiver::RedditAsset
 
 				auto tempComment = std::make_unique<Comment>(com, ParentId);
 
-				if (com.at("replies").is_object() && com.at("replies").is_structured()) {
-					auto innerchildren = com.at("replies").at("data").at("children");
+				if (auto replies = com.at(L"replies"); replies.is_array() && replies.as_array().size() > 0) {
+					auto innerchildren = com.at(L"replies").at(L"data").at(L"children");
 				}
 
 				replies.push_back(std::move(tempComment));
 			}
-			catch (nlohmann::json::exception& e) {
+			catch (JSON::json_exception& e) {
 				scarlettNestedThrow("Failed to parse comment JSON from CommentListing, " + ParentId.value() + ", " + std::string(e.what()));
 			}
 		}
