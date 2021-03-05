@@ -19,8 +19,7 @@ namespace ScarlettArchiver::RedditAsset
 	class Video : public Link
 	{
 	public:
-		Video();
-		Video(const JSON::value& json);
+		Video() : HasAudio(false){}
 		void GetVideoInfo();
 		bool Download(std::filesystem::path destination);
 		void Mux(std::filesystem::path destination);
@@ -36,8 +35,6 @@ namespace ScarlettArchiver::RedditAsset
 		std::string DashPlaylistUrl, AudioURL;
 		bool HasAudio;
 
-		void Read(const JSON::value& json); 
-		
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)

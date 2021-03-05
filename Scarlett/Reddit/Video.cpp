@@ -5,17 +5,6 @@ BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Video);
 
 namespace ScarlettArchiver::RedditAsset
 {
-	Video::Video(const JSON::value& json) : HasAudio(false)
-	{
-
-		Read(json);
-	}
-
-	Video::Video()
-	{
-		GetVideoInfo();
-	}
-
 	void Video::GetVideoInfo()
 	{
 		log->info("Attempting to get additional video information");
@@ -71,7 +60,7 @@ namespace ScarlettArchiver::RedditAsset
 		log->info("Video audio URL: " + AudioURL);
 
 		auto video = ScarlettArchiver::Download(URL);
-		if (!video.status_code())
+		if (video.status_code() != 200)
 		{
 			std::cerr << "Error, Failed to download Video" << std::endl;
 			std::cerr << video.status_code() << std::endl;
@@ -82,7 +71,7 @@ namespace ScarlettArchiver::RedditAsset
 
 		if (HasAudio) {
 			auto audio = ScarlettArchiver::Download(AudioURL);
-			if (!audio.status_code() == 200) {
+			if (audio.status_code() != 200) {
 				std::cerr << "Error, Failed to download Audio" << std::endl;
 				std::cerr << audio.status_code() << std::endl;
 				return false;
