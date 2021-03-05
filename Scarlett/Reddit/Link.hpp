@@ -40,6 +40,7 @@ namespace ScarlettArchiver::RedditAsset
 		{
 			ar& boost::serialization::base_object<Linkable>(*this);
 			ar& boost::serialization::base_object<Postable>(*this);
+			ar& Hint;
 		}
 	};
 	
