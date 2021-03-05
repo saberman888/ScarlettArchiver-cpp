@@ -22,7 +22,7 @@ namespace ScarlettArchiver::RedditAsset
 	public:
 		Gallery(){}
 		// Initializes and then passes a json string into Read(const std::string& json)
-		Gallery(const nlohmann::json& json, const std::optional<std::string> ImgurClientId = std::nullopt);
+		Gallery(const JSON::value& json, const std::optional<std::string> ImgurClientId = std::nullopt);
 		/**
 		 This simply returns a vector full of Image URLs if its not an Imgur URL.
 		 If this is an Imgur album, it runs through the Imgur API and gets the URLs directly and returns a vector full of them.

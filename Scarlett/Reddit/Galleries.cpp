@@ -4,7 +4,7 @@ BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Gallery);
 
 namespace ScarlettArchiver::RedditAsset
 {
-	Gallery::Gallery(const JSON::value, const std::optional<std::string> ImgurClientId) : Link(json, ImgurClientId)	{
+	Gallery::Gallery(const JSON::value& json, const std::optional<std::string> ImgurClientId) : Link(json, ImgurClientId)	{
 		Read(json);	
 	}
 
