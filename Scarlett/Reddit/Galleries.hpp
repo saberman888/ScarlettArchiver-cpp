@@ -20,7 +20,6 @@ namespace ScarlettArchiver::RedditAsset
 	*/
 	class Gallery : public Link	{
 	public:
-		Gallery(){}
 		// Initializes and then passes a json string into Read(const std::string& json)
 		Gallery(const JSON::value& json, const std::optional<std::string> ImgurClientId = std::nullopt);
 		/**
@@ -40,7 +39,8 @@ namespace ScarlettArchiver::RedditAsset
 		void Read(const JSON::value& json);
 		// Where all the images will be stored
 		std::vector<std::string> Images;
-
+	private:
+		Gallery(){}
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)

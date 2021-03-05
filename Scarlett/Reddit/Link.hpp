@@ -14,9 +14,6 @@ namespace ScarlettArchiver::RedditAsset
 	class Link : public Linkable, public Postable, protected Logger
 	{
 	public:
-		/**
-		* An empty constructor because, boost's serialization requires it.
-		*/
 		Link(){}
 		Link(const JSON::value& json, const std::optional<std::string> ImgurClientId = std::nullopt);
 
