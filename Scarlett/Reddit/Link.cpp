@@ -36,7 +36,7 @@ namespace ScarlettArchiver::RedditAsset
 	void Link::Read(const JSON::value& json)
 	{
 		try {
-			Hint = ToU8String(json.at(L"post_hint").as_string());
+			Hint = ToU8String(json.at("post_hint"_u).as_string());
 		}
 		catch (const JSON::json_exception& e) {
 			scarlettNestedThrow(e.what());

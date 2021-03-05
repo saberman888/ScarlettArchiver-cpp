@@ -21,11 +21,11 @@ namespace ScarlettArchiver::RedditAsset
 
 	void TextPost::Read(const JSON::value& json) {
 		try {
-			if (json.has_string_field(L"selftext")) {
-				Text = ToU8String(json.at(L"selftext").as_string());
+			if (json.has_string_field("selftext"_u)) {
+				Text = ToU8String(json.at("selftext"_u).as_string());
 			}
-			else if (json.has_string_field(L"body")) {
-				Text = ToU8String(json.at(L"body").as_string());
+			else if (json.has_string_field("body"_u)) {
+				Text = ToU8String(json.at("body"_u).as_string());
 			}
 		}
 		catch (JSON::json_exception& e) {

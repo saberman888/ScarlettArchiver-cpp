@@ -26,12 +26,12 @@ namespace ScarlettArchiver::RedditAsset
 			try {
 				log->info("Reading...");
 				auto root = redditVideo.extract_json().get();
-				auto post = root.at(0).at(L"data").at(L"children").at(0).at(L"data");
+				auto post = root.at(0).at("data"_u).at("children"_u).at(0).at("data"_u);
 
 				Link::Read(post);
 
-				auto redditVideo = post.at(L"secure_media").at(L"reddit_video");
-				DashPlaylistUrl = ToU8String(redditVideo.at(L"dash_url").as_string());
+				auto redditVideo = post.at("secure_media"_u).at("reddit_video"_u);
+				DashPlaylistUrl = ToU8String(redditVideo.at("dash_url"_u).as_string());
 				log->info("DASH URL: " + DashPlaylistUrl);
 			}
 			catch (JSON::json_exception& e) {
@@ -94,7 +94,7 @@ namespace ScarlettArchiver::RedditAsset
 
 	bool Video::IsVideo(const JSON::value& json)
 	{
-		return (json.has_boolean_field(L"is_video") && json.at(L"is_video").as_bool());
+		return (json.has_boolean_field("is_video"_u) && json.at("is_video"_u).as_bool());
 	}
 
 	bool Video::operator==(Video& other)

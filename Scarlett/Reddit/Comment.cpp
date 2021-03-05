@@ -37,14 +37,14 @@ namespace ScarlettArchiver::RedditAsset
 	void Comment::Read(const JSON::value& json)
 	{
 		ScarlettArchiver::Write(json, std::filesystem::path("logs"), "elem.json");
-		for (auto elem : json.at(L"data").at(L"children").as_array())
+		for (auto elem : json.at("data"_u).at("children"_u).as_array())
 		{
-			ScarlettArchiver::Write(elem.at(L"data"), "logs", "innerelement.json");
+			ScarlettArchiver::Write(elem.at("data"_u), "logs", "innerelement.json");
 			try {
 
-				auto com = elem.at(L"data");
+				auto com = elem.at("data"_u);
 				// If it has an array called children, it's probably a 'more children' object, or in other words keys to more comments
-				if (com.has_field(L"children") && com.at(L"children").is_array())
+				if (com.has_field("children"_u) && com.at("children"_u).is_array())
 				{
 					// TODO: Implement Reddit API components to use more children object
 					continue;
@@ -52,8 +52,8 @@ namespace ScarlettArchiver::RedditAsset
 
 				auto tempComment = std::make_unique<Comment>(com, ParentId);
 
-				if (auto replies = com.at(L"replies"); replies.is_array() && replies.as_array().size() > 0) {
-					auto innerchildren = com.at(L"replies").at(L"data").at(L"children");
+				if (auto replies = com.at("replies"_u); replies.is_array() && replies.as_array().size() > 0) {
+					auto innerchildren = com.at("replies"_u).at("data"_u).at("children"_u);
 				}
 
 				replies.push_back(std::move(tempComment));
