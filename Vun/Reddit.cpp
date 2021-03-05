@@ -29,7 +29,7 @@ namespace Vun::Reddit
 		std::string whole;
 		for (auto scope : scopes)
 		{
-			whole += ("%20" + stringScope[scope]);
+			whole += ("%20" + static_cast<std::string>(stringScope[scope]));
 		}
 		return whole;
 	}
@@ -38,40 +38,45 @@ namespace Vun::Reddit
 	template<Client C>
 	RedditAuthorization<C>::RedditAuthorization(const struct AccessData& ad)
 	{
+		InitAccessData(ad);
+		InitConnection();
+	}
+
+	template<Client C>
+	void RedditAuthorization<C>::InitAccessData(struct AccessData& ad)
+	{
 		ClientId = ad.ClientId;
 		Secret = ad.Secret;
 		RedirectURI = ad.RedirectURI;
 		Username = ad.Username;
 		Password = ad.Password;
-		InitConnection();
 	}
 
 	template<Client C>
 	void RedditAuthorization<C>::InitConnection()
 	{
-		auto oauthconfig = clientConfig.oauth2();
+		auto oauthconfig = clientConfig->oauth2();
 
-		if constexpr (std::is_same<C, Client::Implicit>)
+		if (C == Client::Implicit)
 			oauthconfig->set_implicit_grant(true);
 
-		if constexpr (std::is_same<C, Client::Implicit> || std::is_same<C, Client::Code>)
+		if(C == Client::Implicit || C == Client::Code)
 		{
 			oauthconfig->set_auth_endpoint(conv::to_string_t("/api/v1/authorize"));
 			oauthconfig->set_redirect_uri(conv::to_string_t(RedirectURI));
-			//oauthconfig->set_state(conv::to_string_t(GenerateRandomString()));
 			oauthconfig->build_authorization_uri(true);
+		}
+		else if(C == Client::PSW){
+			oauthconfig->set_token_endpoint(conv::to_string_t("/api/v1/access_token"));
 		}
 
 		oauthconfig->set_client_key(conv::to_string_t(ClientId));
-		
-		oauthconfig->set_token_endpoint(conv::to_string_t("/api/v1/access_token"));
 		oauthconfig->set_scope(conv::to_string_t(GenerateScope));
-		oauthconfig->set_timeout(30);
+		clientConfig->set_timeout(30);
+		
 
-		web::uri URL = web::uri("https://www.reddit.com/");
+		clientConfig->set_oauth2(*oauthconfig.get());
 
-		client = std::make_shared<HttpClient::http_client>(URL, clientConfig);
-
+		client = std::make_shared<HttpClient::http_client>(web::uri("https://www.reddit.com/", clientConfig));
 	}
-
 };

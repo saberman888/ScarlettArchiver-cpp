@@ -14,7 +14,7 @@ namespace conv = utility::conversions;
 
 namespace Vun::Reddit
 {
-	enum class RedditScope
+	enum RedditScope
 	{
 		identity = 0,
 		edit,
@@ -60,18 +60,20 @@ namespace Vun::Reddit
 			return client;
 		}
 	private:
-		friend 	RedditAuthorization<C>& operator<<(const RedditScope rs, RedditAuthorization<C> au);
+		template<Client U>
+		friend 	RedditAuthorization<U>& operator<<(const RedditScope rs, RedditAuthorization<U>& au);
 		std::string ClientId, Secret, RedirectURI, Username, Password;
 
 		std::shared_ptr<HttpClient::http_client> client;
-		HttpClient::http_client_config clientConfig;
+		std::shared_ptr<HttpClient::http_client_config> clientConfig;
 		void InitConnection();
+		void InitAccessData(struct AccessData& ad);
 		std::vector<RedditScope> scopes;
 		std::string GenerateScope();
 	};
 
 	template<Client C>
-	RedditAuthorization<C>& operator<<(const RedditScope rs, RedditAuthorization<C> au)
+	RedditAuthorization<C>& operator<<(const RedditScope rs, RedditAuthorization<C>& au)
 	{
 		au.scopes.push_back(rs);
 		return au;
@@ -89,8 +91,8 @@ namespace Vun::Reddit
 	};
 
 	template<Client C>
-	inline RedditClient<C>::RedditClient(const AccessData& ad) : RedditAuthorization(ad)
+	inline RedditClient<C>::RedditClient(const AccessData& ad) : RedditAuthorization<C>(ad)
 	{
-		client = RedditAuthorization::getClient();
+		client = RedditAuthorization<C>::getClient();
 	}
 };
