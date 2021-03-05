@@ -1,4 +1,5 @@
 #include "Postable.hpp"
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(ScarlettArchiver::RedditAsset::Postable);
 
 namespace ScarlettArchiver::RedditAsset
 {

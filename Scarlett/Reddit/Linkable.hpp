@@ -1,6 +1,9 @@
 #pragma once
 
 #include <string>
+#include <boost/config.hpp>
+#include <boost/serialization/export.hpp>
+#include <boost/serialization/base_object.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <cpprest/json.h>
@@ -25,8 +28,10 @@ namespace ScarlettArchiver::RedditAsset
 		std::string Title;
 		std::string URL;
 		virtual bool operator==(const Linkable& other);
-		virtual bool operator!=(const Linkable& other);
+		virtual bool operator!=(const Linkable& other); 
+		void Read(const JSON::value& json);
 
+	private:
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
@@ -35,8 +40,6 @@ namespace ScarlettArchiver::RedditAsset
 			ar& Title;
 			ar& URL;
 		}
-
-		void Read(const JSON::value& json);
 	};
 
 };

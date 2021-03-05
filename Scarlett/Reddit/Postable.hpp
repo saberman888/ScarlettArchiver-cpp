@@ -3,6 +3,9 @@
 #include <string>
 #include <ctime>
 #include <algorithm>
+#include <boost/config.hpp>
+#include <boost/serialization/export.hpp>
+#include <boost/serialization/base_object.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <cpprest/json.h>
@@ -32,6 +35,9 @@ namespace ScarlettArchiver::RedditAsset
 			return *std::gmtime(&CreatedUTC);
 		}
 
+		void Read(const JSON::value& json);
+		bool timediff(time_t end, time_t begin);
+	private:
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
@@ -42,9 +48,6 @@ namespace ScarlettArchiver::RedditAsset
 			ar& Permalink;
 		}
 
-
-		void Read(const JSON::value& json);
-		bool timediff(time_t end, time_t begin);
 	};
 
 }

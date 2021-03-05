@@ -1,4 +1,5 @@
 #include "Linkable.hpp"
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(ScarlettArchiver::RedditAsset::Linkable);
 
 namespace ScarlettArchiver::RedditAsset
 {
