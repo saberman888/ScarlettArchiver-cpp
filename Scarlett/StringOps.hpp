@@ -12,7 +12,7 @@ namespace ScarlettArchiver {
 	std::vector<std::string> splitString(std::string data, char delimeter);
 	std::string SearchAndReplace(std::string Input, const std::string ToBeReplaced, const std::string Replacement);
 	
-	inline std::string ToU8String(const std::wstring& source){
+	inline std::string ToU8String(const utility::string_t& source){
 		return utility::conversions::to_utf8string(source);
 	}
 
