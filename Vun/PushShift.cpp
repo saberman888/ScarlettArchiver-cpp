@@ -5,12 +5,12 @@ namespace Vun::PushShift {
 
 	static Response PushShiftGet(std::string endpoint, const std::map<std::string, std::string>& URLComponents)
 	{
-		static HttpClient::http_client req(L"api.pushshift.io");
+		static HttpClient::http_client client(web::uri(conv::to_string_t("api.pushshift.io")));
 
 		web::uri_builder builder(conv::to_string_t(endpoint));
 
 		builder.append_query(conv::to_string_t(Vun::Helpers::GenerateParamData(URLComponents)));
-		auto result = req.request(web::http::methods::GET, builder.to_string()).get();
+		auto result = client.request(web::http::methods::GET, builder.to_string()).get();
 		return result;
 	}
 	
