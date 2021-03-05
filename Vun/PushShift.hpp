@@ -3,7 +3,6 @@
 #include "helpers.hpp"
 #include "nlohmann/json.hpp"
 #include <cpprest/http_client.h>
-#include <ppltasks.h>
 #include <vector>
 #include <string>
 #include <map>
