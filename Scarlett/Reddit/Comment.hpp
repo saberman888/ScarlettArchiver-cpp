@@ -5,7 +5,6 @@
 #include <vector>
 #include <optional>
 
-#include "BasicRequest.hpp"
 #include "Misc.hpp"
 #include "TextPost.hpp"
 #include "exceptions.hpp"
