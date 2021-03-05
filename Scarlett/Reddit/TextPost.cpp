@@ -4,7 +4,7 @@ BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::SelfPost);
 
 namespace ScarlettArchiver::RedditAsset
 {
-	TextPost::TextPost(const nlohmann::json& json) : Text("[deleted]") {
+	TextPost::TextPost(const JSON::value& json) : Text("[deleted]") {
 		Postable::Read(json);
 		Read(json);
 	}
@@ -19,21 +19,21 @@ namespace ScarlettArchiver::RedditAsset
 		return Postable::operator!=(other) && other.Text != Text;
 	}
 
-	void TextPost::Read(const nlohmann::json& json) {
+	void TextPost::Read(const JSON::value& json) {
 		try {
-			if (json.contains("selftext")) {
-				json.at("selftext").get_to(Text);
+			if (json.has_string_field(L"selftext")) {
+				Text = ToU8String(json.at(L"selftext").as_string());
 			}
-			else if (json.contains("body")) {
-				json.at("body").get_to(Text);
+			else if (json.has_string_field(L"body")) {
+				Text = ToU8String(json.at(L"body").as_string());
 			}
 		}
-		catch (nlohmann::json::exception& e) {
+		catch (JSON::json_exception& e) {
 			scarlettNestedThrow("Failed to extract JSON from SelfPost, " + std::string(e.what()));
 		}
 	}
 
-	SelfPost::SelfPost(const nlohmann::json& json) : TextPost(json)
+	SelfPost::SelfPost(const JSON::value& json) : TextPost(json)
 	{
 		Linkable::Read(json);
 		TextPost::Read(json);

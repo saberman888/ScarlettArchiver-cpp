@@ -19,7 +19,7 @@ namespace ScarlettArchiver::RedditAsset
 		* An empty constructor because, boost's serialization requires it.
 		*/
 		TextPost() {}
-		TextPost(const nlohmann::json& json);
+		TextPost(const JSON::value& json);
 
 		bool operator==(TextPost& other);
 		bool operator!=(TextPost& other);
@@ -34,7 +34,7 @@ namespace ScarlettArchiver::RedditAsset
 			ar& Text;
 		}
 
-		void Read(const nlohmann::json& json);
+		void Read(const JSON::value& json);
 	};
 
 	/*
@@ -47,15 +47,15 @@ namespace ScarlettArchiver::RedditAsset
 		* An empty constructor because, boost's serialization requires it.
 		*/
 		SelfPost(){}
-		SelfPost(const nlohmann::json& json);
+		SelfPost(const JSON::value& json);
 
 		bool operator==(SelfPost& other);
 		bool operator!=(SelfPost& other);
 
 
-		static inline bool IsSelfPost(const nlohmann::json& json)
+		static inline bool IsSelfPost(const JSON::value& json)
 		{
-			return (json.contains("is_self") && json.at("is_self").get<bool>());
+			return (json.has_string_field(L"is_self") && json.at(L"is_self").as_bool());
 		}
 
 
