@@ -20,9 +20,10 @@ namespace ScarlettArchiver
 
 	void Write(const JSON::value& src, const std::filesystem::path dest, const std::string filename)
 	{
-		std::filesystem::create_directories(dest);
+		// TODO: Reimplement with cpprestsdk json
+		/*std::filesystem::create_directories(dest);
 		std::ofstream out(dest.string() + "/" + filename, std::ios::out);
-		out << ToU8String(src.to_string());
+		out << src;*/
 	}	
 	
 	void Write(const std::string& buff, std::string filename)
