@@ -8,8 +8,6 @@
 #include "Images/Imgur.hpp"
 #include "Link.hpp"
 #include "Comment.hpp"
-#include "nlohmann/json.hpp"
-
 #include <boost/serialization/export.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -30,7 +28,7 @@ namespace ScarlettArchiver::RedditAsset
 		 If this is an Imgur album, it runs through the Imgur API and gets the URLs directly and returns a vector full of them.
 		*/
 		const std::vector<std::string> GetImages();
-		static bool IsGallery(const nlohmann::json& json); 
+		static bool IsGallery(const JSON::value& json); 
 
 		bool operator==(Gallery& other);
 		bool operator!=(Gallery& other);
@@ -39,7 +37,7 @@ namespace ScarlettArchiver::RedditAsset
 		 Reads Json data into Gallery. If it's a Reddit album then, it reads the provided json. If it's an Imgur album, it justs calls RedditCommon::Read only; 
 		 you'd have to call GetImages to resolve the URL instead.
 		*/
-		void Read(const nlohmann::json& json);
+		void Read(const JSON::value& json);
 		// Where all the images will be stored
 		std::vector<std::string> Images;
 

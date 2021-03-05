@@ -4,24 +4,26 @@ BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Gallery);
 
 namespace ScarlettArchiver::RedditAsset
 {
-	Gallery::Gallery(const nlohmann::json& json, const std::optional<std::string> ImgurClientId) : Link(json, ImgurClientId)	{
+	Gallery::Gallery(const JSON::value, const std::optional<std::string> ImgurClientId) : Link(json, ImgurClientId)	{
 		Read(json);	
 	}
 
-	void Gallery::Read(const nlohmann::json& json)
+	void Gallery::Read(const JSON::value& json)
 	{
 		if (ImgurClientId == std::nullopt) {
-			for (auto& image : json.at("gallery_data").at("items"))
+			for (auto& image : json.at("gallery_data"_u).at("items"_u).as_array())
 			{
 				try {
-					std::string mediaId = image.at("media_id").get<std::string>();
-					auto mediaMetadata = json.at("media_metadata").at(mediaId);
+					auto mediaId = image.at("media_id"_u).as_string();
+					auto mediaMetadata = json.at("media_metadata"_u).at(mediaId);
 
-					std::string imageExtension = ScarlettArchiver::splitString(mediaMetadata.at("m").get<std::string>(), '/')[1];
-					std::string imageURL = "https://i.redd.it/" + mediaId + "." + imageExtension;
+					std::string imageExtension = ScarlettArchiver::splitString(
+						ToU8String(mediaMetadata.at("m"_u).as_string()), 
+						'/')[1];
+					std::string imageURL = "https://i.redd.it/" + conv::to_utf8string(mediaId) + "." + imageExtension;
 					Images.push_back(imageURL);
 				}
-				catch (nlohmann::json::exception& e) {
+				catch (JSON::json_exception& e) {
 					scarlettNestedThrow("Failed to parse JSON for Gallery, " + std::string(e.what()));
 				}
 			}
@@ -38,9 +40,9 @@ namespace ScarlettArchiver::RedditAsset
 			return ImgurAccess::ResolveAlbumURLs(URL, ImgurClientId.value());
 		}
 	}
-	bool Gallery::IsGallery(const nlohmann::json& json)
+	bool Gallery::IsGallery(const JSON::value& json)
 	{
-		if (json.contains("is_gallery") && json.at("is_gallery").get<bool>() && json.at("gallery_data").is_object())
+		if (json.has_boolean_field("is_gallery"_u) && json.at("is_gallery"_u).as_bool() && json.has_field("gallery_data"_u))
 			return true;
 		return false;
 	}
