@@ -22,4 +22,10 @@ namespace ScarlettArchiver {
 		return Input;
 	}
 
+	utility::string_t operator""_u(const char* source, size_t csize)
+	{
+		return utility::conversions::to_string_t(std::string(source, csize));
+	}
+
+
 }

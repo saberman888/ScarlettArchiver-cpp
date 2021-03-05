@@ -16,4 +16,7 @@ namespace ScarlettArchiver {
 		return utility::conversions::to_utf8string(source);
 	}
 
+	utility::string_t operator ""_u(const char* source, size_t csize);
+
+
 }
