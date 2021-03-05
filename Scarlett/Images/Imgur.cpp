@@ -6,16 +6,15 @@ namespace ScarlettArchiver
 	{
 		static Response ImgurGet(std::string endpoint, std::string ClientId)
 		{
-			std::string URL = "https://api.imgur.com" + endpoint;
 
-			static HttpClient::http_client client(L"https://api.imgur.com/");
+			static HttpClient::http_client client(web::uri("https://api.imgur.com/"_u));
 
 			Http::http_request req(Http::methods::GET);
 			auto headers = req.headers();
 
 			std::string lefthandHeader = " CLIENT-ID " + ClientId;
 
-			headers.add(L"Authorization", conv::to_string_t(lefthandHeader));
+			headers.add("Authorization"_u, conv::to_string_t(lefthandHeader));
 			req.set_request_uri(conv::to_string_t(endpoint));
 			return client.request(req).get();
 		}
@@ -24,9 +23,9 @@ namespace ScarlettArchiver
 		{
 			std::string link;
 			try {
-				if (json.has_field(L"data"))
+				if (json.has_field("data"_u))
 				{
-					link = conv::to_utf8string(json.at(L"data").at(L"link").as_string());
+					link = ToU8String(json.at("data"_u).at("link"_u).as_string());
 				}
 			}
 			catch (JSON::json_exception& e) {
@@ -38,9 +37,9 @@ namespace ScarlettArchiver
 		{
 			std::vector<std::string> URLs;
 			try {
-				if (json.at(L"data").at(L"images").is_array())
+				if (json.at("data"_u).at("images"_u).is_array())
 				{
-					JSON::array images = json.at(L"data").at(L"images").as_array();
+					JSON::array images = json.at("data"_u).at("images"_u).as_array();
 					for (auto& elem : images)
 					{
 						auto link = conv::to_utf8string(elem.as_string());
