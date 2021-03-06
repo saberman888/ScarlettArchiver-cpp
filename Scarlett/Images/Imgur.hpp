@@ -7,8 +7,6 @@
 #include <cpprest/http_msg.h>
 #include <cpprest/http_headers.h>
 #include <cpprest/oauth2.h>
-#include <string>
-#include <vector>
 
 typedef web::http::http_response Response;
 namespace JSON = web::json;

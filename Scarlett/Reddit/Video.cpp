@@ -1,6 +1,6 @@
 #include "Video.hpp"
 #include <iostream>
-BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Video);
+BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Video)
 
 
 namespace ScarlettArchiver::RedditAsset

@@ -1,5 +1,5 @@
 #include "Comment.hpp"
-BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Comment);
+BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Comment)
 
 namespace ScarlettArchiver::RedditAsset
 {
@@ -24,7 +24,7 @@ namespace ScarlettArchiver::RedditAsset
 			}
 		}
 		else {
-			std::string msg = "Failed to download additional comments for a post, " + std::to_string(data.status_code());
+			std::string msg = "Failed to gather additional comments!, " + std::to_string(data.status_code());
 			scarlettThrow(msg);
 		}
     }

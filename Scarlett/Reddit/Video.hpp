@@ -4,15 +4,7 @@
 #include "Link.hpp"
 #include "Comment.hpp"
 #include "Misc.hpp"
-
-#include <string>
-#include <filesystem>
-#include <exception>
 #include <regex>
-#include <iosfwd>
-#include <boost/serialization/export.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
 
 namespace ScarlettArchiver::RedditAsset
 {

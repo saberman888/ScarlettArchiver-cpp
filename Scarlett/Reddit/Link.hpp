@@ -1,14 +1,11 @@
 #pragma once
 
-#include <string>
 #include <optional>
 #include "Linkable.hpp"
 #include "Postable.hpp"
 #include "Images/Imgur.hpp"
 #include <boost/serialization/export.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-
+#include <boost/serialization/base_object.hpp>
 namespace ScarlettArchiver::RedditAsset
 {
 	class Link : public Linkable, public Postable, protected Logger

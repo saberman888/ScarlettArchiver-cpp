@@ -1,18 +1,10 @@
 #pragma once
 
-#include <string>
 #include <ctime>
 #include <algorithm>
-#include <boost/config.hpp>
-#include <boost/serialization/export.hpp>
-#include <boost/serialization/base_object.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <cpprest/json.h>
-#include "cpprest/details/basic_types.h"
 #include "exceptions.hpp"
 #include "StringOps.hpp"
-
+#include <boost/archive/text_oarchive.hpp>
 namespace JSON = web::json;
 
 namespace ScarlettArchiver::RedditAsset

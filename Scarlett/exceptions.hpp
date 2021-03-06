@@ -1,12 +1,8 @@
 #pragma once
 
-#include <string>
 #include <stdexcept>
 #include <exception>
-#include <cstring>
 #include <iosfwd>
-#include <memory>
-#include <optional>
 #include "Logger.hpp"
 
 #if defined(__FUNCTION__)
