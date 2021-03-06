@@ -1,18 +1,10 @@
 #pragma once
 
-#include <string>
 #include <memory>
-#include <vector>
 #include <optional>
 #include "Misc.hpp"
 #include "TextPost.hpp"
-#include "exceptions.hpp"
-#include <boost/config.hpp>
 #include <boost/serialization/export.hpp>
-#include <boost/serialization/base_object.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-
 namespace ScarlettArchiver::RedditAsset
 {
 	
@@ -32,10 +24,9 @@ namespace ScarlettArchiver::RedditAsset
 		void serialize(Archive& ar, const unsigned int version)
 		{
 			ar& boost::serialization::base_object<TextPost>(*this);
-			auto ParentIdstr = ParentId.value_or("(null)");
-			ar& ParentIdstr;
+			std::string pidName = ParentId.value_or("(null)");
+			ar& pidName;
 		}
-
 
 		std::optional<std::string> ParentId;
 		void Read(const JSON::value& json);
