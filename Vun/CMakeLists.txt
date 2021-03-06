@@ -9,6 +9,7 @@ option(NDEBUG ON)
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -O0")
 set(CMAKE_CXX_FLAGS "-Wall -Werror -Wfatal-errors")
+set(_TURN_OFF_PLATFORM_STRING ON)
 
 if(NDEBUG)
     add_compile_option(-DNDEBUG=1)

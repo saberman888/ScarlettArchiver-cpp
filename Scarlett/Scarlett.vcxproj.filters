@@ -78,6 +78,9 @@
     <ClCompile Include="Images\Imgur.cpp">
       <Filter>Source Files\Images</Filter>
     </ClCompile>
+    <ClCompile Include="Reddit\SelfPosts.cpp">
+      <Filter>Source Files\Reddit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exceptions.hpp">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="Images\Imgur.hpp">
       <Filter>Header Files\Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Reddit\SelfPost.hpp">
+      <Filter>Header Files\Reddit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
