@@ -10,7 +10,7 @@ namespace ScarlettArchiver::RedditAsset
 
 	void Gallery::Read(const JSON::value& json)
 	{
-		if (ImgurClientId == std::nullopt) {
+		if (!ImgurClientId) {
 			for (auto& image : json.at("gallery_data"_u).at("items"_u).as_array())
 			{
 				try {
@@ -32,7 +32,7 @@ namespace ScarlettArchiver::RedditAsset
 
 	const std::vector<std::string> Gallery::GetImages()
 	{
-        if (ImgurClientId == std::nullopt)
+        if (!ImgurClientId)
 		{
 			return Images;
 		}

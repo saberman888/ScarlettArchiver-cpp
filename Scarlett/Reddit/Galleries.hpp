@@ -1,16 +1,6 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include <filesystem>
-#include <optional>
-#include "StringOps.hpp"
-#include "Images/Imgur.hpp"
 #include "Link.hpp"
-#include "Comment.hpp"
-#include <boost/serialization/export.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
 
 namespace ScarlettArchiver::RedditAsset
@@ -39,7 +29,7 @@ namespace ScarlettArchiver::RedditAsset
 		void Read(const JSON::value& json);
 		// Where all the images will be stored
 		std::vector<std::string> Images;
-	private:
+		
 		Gallery(){}
 		friend class boost::serialization::access;
 		template<class Archive>
