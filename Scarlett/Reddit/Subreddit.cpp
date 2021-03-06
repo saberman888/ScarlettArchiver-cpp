@@ -45,45 +45,45 @@ namespace ScarlettArchiver {
 	}
 
 
-	void Subreddit::Read(const nlohmann::json& source) {
+	void Subreddit::Read(const JSON::value& source) {
 		SubredditMetadata tempStats;
 #pragma omp parallel for
-		for (nlohmann::json json : source.at("data"))
+		for (auto element : source.at("data"_u).as_array())
 		{
-			log->info("Reading Point: " + json.at("id").get<std::string>());
-			std::cout << "Reading Point: " << json.at("id").get<std::string>() << std::endl;
+			log->info("Reading Point: " + ToU8String(element.at("id"_u).as_string()));
+			std::cout << "Reading Point: " << ToU8String(element.at("id"_u).as_string()) << std::endl;
 
-			log->info("Reading json...");
-			if (RedditAsset::Gallery::IsGallery(json))
+			log->info("Reading element...");
+			if (RedditAsset::Gallery::IsGallery(element))
 			{
 				log->info("Found a Gallery");
-				auto element = std::make_shared<RedditAsset::Gallery>(json);
+				auto potentialPost = std::make_shared<RedditAsset::Gallery>(element);
 				tempStats.Galleries += 1;
-				Add(element);
+				Add(potentialPost);
 			}
-			else if (RedditAsset::Video::IsVideo(json)) {
+			else if (RedditAsset::Video::IsVideo(element)) {
 				log->info("Found a Video");
-				auto element = std::make_shared<RedditAsset::Video>(json);
+				auto potentialPost = std::make_shared<RedditAsset::Video>(element);
 				tempStats.Videos += 1;
 #pragma omp critical (getvideoinfo)
 				{
 					log->info("Getting dash info");
-					auto Directvideo = std::dynamic_pointer_cast<RedditAsset::Video>(element);
+					auto Directvideo = std::dynamic_pointer_cast<RedditAsset::Video>(potentialPost);
 					Directvideo.get()->GetVideoInfo();
 				}
-				Add(element);
+				Add(potentialPost);
 			}
-			else if (RedditAsset::SelfPost::IsSelfPost(json)) {
+			else if (RedditAsset::SelfPost::IsSelfPost(element)) {
 				log->info("Found a Self Post");
-				auto element = std::make_shared<RedditAsset::SelfPost>(json);
+				auto potentialPost = std::make_shared<RedditAsset::SelfPost>(element);
 				tempStats.SelfPosts += 1;
-				Add(element);
+				Add(potentialPost);
 			}
 			else {
 				log->info("Found a Link");
-				auto element = std::make_shared<RedditAsset::Link>(json);
+				auto potentialPost = std::make_shared<RedditAsset::Link>(element);
 				tempStats.Links += 1;
-				Add(element);
+				Add(potentialPost);
 			}
 		}
 #pragma omp critical(updateStats)

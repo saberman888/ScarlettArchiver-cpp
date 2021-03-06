@@ -44,7 +44,7 @@ namespace ScarlettArchiver {
 				posts.push_back(post);
 			}
 		}
-		void Read(const nlohmann::json& source);
+		void Read(const JSON::value& source);
 		void WriteAll();
 
 		template<class T>
