@@ -1,5 +1,5 @@
 #include "TextPost.hpp"
-BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::SelfPost);
+
 
 
 namespace ScarlettArchiver::RedditAsset
@@ -32,21 +32,4 @@ namespace ScarlettArchiver::RedditAsset
 			scarlettNestedThrow("Failed to extract JSON from SelfPost, " + std::string(e.what()));
 		}
 	}
-
-	SelfPost::SelfPost(const JSON::value& json) : TextPost(json)
-	{
-		Linkable::Read(json);
-		TextPost::Read(json);
-	}
-
-	bool SelfPost::operator==(SelfPost& other)
-	{
-		return TextPost::operator==(other) && Linkable::operator==(other);
-	}
-
-	bool SelfPost::operator!=(SelfPost& other)
-	{
-		return TextPost::operator!=(other) && Linkable::operator!=(other);
-	}
-
 };
