@@ -2,31 +2,19 @@
 
 #include "PushShift.hpp"
 #include "ParseOptions.hpp"
-#include "Misc.hpp"
 #include "SubredditMetadata.hpp"
-#include "Logger.hpp"
-#include "Link.hpp"
 #include "Video.hpp"
-#include "TextPost.hpp"
+#include "SelfPost.hpp"
 #include "Galleries.hpp"
-#include <boost/archive/text_oarchive.hpp>
 
-#include <ctime>
-#include <string>
 #include <map>
 #include <utility>
 #include <cstring>
-#include <fstream>
-#include <filesystem>
-#include <memory>
-#include <vector>
-#include <iosfwd>
-#include <type_traits>
 #include <omp.h>
 
 
 namespace ScarlettArchiver {
-	class Subreddit
+	class Subreddit : protected Logger
 	{
 	public:
 		Subreddit(const struct ScarlettOptions::POptions& cmdOptions);
@@ -80,6 +68,5 @@ namespace ScarlettArchiver {
 
 		// Where we're going to store sub paths
 		std::filesystem::path SubStorePath;
-		std::shared_ptr<spdlog::logger> salog;
 	};
 }
