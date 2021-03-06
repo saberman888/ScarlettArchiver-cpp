@@ -1,15 +1,10 @@
 #pragma once
 
-#include <string>
-#include <cstring>
-#include <ctime>
 #include <iosfwd>
-#include <filesystem>
 #include <optional>
 #include <regex>
-
-#include "ParseOptions.hpp"
 #include "Misc.hpp"
+#include "ParseOptions.hpp"
 #include "Logger.hpp"
 
 namespace ScarlettArchiver
@@ -20,16 +15,16 @@ namespace ScarlettArchiver
 	/*
 		SubredditMetadata holds information regarding the date, position, statistics and functions manipulating said data.
 	*/
-	class SubredditMetadata
+	class SubredditMetadata : public Logger
 	{
 	public:
 		/*
-			Empty constructor where everything is initialized to 0
+			Initializes everything to zero
 		*/
 		SubredditMetadata() : Videos(0), Links(0), SelfPosts(0), Galleries(0){}
 
 		/*
-			
+			Pass Boost program options to the constructor
 		*/
 		SubredditMetadata(const struct ScarlettOptions::POptions ops);
 
@@ -40,7 +35,7 @@ namespace ScarlettArchiver
 		int Videos, Links, SelfPosts, Galleries;
 
 		/*
-			Checks if there is any posts we could possibly retrieve within our set dates.
+			Checks if there is any posts we could possibly retrieve within our set dates by, comparing the difference between the dates
 		*/
 		inline bool HasNext()
 		{
@@ -51,7 +46,7 @@ namespace ScarlettArchiver
 		}
 
 		/*
-			Returns a grand sum of all posts
+			Returns a grand total of all posts
 		*/
 		int GetPostTotal();
 
@@ -83,8 +78,5 @@ namespace ScarlettArchiver
 		 @param Dates in string format with the provided date formats: YYYY:MM:DD, YYYY-MM-DD, YYYY.MM.DD, YYYY/MM/DD or YYYYMMDD
 		*/
 		void InitializeDates(std::optional<std::string> Start = std::nullopt, std::optional<std::string> End = std::nullopt);
-
-		// A handle to access the global logger
-		std::shared_ptr<spdlog::logger> salog;
 	};
 };

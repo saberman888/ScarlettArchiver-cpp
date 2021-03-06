@@ -8,7 +8,6 @@ namespace ScarlettArchiver
 	{
 		InitializeDates(ops.StartTime, ops.EndTime);
 		Subreddit = ops.Subreddit;
-		salog = GetGlobalLogger();
 	}
 
 	int SubredditMetadata::GetPostTotal()
@@ -105,7 +104,7 @@ namespace ScarlettArchiver
 	
 	void SubredditMetadata::WriteMetadata(std::filesystem::path destination)
 	{
-		salog->info("Writing metadata...");
+		log->info("Writing metadata...");
 		// TODO: Reimplement this
 		/*nlohmann::json metadata = {
 			{"startdate", mktime(&StartDate)},
