@@ -48,9 +48,6 @@
     <ClCompile Include="StringOps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SubredditMetadata.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Reddit\Comment.cpp">
       <Filter>Source Files\Reddit</Filter>
     </ClCompile>
@@ -81,6 +78,9 @@
     <ClCompile Include="Reddit\SelfPosts.cpp">
       <Filter>Source Files\Reddit</Filter>
     </ClCompile>
+    <ClCompile Include="Reddit\SubredditMetadata.cpp">
+      <Filter>Source Files\Reddit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exceptions.hpp">
@@ -99,9 +99,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StringOps.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SubredditMetadata.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Reddit\Comment.hpp">
@@ -132,6 +129,12 @@
       <Filter>Header Files\Images</Filter>
     </ClInclude>
     <ClInclude Include="Reddit\SelfPost.hpp">
+      <Filter>Header Files\Reddit</Filter>
+    </ClInclude>
+    <ClInclude Include="Reddit\RedditAssets.hpp">
+      <Filter>Header Files\Reddit</Filter>
+    </ClInclude>
+    <ClInclude Include="Reddit\SubredditMetadata.hpp">
       <Filter>Header Files\Reddit</Filter>
     </ClInclude>
   </ItemGroup>

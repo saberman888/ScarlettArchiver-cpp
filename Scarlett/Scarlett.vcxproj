@@ -196,11 +196,11 @@
     <ClCompile Include="Reddit\Postable.cpp" />
     <ClCompile Include="Reddit\SelfPosts.cpp" />
     <ClCompile Include="Reddit\Subreddit.cpp" />
+    <ClCompile Include="Reddit\SubredditMetadata.cpp" />
     <ClCompile Include="Reddit\TextPost.cpp" />
     <ClCompile Include="Reddit\Video.cpp" />
     <ClCompile Include="Scarlett.cpp" />
     <ClCompile Include="StringOps.cpp" />
-    <ClCompile Include="SubredditMetadata.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exceptions.hpp" />
@@ -213,13 +213,14 @@
     <ClInclude Include="Reddit\Link.hpp" />
     <ClInclude Include="Reddit\Linkable.hpp" />
     <ClInclude Include="Reddit\Postable.hpp" />
+    <ClInclude Include="Reddit\RedditAssets.hpp" />
     <ClInclude Include="Reddit\SelfPost.hpp" />
     <ClInclude Include="Reddit\Subreddit.hpp" />
+    <ClInclude Include="Reddit\SubredditMetadata.hpp" />
     <ClInclude Include="Reddit\TextPost.hpp" />
     <ClInclude Include="Reddit\Video.hpp" />
     <ClInclude Include="Scarlett.hpp" />
     <ClInclude Include="StringOps.hpp" />
-    <ClInclude Include="SubredditMetadata.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
