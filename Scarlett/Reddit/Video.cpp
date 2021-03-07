@@ -20,67 +20,18 @@ namespace ScarlettArchiver::RedditAsset
 				Link::Read(post);
 
 				auto redditVideo = post.at("secure_media"_u).at("reddit_video"_u);
-				DashPlaylistUrl = ToU8String(redditVideo.at("dash_url"_u).as_string());
-				log->info("DASH URL: " + DashPlaylistUrl);
+				MPEGManifestURL = ToU8String(redditVideo.at("dash_url"_u).as_string());
+				log->info("DASH URL: " + MPEGManifestURL);
 			}
 			catch (JSON::json_exception& e) {
 				scarlettNestedThrow("Failed to extract JSON from Video, " + std::string(e.what()));
 			}
-
-			log->info("Success!");
-			auto dashDownload = ScarlettArchiver::Download(DashPlaylistUrl);
-			if (dashDownload.status_code() == 200)
-			{
-				log->info("Reading...");
-				if (std::regex_search(ToU8String(dashDownload.extract_string().get()), std::regex("<BaseURL>[DASH_]?audio[.mp4]?</BaseURL>"))) {
-					HasAudio = true;
-					log->info("Video has audio");
-				}
-				else {
-					log->info("Video does not have audio");
-				}
-			}
 		}
 		else {
-			scarlettThrow("Failed to download DASH");
+			scarlettThrow("Failed to get video information for " + Id  + ", error: " + std::to_string(redditVideo.status_code()));
 		}
 	}
-
-	bool Video::Download(std::filesystem::path destination)
-	{
-		size_t ending = URL.rfind("/");
-		std::string audio_url = URL.substr(0, ending + 1);
-		if (ScarlettArchiver::contains(URL, ".mp4"))
-		{
-			AudioURL = audio_url + "DASH_audio.mp4";
-		}
-		else {
-			AudioURL = audio_url + "audio";
-		}
-		log->info("Video audio URL: " + AudioURL);
-
-		auto video = ScarlettArchiver::Download(URL);
-		if (video.status_code() != 200)
-		{
-			std::cerr << "Error, Failed to download Video" << std::endl;
-			std::cerr << video.status_code() << std::endl;
-			return false;
-		} else{
-			log->info("Downloaded video for " + Id);
-		}
-
-		if (HasAudio) {
-			auto audio = ScarlettArchiver::Download(AudioURL);
-			if (audio.status_code() != 200) {
-				std::cerr << "Error, Failed to download Audio" << std::endl;
-				std::cerr << audio.status_code() << std::endl;
-				return false;
-			}
-			log->info("Downloaded audio for " + Id);
-		}
-		return true;
-	}
-
+	 
 	bool Video::IsVideo(const JSON::value& json)
 	{
 		return (json.has_boolean_field("is_video"_u) && json.at("is_video"_u).as_bool());
@@ -88,12 +39,35 @@ namespace ScarlettArchiver::RedditAsset
 
 	bool Video::operator==(Video& other)
 	{
-		return (Link::operator==(other) && other.HasAudio == HasAudio && other.DashPlaylistUrl == DashPlaylistUrl);
+		return (Link::operator==(other) && other._HasAudio == _HasAudio && other.MPEGManifestURL == MPEGManifestURL);
 	}
 
 	bool Video::operator!=(Video& other)
 	{
-		return (Link::operator!=(other) && other.HasAudio == HasAudio && other.DashPlaylistUrl == DashPlaylistUrl);
+		return (Link::operator!=(other) && other._HasAudio == _HasAudio && other.MPEGManifestURL == MPEGManifestURL);
+	}
+
+	bool Video::IsMP4(const std::string& MPEGManifestData)
+	{
+		log->info("Determining if " + Id + " is an mp4 file...");
+		if (std::regex_search(MPEGManifestData, std::regex("\b\.mp4"))) {
+			log->info(this->Id + " is an MP4 file.");
+			return true;
+		}
+		log->info(this->Id + " is not an MP4 file.");
+		return false;
+	}
+
+	bool Video::CheckforAudio(const std::string& MPEGManifestData)
+	{
+		log->info("Determining if " + Id + " has any audio...");
+		if (std::regex_search(MPEGManifestData, std::regex("<BaseURL>[DASH_]?audio[.mp4]?</BaseURL>")))
+		{
+			log->info(Id + " has audio.");
+			return true;
+		}
+		log->info(Id + " doesn't have any audio.");
+		return false;
 	}
 
 	void Video::Mux(std::filesystem::path source)
@@ -115,4 +89,4 @@ namespace ScarlettArchiver::RedditAsset
 		std::filesystem::remove(audio);
 
 	}
-}
+};

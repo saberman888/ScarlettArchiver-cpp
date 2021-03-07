@@ -1,19 +1,18 @@
 #pragma once
 
-#include "StringOps.hpp"
-#include "Link.hpp"
+#include "BaseTypes/Link.hpp"
+#include "Scarlett/Misc.hpp"
 #include "Comment.hpp"
-#include "Misc.hpp"
+
 #include <regex>
 
 namespace ScarlettArchiver::RedditAsset
 {
-	class Video : public Link
+	class Video : public BaseTypes::Link
 	{
 	public:
-		Video() : HasAudio(false){}
+		Video() : _HasAudio(false){}
 		void GetVideoInfo();
-		bool Download(std::filesystem::path destination);
 		void Mux(std::filesystem::path destination);
 
 		/**
@@ -23,9 +22,27 @@ namespace ScarlettArchiver::RedditAsset
 
 		bool operator==(Video& other);
 		bool operator!=(Video& other);
+
+		inline bool HasAudio() {
+			return _HasAudio;
+		}
+
+		inline std::string GetVideoURL()
+		{
+			return URL + "/" + VideoURL + (_IsMP4? ".mp4" : std::string());
+		}
+
+		inline std::string GetAudioURL()
+		{
+			return URL + "/" + AudioURL + (_IsMP4? ".mp4" : std::string());
+		}
+
 	private:
-		std::string DashPlaylistUrl, AudioURL;
-		bool HasAudio;
+		std::string AudioURL, VideoURL, MPEGManifestURL;
+		bool _HasAudio, _IsMP4;
+
+		bool IsMP4(const std::string& MPEGManifestData);
+		bool CheckforAudio(const std::string& MPEGManifestData);
 
 		friend class boost::serialization::access;
 		template<class Archive>
@@ -33,8 +50,10 @@ namespace ScarlettArchiver::RedditAsset
 		{
 			ar& boost::serialization::base_object<Link>(*this);
 			ar& AudioURL;
-			ar& DashPlaylistUrl;
-			ar& HasAudio;
+			ar& VideoURL;
+			ar& MPEGManifestURL;
+			ar& _HasAudio;
 		}
+		using Link::GetContent;
 	};
 };
