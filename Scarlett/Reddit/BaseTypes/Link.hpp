@@ -25,7 +25,7 @@ namespace Scarlett::Reddit::BaseTypes
 		bool operator!=(Link& other);
 	protected:
 		void Read(const JSON::value& json);
-		std::optional<std::string> ImgurClientId;
+		std::optional<std::string> ImgurClientId{ std::nullopt };
 	private:
 		
 		friend class boost::serialization::access;

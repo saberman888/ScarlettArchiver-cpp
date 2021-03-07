@@ -14,7 +14,7 @@ namespace Scarlett::Reddit::BaseTypes
 	class Linkable
 	{
 	public:
-		Linkable() {}
+		Linkable() = default;
 		std::string Domain;
 		std::string Title;
 		std::string URL;

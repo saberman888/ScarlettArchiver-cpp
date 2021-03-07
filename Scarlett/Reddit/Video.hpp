@@ -1,17 +1,19 @@
 #pragma once
 
 #include "BaseTypes/Link.hpp"
-#include "Scarlett/Misc.hpp"
 #include "Comment.hpp"
 
 #include <regex>
 
 namespace Scarlett::Reddit
 {
+
+	// UNDONE: Need to finish this class
 	class Video : public BaseTypes::Link
 	{
 	public:
-		Video() : _HasAudio(false){}
+		// FIXME: Need a constructor w/ a reddit Id parameter
+		Video() = default;
 		void GetVideoInfo();
 		void Mux(std::filesystem::path destination);
 
@@ -39,7 +41,7 @@ namespace Scarlett::Reddit
 
 	private:
 		std::string AudioURL, VideoURL, MPEGManifestURL;
-		bool _HasAudio, _IsMP4;
+		bool _HasAudio{ false }, _IsMP4{ false };
 
 		bool IsMP4(const std::string& MPEGManifestData);
 		bool CheckforAudio(const std::string& MPEGManifestData);
