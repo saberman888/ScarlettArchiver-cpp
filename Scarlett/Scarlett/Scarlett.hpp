@@ -1,18 +1,18 @@
 #pragma once
 
-#include "Reddit/Subreddit.hpp"
+#include "Reddit/RedditAssets.hpp"
 #include <iosfwd>
 
 namespace ScarlettArchiver
 {
-	class Scarlett
+	class ScarlettCore
 	{
 	public:
 
-		Scarlett(int argc, char* argv[]);
+		ScarlettCore(int argc, char* argv[]);
 		void Run();
 		struct ScarlettOptions::POptions Options;
-		std::shared_ptr<Subreddit> sub;
+		std::shared_ptr<RedditAsset::Subreddit> sub;
 		std::shared_ptr<spdlog::logger> log;
 	};
 }

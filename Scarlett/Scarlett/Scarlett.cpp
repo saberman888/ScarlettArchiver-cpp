@@ -3,15 +3,15 @@
 
 namespace ScarlettArchiver
 {
-	Scarlett::Scarlett(int argc, char* argv[])
+	ScarlettCore::ScarlettCore(int argc, char* argv[])
 	{
 		InitLogs();
 
 		Options = ScarlettOptions::ParseOptions(argc, argv);
-		sub = std::make_shared<Subreddit>(Options);
+		sub = std::make_shared<RedditAsset::Subreddit>(Options);
 		log = GetGlobalLogger();
 	}
-	void Scarlett::Run()
+	void ScarlettCore::Run()
 	{
 		do {
 			try {
