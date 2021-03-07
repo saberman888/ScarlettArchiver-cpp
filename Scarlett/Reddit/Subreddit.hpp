@@ -37,10 +37,7 @@ namespace Scarlett::Reddit {
 
 		template<class T>
 		void Add(T post) {
-#pragma omp critical
-			{
 				posts.push_back(post);
-			}
 		}
 		void Read(const JSON::value& source);
 		void WriteAll();
