@@ -35,7 +35,7 @@ namespace Scarlett::Reddit {
 		if (result.status_code() != 200)
 		{
 			scarlettThrow("Failed to fetch data from PushShift, code: " + result.status_code());
-		} 
+		}
 
 		// Increment CurrentPointedDate by 24 hours so we can ready for the next call.
 		sub->DatePointer.tm_mday += 1;
@@ -47,7 +47,6 @@ namespace Scarlett::Reddit {
 
 	void Subreddit::Read(const JSON::value& source) {
 		SubredditMetadata tempStats;
-#pragma omp parallel for
 		for (auto element : source.at("data"_u).as_array())
 		{
 			log->info("Reading Point: " + ToU8String(element.at("id"_u).as_string()));
@@ -59,43 +58,37 @@ namespace Scarlett::Reddit {
 				log->info("Found a Gallery");
 				auto potentialPost = std::make_shared<Gallery>(element);
 				tempStats.Galleries += 1;
-				Add(potentialPost);
+				posts.push_back(potentialPost);
 			}
 			else if (Reddit::Video::IsVideo(element)) {
 				log->info("Found a Video");
 				auto potentialPost = std::make_shared<Video>(element);
 				tempStats.Videos += 1;
-#pragma omp critical (getvideoinfo)
-				{
-					log->info("Getting dash info");
-					auto Directvideo = std::dynamic_pointer_cast<Video>(potentialPost);
-					Directvideo.get()->GetVideoInfo();
-				}
-				Add(potentialPost);
+
+				log->info("Getting dash info");
+				auto Directvideo = std::dynamic_pointer_cast<Video>(potentialPost);
+				Directvideo.get()->GetVideoInfo();
+
+				posts.push_back(potentialPost);
 			}
 			else if (Reddit::SelfPost::IsSelfPost(element)) {
 				log->info("Found a Self Post");
 				auto potentialPost = std::make_shared<SelfPost>(element);
 				tempStats.SelfPosts += 1;
-				Add(potentialPost);
+				posts.push_back(potentialPost);
 			}
 			else {
 				log->info("Found a Link");
 				auto potentialPost = std::make_shared<BaseTypes::Link>(element);
 				tempStats.Links += 1;
-				Add(potentialPost);
+				posts.push_back(potentialPost);
 			}
 		}
-#pragma omp critical(updateStats)
-		{
-			log->info("Updated stats");
-			sub->UpdateStats(tempStats);
-		}
-
+		log->info("Updated stats");
+		sub->UpdateStats(tempStats);
 	}
 	void Subreddit::WriteAll()
 	{
-#pragma omp parallel for
 		for (std::vector<std::shared_ptr<BaseTypes::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
 		{
 			//Write(SubStorePath, (*it)->Id + ".txt", *it);
