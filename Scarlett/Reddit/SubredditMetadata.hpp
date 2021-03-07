@@ -13,7 +13,7 @@ namespace ScarlettArchiver::RedditAsset
 	constexpr time_t TwentyFourHours = 86400;
 
 	/*
-		SubredditMetadata holds information regarding the date, position, statistics and functions manipulating said data.
+		SubredditMetadata holds information regarding the date, position, statistics and functions manipulating around a Subreddit
 	*/
 	class SubredditMetadata : public Logger
 	{
@@ -63,7 +63,7 @@ namespace ScarlettArchiver::RedditAsset
 		void UpdateStats(const SubredditMetadata& src);
 		
 		/**
-		* Writes the data stored in the class such as, Start date, End date and the statistics in metadata.json
+		* Writes the data stored in the class such as, Start date, End date and the statistics into a file
 		* 
 		* @param destination - Destination path for metadata.json
 		*/
@@ -73,7 +73,7 @@ namespace ScarlettArchiver::RedditAsset
 	private:
 		/**
 		 Scans the provided dates in string format into a Time Structure , and assigns them to
-		 Scarlett::StartDate and Scarlett::EndDate. It uses the strptime provided in Time.hpp
+		 StartDate and EndDate. It uses the strptime provided in Misc.hpp
 		
 		 @param Dates in string format with the provided date formats: YYYY:MM:DD, YYYY-MM-DD, YYYY.MM.DD, YYYY/MM/DD or YYYYMMDD
 		*/
