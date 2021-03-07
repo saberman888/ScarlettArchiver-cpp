@@ -38,23 +38,19 @@ namespace Scarlett::Reddit
 	void SubredditMetadata::InitializeDates(std::optional<std::string> Start, std::optional<std::string> End)
 	{		
 
-		auto match = [&Start, &End](const std::string pattern) -> bool { return (std::regex_match(*Start, std::regex(pattern)) && std::regex_match(*End, std::regex(pattern))); };
-
-		// Zero out the tms we have in have within our class
-		std::memset(&this->StartDate, 0, sizeof(struct tm));
-		std::memset(&this->EndDate, 0, sizeof(struct tm));
+		const auto match = [&Start, &End](const std::string pattern) -> bool { return (std::regex_match(*Start, std::regex(pattern)) && std::regex_match(*End, std::regex(pattern))); };
 
 		// Check if the Start date and End date are present
-		if (Start == std::nullopt)
+		if (!Start)
 		{
 			// If Start is not present, assign it to when Reddit first emerged since we have no idea when the Subreddit emerged
 			this->StartDate.tm_year = 2005;
 			this->StartDate.tm_mday = 23;
 			this->StartDate.tm_mon = 07;
-			if (End == std::nullopt)
+			if (!End)
 			{
 				// If End isn't either, assign it to today's date in UTC
-				time_t current = 0;
+				const time_t current = 0;
 				this->EndDate = *std::gmtime(&current);
 			}
 		}
@@ -100,25 +96,4 @@ namespace Scarlett::Reddit
 		}
 		this->DatePointer = this->StartDate;
 	}	
-	
-	
-	void SubredditMetadata::WriteMetadata(std::filesystem::path destination)
-	{
-		log->info("Writing metadata...");
-		// TODO: Reimplement this
-		/*nlohmann::json metadata = {
-			{"startdate", mktime(&StartDate)},
-			{"enddate", mktime(&EndDate)},
-			{"subreddit", Subreddit},
-			{"stoppingPoint", mktime(&DatePointer)},
-			{"stats", {
-				{"Galleries", Galleries},
-				{"SelfPosts", SelfPosts},
-				{"Links", Links},
-				{"Videos", Videos}
-				}
-			}
-		};*/
-		//Write(metadata, destination, "metadata.json");
-	}
 }
