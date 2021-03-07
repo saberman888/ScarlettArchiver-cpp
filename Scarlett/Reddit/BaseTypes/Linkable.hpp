@@ -1,12 +1,12 @@
 #pragma once
 
-#include "exceptions.hpp"
-#include "StringOps.hpp"
+#include "Scarlett/exceptions.hpp"
+#include "Scarlett/StringOps.hpp"
 #include <boost/archive/text_oarchive.hpp>
 
 namespace JSON = web::json;
 
-namespace ScarlettArchiver::RedditAsset
+namespace ScarlettArchiver::RedditAsset::BaseTypes
 {
 	/*
 	* Linkable is an class that represents common values that Videos, Images, Galleries and Self Posts have

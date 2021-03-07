@@ -1,7 +1,7 @@
 #include "Linkable.hpp"
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(ScarlettArchiver::RedditAsset::Linkable);
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(ScarlettArchiver::RedditAsset::BaseTypes::Linkable);
 
-namespace ScarlettArchiver::RedditAsset
+namespace ScarlettArchiver::RedditAsset::BaseTypes
 {
 	bool Linkable::operator==(const Linkable& other)
 	{

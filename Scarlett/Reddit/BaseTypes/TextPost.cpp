@@ -2,7 +2,7 @@
 
 
 
-namespace ScarlettArchiver::RedditAsset
+namespace ScarlettArchiver::RedditAsset::BaseTypes
 {
 	TextPost::TextPost(const JSON::value& json) : Text("[deleted]") {
 		Postable::Read(json);

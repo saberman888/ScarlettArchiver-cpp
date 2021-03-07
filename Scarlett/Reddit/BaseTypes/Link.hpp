@@ -3,10 +3,10 @@
 #include <optional>
 #include "Linkable.hpp"
 #include "Postable.hpp"
-#include "Images/Imgur.hpp"
+#include "Media/Imgur.hpp"
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/base_object.hpp>
-namespace ScarlettArchiver::RedditAsset
+namespace ScarlettArchiver::RedditAsset::BaseTypes
 {
 	class Link : public Linkable, public Postable, protected Logger
 	{

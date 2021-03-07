@@ -1,8 +1,8 @@
 #include "Link.hpp"
-BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Link)
+BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::BaseTypes::Link)
 
 
-namespace ScarlettArchiver::RedditAsset
+namespace ScarlettArchiver::RedditAsset::BaseTypes
 {
 	Link::Link(const JSON::value& json, std::optional<std::string> ImgurClientId) : ImgurClientId(ImgurClientId)
 	{
@@ -11,6 +11,8 @@ namespace ScarlettArchiver::RedditAsset
 	}
 
 	std::string Link::GetContent() {
+		using namespace ScarlettArchiver::Media;
+
 		log->info(Id + ": Getting Image");
 		if (ImgurClientId) {
 			log->info(Id + ": Resolving the URL through the Imgur API");
