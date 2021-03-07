@@ -1,8 +1,8 @@
 #include "Galleries.hpp"
-BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Gallery);
+BOOST_CLASS_EXPORT(Scarlett::RedditAsset::Gallery);
 
 
-namespace ScarlettArchiver::RedditAsset
+namespace Scarlett::RedditAsset
 {
 	Gallery::Gallery(const JSON::value& json, const std::optional<std::string> ImgurClientId) : Link(json, ImgurClientId)	{
 		Read(json);	
@@ -17,7 +17,7 @@ namespace ScarlettArchiver::RedditAsset
 					auto mediaId = image.at("media_id"_u).as_string();
 					auto mediaMetadata = json.at("media_metadata"_u).at(mediaId);
 
-					std::string imageExtension = ScarlettArchiver::splitString(
+					std::string imageExtension = Scarlett::splitString(
 						ToU8String(mediaMetadata.at("m"_u).as_string()), 
 						'/')[1];
 					std::string imageURL = "https://i.redd.it/" + conv::to_utf8string(mediaId) + "." + imageExtension;

@@ -4,7 +4,7 @@
 #include <vector>
 #include <cpprest/json.h>
 
-namespace ScarlettArchiver {
+namespace Scarlett {
 	inline bool contains(const std::string& lhs, const std::string rhs)
 	{
 		return (lhs.rfind(rhs) != std::string::npos);

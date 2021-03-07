@@ -9,7 +9,7 @@
 #define __func__ __FUNCTION__
 #endif
 
-namespace ScarlettArchiver
+namespace Scarlett
 {
 	class ScarlettException : public std::runtime_error
 	{

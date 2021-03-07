@@ -11,7 +11,7 @@
 #include <omp.h>
 
 
-namespace ScarlettArchiver::RedditAsset {
+namespace Scarlett::RedditAsset {
 	class Subreddit : protected Logger
 	{
 	public:

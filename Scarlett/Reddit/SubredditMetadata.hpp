@@ -7,7 +7,7 @@
 #include "Scarlett/ParseOptions.hpp"
 #include "Scarlett/Logger.hpp"
 
-namespace ScarlettArchiver::RedditAsset
+namespace Scarlett::RedditAsset
 {
 	// 24 hours in unix epoch seconds
 	constexpr time_t TwentyFourHours = 86400;

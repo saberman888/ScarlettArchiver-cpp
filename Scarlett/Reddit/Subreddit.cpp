@@ -1,7 +1,7 @@
 #include "Reddit/Subreddit.hpp"
 #include <iostream>
 
-namespace ScarlettArchiver::RedditAsset {
+namespace Scarlett::RedditAsset {
 
 	Subreddit::Subreddit(const struct ScarlettOptions::POptions& cmdOptions)
 	{

@@ -1,5 +1,5 @@
 #include "StringOps.hpp"
-namespace ScarlettArchiver {
+namespace Scarlett {
 	std::vector<std::string> splitString(std::string data, char delimeter)
 	{
 		std::string temp;

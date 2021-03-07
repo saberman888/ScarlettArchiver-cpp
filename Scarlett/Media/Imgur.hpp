@@ -14,7 +14,7 @@ namespace HttpClient = web::http::client;
 namespace Http = web::http;
 namespace conv = utility::conversions;
 
-namespace ScarlettArchiver::Media::ImgurAccess
+namespace Scarlett::Media::ImgurAccess
 {
 	inline bool IsAlbum(std::string URL)
 	{
@@ -28,7 +28,7 @@ namespace ScarlettArchiver::Media::ImgurAccess
 
 	inline static std::string GetHash(std::string URL)
 	{
-		return ScarlettArchiver::splitString(URL, '/').back();
+		return Scarlett::splitString(URL, '/').back();
 	}
 
 	inline bool IsDirect(std::string URL)

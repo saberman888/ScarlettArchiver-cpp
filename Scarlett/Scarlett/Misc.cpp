@@ -1,6 +1,6 @@
 #include "Misc.hpp"
 
-namespace ScarlettArchiver
+namespace Scarlett
 {
 	char* strptime(const char* s, const char* f, struct tm* tm) {
 		std::istringstream input(s);

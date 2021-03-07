@@ -3,7 +3,7 @@
 #include "Reddit/RedditAssets.hpp"
 #include <iosfwd>
 
-namespace ScarlettArchiver
+namespace Scarlett
 {
 	class ScarlettCore
 	{

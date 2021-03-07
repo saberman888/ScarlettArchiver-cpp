@@ -12,7 +12,7 @@ namespace HttpClient = web::http::client;
 namespace conv = utility::conversions;
 namespace JSON = web::json;
 
-namespace ScarlettArchiver
+namespace Scarlett
 {	
 	/**
 	* just like the normal strptime on Linux. I just needed an independent implementation because, MSVC doesn't have one

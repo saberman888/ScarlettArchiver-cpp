@@ -1,13 +1,7 @@
 
-#include <iostream>
-#include <fstream>
-#include <filesystem>
-#include <omp.h>
-#include "Scarlett.hpp"
-#include "ParseOptions.hpp"
-#include "exceptions.hpp"
+#include "Scarlett/Scarlett.hpp"
 int main(int argc, char* argv[])
 {
-	//ScarlettArchiver::Scarlett sc(argc, argv);
-	//sc.Run();
+	Scarlett::ScarlettCore sc(argc, argv);
+	sc.Run();
 }

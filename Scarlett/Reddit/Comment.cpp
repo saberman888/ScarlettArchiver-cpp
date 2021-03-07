@@ -1,7 +1,7 @@
 #include "Comment.hpp"
-BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Comment)
+BOOST_CLASS_EXPORT(Scarlett::RedditAsset::Comment)
 
-namespace ScarlettArchiver::RedditAsset
+namespace Scarlett::RedditAsset
 {
 
     Comment::Comment(const std::string& ParentId) : ParentId(ParentId)
@@ -36,10 +36,10 @@ namespace ScarlettArchiver::RedditAsset
 
 	void Comment::Read(const JSON::value& json)
 	{
-		ScarlettArchiver::Write(json, std::filesystem::path("logs"), "elem.json");
+		Scarlett::Write(json, std::filesystem::path("logs"), "elem.json");
 		for (auto elem : json.at("data"_u).at("children"_u).as_array())
 		{
-			ScarlettArchiver::Write(elem.at("data"_u), "logs", "innerelement.json");
+			Scarlett::Write(elem.at("data"_u), "logs", "innerelement.json");
 			try {
 
 				auto com = elem.at("data"_u);

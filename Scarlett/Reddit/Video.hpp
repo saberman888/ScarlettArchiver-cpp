@@ -6,7 +6,7 @@
 
 #include <regex>
 
-namespace ScarlettArchiver::RedditAsset
+namespace Scarlett::RedditAsset
 {
 	class Video : public BaseTypes::Link
 	{

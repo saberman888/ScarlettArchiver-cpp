@@ -1,7 +1,7 @@
 #include "Scarlett.hpp"
 #include <iostream>
 
-namespace ScarlettArchiver
+namespace Scarlett
 {
 	ScarlettCore::ScarlettCore(int argc, char* argv[])
 	{

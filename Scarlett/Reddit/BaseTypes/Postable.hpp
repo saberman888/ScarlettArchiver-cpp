@@ -7,7 +7,7 @@
 #include <boost/archive/text_oarchive.hpp>
 namespace JSON = web::json;
 
-namespace ScarlettArchiver::RedditAsset::BaseTypes
+namespace Scarlett::RedditAsset::BaseTypes
 {
 	/*
 	* Postable is an class that represents common values that Videos, Images, Galleries, Self Posts and Comments have

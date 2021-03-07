@@ -5,7 +5,7 @@
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/base_object.hpp>
 
-namespace ScarlettArchiver::RedditAsset
+namespace Scarlett::RedditAsset
 {
 	/*
 	* SelfPost takes TextPost with Linkable traits, and that serves as a class for self posts

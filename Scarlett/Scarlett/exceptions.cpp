@@ -1,7 +1,7 @@
 #include "exceptions.hpp"
 #include <iostream>
 
-namespace ScarlettArchiver
+namespace Scarlett
 {
 
 	void printException(const std::exception& e, int level)

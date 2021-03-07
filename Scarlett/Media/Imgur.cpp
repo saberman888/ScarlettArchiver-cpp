@@ -1,6 +1,6 @@
 #include "Imgur.hpp"
 
-namespace ScarlettArchiver::Media::ImgurAccess
+namespace Scarlett::Media::ImgurAccess
 {
 	static Response ImgurGet(std::string endpoint, std::string ClientId)
 	{

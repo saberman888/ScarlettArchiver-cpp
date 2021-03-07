@@ -1,15 +1,15 @@
 #include "Video.hpp"
 #include <iostream>
-BOOST_CLASS_EXPORT(ScarlettArchiver::RedditAsset::Video)
+BOOST_CLASS_EXPORT(Scarlett::RedditAsset::Video)
 
 
-namespace ScarlettArchiver::RedditAsset
+namespace Scarlett::RedditAsset
 {
 	void Video::GetVideoInfo()
 	{
 		log->info("Attempting to get additional video information");
 		log->info("Connecting to https://reddit.com/" + Id + ".json");
-		auto redditVideo = ScarlettArchiver::Download("https://reddit.com/" + Id + ".json");
+		auto redditVideo = Scarlett::Download("https://reddit.com/" + Id + ".json");
 		if (redditVideo.status_code() == 200)
 		{
 			try {
@@ -72,7 +72,7 @@ namespace ScarlettArchiver::RedditAsset
 
 	void Video::Mux(std::filesystem::path source)
 	{
-		using namespace ScarlettArchiver;
+		using namespace Scarlett;
 		std::string filename = Id + ".mkv";
 		std::string ffmpegCommand = "ffmpeg -y -i {video_source} {audio_source} -c copy {destination_video}";
 

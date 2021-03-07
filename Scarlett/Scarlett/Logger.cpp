@@ -1,7 +1,7 @@
 #include "Logger.hpp"
 #include <iostream>
 
-namespace ScarlettArchiver
+namespace Scarlett
 {
 	void InitLogs()
 	{

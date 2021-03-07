@@ -1,7 +1,7 @@
 #include "SubredditMetadata.hpp"
 #include <iostream>
 
-namespace ScarlettArchiver::RedditAsset
+namespace Scarlett::RedditAsset
 { 
 	
 	SubredditMetadata::SubredditMetadata(const struct ScarlettOptions::POptions ops) : Videos(0), Links(0), SelfPosts(0), Galleries(0)
@@ -95,8 +95,8 @@ namespace ScarlettArchiver::RedditAsset
 			else {
 				throw std::runtime_error("Not a valid date format");
 			}
-			ScarlettArchiver::strptime(Start->c_str(), format.c_str(), &this->StartDate);
-			ScarlettArchiver::strptime(End->c_str(), format.c_str(), &this->EndDate);
+			Scarlett::strptime(Start->c_str(), format.c_str(), &this->StartDate);
+			Scarlett::strptime(End->c_str(), format.c_str(), &this->EndDate);
 		}
 		this->DatePointer = this->StartDate;
 	}	

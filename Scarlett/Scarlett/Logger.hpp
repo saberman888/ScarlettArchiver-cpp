@@ -7,7 +7,7 @@
 #include "spdlog/sinks/stdout_sinks.h"
 #include <string>
 
-namespace ScarlettArchiver
+namespace Scarlett
 {
 	void InitLogs();
 

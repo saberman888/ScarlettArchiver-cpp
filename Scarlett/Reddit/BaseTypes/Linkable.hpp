@@ -6,7 +6,7 @@
 
 namespace JSON = web::json;
 
-namespace ScarlettArchiver::RedditAsset::BaseTypes
+namespace Scarlett::RedditAsset::BaseTypes
 {
 	/*
 	* Linkable is an class that represents common values that Videos, Images, Galleries and Self Posts have
