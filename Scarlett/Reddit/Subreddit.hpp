@@ -8,8 +8,6 @@
 #include <map>
 #include <utility>
 #include <cstring>
-#include <omp.h>
-
 
 namespace Scarlett::Reddit {
 	class Subreddit : protected Logger
