@@ -4,35 +4,10 @@
 namespace Scarlett::Reddit
 { 
 	
-	SubredditMetadata::SubredditMetadata(const struct ScarlettOptions::POptions ops) : Videos(0), Links(0), SelfPosts(0), Galleries(0)
+	SubredditMetadata::SubredditMetadata(const struct ScarlettOptions::POptions ops)
 	{
 		InitializeDates(ops.StartTime, ops.EndTime);
 		Subreddit = ops.Subreddit;
-	}
-
-	int SubredditMetadata::GetPostTotal()
-	{
-		return Galleries + Videos + SelfPosts + Links;
-	}
-
-	void SubredditMetadata::PrintStats()
-	{
-		std::cout << "Scanned date: " << asctime(&DatePointer) << std::endl;
-
-		std::cout << "Statistics" << "\n";
-		std::cout << "Links: " << Links << "\n";
-		std::cout << "Videos: " << Videos << "\n";
-		std::cout << "Galleries: " << Galleries << "\n";
-		std::cout << "Self Posts: " << SelfPosts << "\n";
-		std::cout << std::flush;
-	}
-
-	void SubredditMetadata::UpdateStats(const SubredditMetadata& src)
-	{
-		Links += src.Links;
-		SelfPosts += src.SelfPosts;
-		Videos += src.Videos;
-		Galleries += src.Galleries;
 	}
 
 	void SubredditMetadata::InitializeDates(std::optional<std::string> Start, std::optional<std::string> End)
