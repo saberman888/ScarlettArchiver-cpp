@@ -183,47 +183,47 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="exceptions.cpp" />
-    <ClCompile Include="Images\Imgur.cpp" />
-    <ClCompile Include="Logger.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Misc.cpp" />
-    <ClCompile Include="ParseOptions.cpp" />
-    <ClCompile Include="Reddit\Comment.cpp" />
-    <ClCompile Include="Reddit\Galleries.cpp" />
-    <ClCompile Include="Reddit\Link.cpp" />
-    <ClCompile Include="Reddit\Linkable.cpp" />
-    <ClCompile Include="Reddit\Postable.cpp" />
-    <ClCompile Include="Reddit\SelfPosts.cpp" />
-    <ClCompile Include="Reddit\Subreddit.cpp" />
-    <ClCompile Include="Reddit\SubredditMetadata.cpp" />
-    <ClCompile Include="Reddit\TextPost.cpp" />
-    <ClCompile Include="Reddit\Video.cpp" />
-    <ClCompile Include="Scarlett.cpp" />
-    <ClCompile Include="StringOps.cpp" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="exceptions.hpp" />
-    <ClInclude Include="Images\Imgur.hpp" />
-    <ClInclude Include="Logger.hpp" />
-    <ClInclude Include="Misc.hpp" />
-    <ClInclude Include="ParseOptions.hpp" />
+    <ClInclude Include="Media\Imgur.hpp" />
+    <ClInclude Include="Reddit\BaseTypes\Link.hpp" />
+    <ClInclude Include="Reddit\BaseTypes\Linkable.hpp" />
+    <ClInclude Include="Reddit\BaseTypes\Postable.hpp" />
+    <ClInclude Include="Reddit\BaseTypes\TextPost.hpp" />
     <ClInclude Include="Reddit\Comment.hpp" />
     <ClInclude Include="Reddit\Galleries.hpp" />
-    <ClInclude Include="Reddit\Link.hpp" />
-    <ClInclude Include="Reddit\Linkable.hpp" />
-    <ClInclude Include="Reddit\Postable.hpp" />
     <ClInclude Include="Reddit\RedditAssets.hpp" />
     <ClInclude Include="Reddit\SelfPost.hpp" />
     <ClInclude Include="Reddit\Subreddit.hpp" />
     <ClInclude Include="Reddit\SubredditMetadata.hpp" />
-    <ClInclude Include="Reddit\TextPost.hpp" />
     <ClInclude Include="Reddit\Video.hpp" />
-    <ClInclude Include="Scarlett.hpp" />
-    <ClInclude Include="StringOps.hpp" />
+    <ClInclude Include="Scarlett\exceptions.hpp" />
+    <ClInclude Include="Scarlett\Logger.hpp" />
+    <ClInclude Include="Scarlett\Misc.hpp" />
+    <ClInclude Include="Scarlett\ParseOptions.hpp" />
+    <ClInclude Include="Scarlett\Scarlett.hpp" />
+    <ClInclude Include="Scarlett\StringOps.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Media\Imgur.cpp" />
+    <ClCompile Include="Reddit\BaseTypes\Link.cpp" />
+    <ClCompile Include="Reddit\BaseTypes\Linkable.cpp" />
+    <ClCompile Include="Reddit\BaseTypes\Postable.cpp" />
+    <ClCompile Include="Reddit\BaseTypes\TextPost.cpp" />
+    <ClCompile Include="Reddit\Comment.cpp" />
+    <ClCompile Include="Reddit\Galleries.cpp" />
+    <ClCompile Include="Reddit\SelfPosts.cpp" />
+    <ClCompile Include="Reddit\Subreddit.cpp" />
+    <ClCompile Include="Reddit\SubredditMetadata.cpp" />
+    <ClCompile Include="Reddit\Video.cpp" />
+    <ClCompile Include="Scarlett\exceptions.cpp" />
+    <ClCompile Include="Scarlett\Logger.cpp" />
+    <ClCompile Include="Scarlett\Misc.cpp" />
+    <ClCompile Include="Scarlett\ParseOptions.cpp" />
+    <ClCompile Include="Scarlett\Scarlett.cpp" />
+    <ClCompile Include="Scarlett\StringOps.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
