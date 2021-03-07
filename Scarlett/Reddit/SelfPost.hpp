@@ -1,7 +1,7 @@
 #pragma once
 
-#include "TextPost.hpp"
-#include "Linkable.hpp"
+#include "BaseTypes/TextPost.hpp"
+#include "BaseTypes/Linkable.hpp"
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/base_object.hpp>
 
@@ -10,7 +10,7 @@ namespace ScarlettArchiver::RedditAsset
 	/*
 	* SelfPost takes TextPost with Linkable traits, and that serves as a class for self posts
 	*/
-	class SelfPost : public TextPost, public Linkable
+	class SelfPost : public BaseTypes::TextPost, public BaseTypes::Linkable
 	{
 	public:
 		SelfPost(const JSON::value& json);

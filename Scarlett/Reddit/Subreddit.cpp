@@ -1,7 +1,7 @@
 #include "Reddit/Subreddit.hpp"
 #include <iostream>
 
-namespace ScarlettArchiver {
+namespace ScarlettArchiver::RedditAsset {
 
 	Subreddit::Subreddit(const struct ScarlettOptions::POptions& cmdOptions)
 	{
@@ -54,34 +54,34 @@ namespace ScarlettArchiver {
 			std::cout << "Reading Point: " << ToU8String(element.at("id"_u).as_string()) << std::endl;
 
 			log->info("Reading element...");
-			if (RedditAsset::Gallery::IsGallery(element))
+			if (Gallery::IsGallery(element))
 			{
 				log->info("Found a Gallery");
-				auto potentialPost = std::make_shared<RedditAsset::Gallery>(element);
+				auto potentialPost = std::make_shared<Gallery>(element);
 				tempStats.Galleries += 1;
 				Add(potentialPost);
 			}
 			else if (RedditAsset::Video::IsVideo(element)) {
 				log->info("Found a Video");
-				auto potentialPost = std::make_shared<RedditAsset::Video>(element);
+				auto potentialPost = std::make_shared<Video>(element);
 				tempStats.Videos += 1;
 #pragma omp critical (getvideoinfo)
 				{
 					log->info("Getting dash info");
-					auto Directvideo = std::dynamic_pointer_cast<RedditAsset::Video>(potentialPost);
+					auto Directvideo = std::dynamic_pointer_cast<Video>(potentialPost);
 					Directvideo.get()->GetVideoInfo();
 				}
 				Add(potentialPost);
 			}
 			else if (RedditAsset::SelfPost::IsSelfPost(element)) {
 				log->info("Found a Self Post");
-				auto potentialPost = std::make_shared<RedditAsset::SelfPost>(element);
+				auto potentialPost = std::make_shared<SelfPost>(element);
 				tempStats.SelfPosts += 1;
 				Add(potentialPost);
 			}
 			else {
 				log->info("Found a Link");
-				auto potentialPost = std::make_shared<RedditAsset::Link>(element);
+				auto potentialPost = std::make_shared<BaseTypes::Link>(element);
 				tempStats.Links += 1;
 				Add(potentialPost);
 			}
@@ -96,7 +96,7 @@ namespace ScarlettArchiver {
 	void Subreddit::WriteAll()
 	{
 #pragma omp parallel for
-		for (std::vector<std::shared_ptr<RedditAsset::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
+		for (std::vector<std::shared_ptr<BaseTypes::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
 		{
 			//Write(SubStorePath, (*it)->Id + ".txt", *it);
 		}

@@ -1,19 +1,17 @@
 #pragma once
 
 #include "PushShift.hpp"
-#include "ParseOptions.hpp"
-#include "SubredditMetadata.hpp"
 #include "Video.hpp"
 #include "SelfPost.hpp"
 #include "Galleries.hpp"
-
+#include "SubredditMetadata.hpp"
 #include <map>
 #include <utility>
 #include <cstring>
 #include <omp.h>
 
 
-namespace ScarlettArchiver {
+namespace ScarlettArchiver::RedditAsset {
 	class Subreddit : protected Logger
 	{
 	public:
@@ -64,7 +62,7 @@ namespace ScarlettArchiver {
 		}
 
 
-		std::vector< std::shared_ptr<RedditAsset::Linkable> > posts;
+		std::vector< std::shared_ptr<BaseTypes::Linkable> > posts;
 
 		// Where we're going to store sub paths
 		std::filesystem::path SubStorePath;

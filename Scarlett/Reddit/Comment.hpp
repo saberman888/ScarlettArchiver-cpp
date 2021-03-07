@@ -2,13 +2,13 @@
 
 #include <memory>
 #include <optional>
-#include "Misc.hpp"
-#include "TextPost.hpp"
+#include "Scarlett/Misc.hpp"
+#include "BaseTypes/TextPost.hpp"
 #include <boost/serialization/export.hpp>
 namespace ScarlettArchiver::RedditAsset
 {
 	
-	class Comment : public TextPost
+	class Comment : public BaseTypes::TextPost
 	{
 	public:
 		Comment(const std::string& ParentId);

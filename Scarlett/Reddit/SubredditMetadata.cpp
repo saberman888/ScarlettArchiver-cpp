@@ -1,7 +1,7 @@
 #include "SubredditMetadata.hpp"
 #include <iostream>
 
-namespace ScarlettArchiver
+namespace ScarlettArchiver::RedditAsset
 { 
 	
 	SubredditMetadata::SubredditMetadata(const struct ScarlettOptions::POptions ops) : Videos(0), Links(0), SelfPosts(0), Galleries(0)

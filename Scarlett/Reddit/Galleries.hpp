@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Link.hpp"
+#include "BaseTypes/Link.hpp"
 #include <boost/serialization/vector.hpp>
 
 namespace ScarlettArchiver::RedditAsset
@@ -8,7 +8,7 @@ namespace ScarlettArchiver::RedditAsset
 	/**
 	 The Gallery class holds images from Reddit Galleries and Imgur Galleries.
 	*/
-	class Gallery : public Link	{
+	class Gallery : public BaseTypes::Link	{
 	public:
 		// Initializes and then passes a json string into Read(const std::string& json)
 		Gallery(const JSON::value& json, const std::optional<std::string> ImgurClientId = std::nullopt);

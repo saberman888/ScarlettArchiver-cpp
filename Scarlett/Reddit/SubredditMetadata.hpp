@@ -3,11 +3,11 @@
 #include <iosfwd>
 #include <optional>
 #include <regex>
-#include "Misc.hpp"
-#include "ParseOptions.hpp"
-#include "Logger.hpp"
+#include "Scarlett/Misc.hpp"
+#include "Scarlett/ParseOptions.hpp"
+#include "Scarlett/Logger.hpp"
 
-namespace ScarlettArchiver
+namespace ScarlettArchiver::RedditAsset
 {
 	// 24 hours in unix epoch seconds
 	constexpr time_t TwentyFourHours = 86400;
