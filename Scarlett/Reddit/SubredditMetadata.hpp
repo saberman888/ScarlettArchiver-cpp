@@ -9,9 +9,6 @@
 
 namespace Scarlett::Reddit
 {
-	// 24 hours in unix epoch seconds
-	constexpr time_t TwentyFourHours = 86400;
-
 	/*
 		SubredditMetadata holds information regarding the date, position, statistics and functions manipulating around a Subreddit
 	*/
@@ -21,7 +18,7 @@ namespace Scarlett::Reddit
 		/*
 			Initializes everything to zero
 		*/
-		SubredditMetadata() : Videos(0), Links(0), SelfPosts(0), Galleries(0){}
+		SubredditMetadata() = default;
 
 		/*
 			Pass Boost program options to the constructor
@@ -29,10 +26,10 @@ namespace Scarlett::Reddit
 		SubredditMetadata(const struct ScarlettOptions::POptions ops);
 
 		std::string Subreddit;
-		struct tm StartDate, EndDate, DatePointer;
+		struct tm StartDate { 0 }, EndDate{ 0 }, DatePointer{ 0 };
 
 		// Variables to count how many different types of posts there are
-		int Videos, Links, SelfPosts, Galleries;
+		int Videos{ 0 }, Links{ 0 }, SelfPosts{ 0 }, Galleries{ 0 };
 
 		/*
 			Checks if there is any posts we could possibly retrieve within our set dates by, comparing the difference between the dates
@@ -62,13 +59,6 @@ namespace Scarlett::Reddit
 		*/
 		void UpdateStats(const SubredditMetadata& src);
 		
-		/**
-		* Writes the data stored in the class such as, Start date, End date and the statistics into a file
-		* 
-		* @param destination - Destination path for metadata.json
-		*/
-		void WriteMetadata(const std::filesystem::path destination);
-
 
 	private:
 		/**
