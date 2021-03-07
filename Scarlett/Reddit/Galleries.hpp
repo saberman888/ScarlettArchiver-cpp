@@ -3,7 +3,7 @@
 #include "BaseTypes/Link.hpp"
 #include <boost/serialization/vector.hpp>
 
-namespace Scarlett::RedditAsset
+namespace Scarlett::Reddit
 {
 	/**
 	 The Gallery class holds images from Reddit Galleries and Imgur Galleries.

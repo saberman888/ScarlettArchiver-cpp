@@ -1,8 +1,8 @@
 #include "Galleries.hpp"
-BOOST_CLASS_EXPORT(Scarlett::RedditAsset::Gallery);
+BOOST_CLASS_EXPORT(Scarlett::Reddit::Gallery);
 
 
-namespace Scarlett::RedditAsset
+namespace Scarlett::Reddit
 {
 	Gallery::Gallery(const JSON::value& json, const std::optional<std::string> ImgurClientId) : Link(json, ImgurClientId)	{
 		Read(json);	

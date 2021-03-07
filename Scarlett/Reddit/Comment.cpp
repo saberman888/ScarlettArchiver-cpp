@@ -1,7 +1,7 @@
 #include "Comment.hpp"
-BOOST_CLASS_EXPORT(Scarlett::RedditAsset::Comment)
+BOOST_CLASS_EXPORT(Scarlett::Reddit::Comment)
 
-namespace Scarlett::RedditAsset
+namespace Scarlett::Reddit
 {
 
     Comment::Comment(const std::string& ParentId) : ParentId(ParentId)

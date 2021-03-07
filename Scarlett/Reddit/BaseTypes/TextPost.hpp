@@ -3,7 +3,7 @@
 #include "Postable.hpp"
 #include <boost/serialization/base_object.hpp>
 
-namespace Scarlett::RedditAsset::BaseTypes
+namespace Scarlett::Reddit::BaseTypes
 {
 	/*
 	* TextPost serves as a base class for posts and comments with text in them.

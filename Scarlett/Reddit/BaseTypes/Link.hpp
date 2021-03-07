@@ -6,7 +6,7 @@
 #include "Media/Imgur.hpp"
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/base_object.hpp>
-namespace Scarlett::RedditAsset::BaseTypes
+namespace Scarlett::Reddit::BaseTypes
 {
 	class Link : public Linkable, public Postable, protected Logger
 	{

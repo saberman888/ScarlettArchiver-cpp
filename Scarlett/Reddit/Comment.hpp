@@ -5,7 +5,7 @@
 #include "Scarlett/Misc.hpp"
 #include "BaseTypes/TextPost.hpp"
 #include <boost/serialization/export.hpp>
-namespace Scarlett::RedditAsset
+namespace Scarlett::Reddit
 {
 	
 	class Comment : public BaseTypes::TextPost

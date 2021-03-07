@@ -1,9 +1,9 @@
 #include "Video.hpp"
 #include <iostream>
-BOOST_CLASS_EXPORT(Scarlett::RedditAsset::Video)
+BOOST_CLASS_EXPORT(Scarlett::Reddit::Video)
 
 
-namespace Scarlett::RedditAsset
+namespace Scarlett::Reddit
 {
 	void Video::GetVideoInfo()
 	{

@@ -12,7 +12,7 @@ namespace Scarlett
 		ScarlettCore(int argc, char* argv[]);
 		void Run();
 		struct ScarlettOptions::POptions Options;
-		std::shared_ptr<RedditAsset::Subreddit> sub;
+		std::shared_ptr<Reddit::Subreddit> sub;
 		std::shared_ptr<spdlog::logger> log;
 	};
 }

@@ -11,7 +11,7 @@
 #include <omp.h>
 
 
-namespace Scarlett::RedditAsset {
+namespace Scarlett::Reddit {
 	class Subreddit : protected Logger
 	{
 	public:
@@ -48,7 +48,7 @@ namespace Scarlett::RedditAsset {
 		template<class T>
 		void Write(std::filesystem::path destination, std::string filename, std::shared_ptr<T> post)
 		{
-			static_assert((std::is_base_of<RedditAsset::Linkable, T>::value || std::is_base_of<RedditAsset::Link, T>::value), "post does not derive from RedditAsset::Linkable");
+			static_assert((std::is_base_of<Reddit::Linkable, T>::value || std::is_base_of<Reddit::Link, T>::value), "post does not derive from Reddit::Linkable");
 
 			auto tempTime = std::gmtime(post->CreatedUTC);
 

@@ -1,7 +1,7 @@
 #include "Postable.hpp"
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(Scarlett::RedditAsset::BaseTypes::Postable);
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(Scarlett::Reddit::BaseTypes::Postable);
 
-namespace Scarlett::RedditAsset::BaseTypes
+namespace Scarlett::Reddit::BaseTypes
 {
 	bool Postable::operator==(Postable& other)
 	{

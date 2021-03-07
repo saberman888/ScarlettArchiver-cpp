@@ -1,7 +1,7 @@
 #include "SelfPost.hpp"
-BOOST_CLASS_EXPORT(Scarlett::RedditAsset::SelfPost);
+BOOST_CLASS_EXPORT(Scarlett::Reddit::SelfPost);
 
-namespace Scarlett::RedditAsset
+namespace Scarlett::Reddit
 {
 	SelfPost::SelfPost(const JSON::value& json) : TextPost(json)
 	{

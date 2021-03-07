@@ -1,8 +1,8 @@
 #include "Link.hpp"
-BOOST_CLASS_EXPORT(Scarlett::RedditAsset::BaseTypes::Link)
+BOOST_CLASS_EXPORT(Scarlett::Reddit::BaseTypes::Link)
 
 
-namespace Scarlett::RedditAsset::BaseTypes
+namespace Scarlett::Reddit::BaseTypes
 {
 	Link::Link(const JSON::value& json, std::optional<std::string> ImgurClientId) : ImgurClientId(ImgurClientId)
 	{

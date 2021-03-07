@@ -1,7 +1,7 @@
 #include "Reddit/Subreddit.hpp"
 #include <iostream>
 
-namespace Scarlett::RedditAsset {
+namespace Scarlett::Reddit {
 
 	Subreddit::Subreddit(const struct ScarlettOptions::POptions& cmdOptions)
 	{
@@ -61,7 +61,7 @@ namespace Scarlett::RedditAsset {
 				tempStats.Galleries += 1;
 				Add(potentialPost);
 			}
-			else if (RedditAsset::Video::IsVideo(element)) {
+			else if (Reddit::Video::IsVideo(element)) {
 				log->info("Found a Video");
 				auto potentialPost = std::make_shared<Video>(element);
 				tempStats.Videos += 1;
@@ -73,7 +73,7 @@ namespace Scarlett::RedditAsset {
 				}
 				Add(potentialPost);
 			}
-			else if (RedditAsset::SelfPost::IsSelfPost(element)) {
+			else if (Reddit::SelfPost::IsSelfPost(element)) {
 				log->info("Found a Self Post");
 				auto potentialPost = std::make_shared<SelfPost>(element);
 				tempStats.SelfPosts += 1;
