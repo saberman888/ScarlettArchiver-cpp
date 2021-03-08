@@ -5,7 +5,22 @@ BOOST_CLASS_EXPORT(Scarlett::Reddit::Video)
 
 namespace Scarlett::Reddit
 {
-	void Video::GetVideoInfo()
+	Video::Video(const JSON::value json) : BaseTypes::Link(json)
+	{
+	}
+
+	// UNFINISHED
+	void Video::Fetch()
+	{
+		DashURL = URL + "/DASHPlaylist.mpd";
+		auto dash = Download(DashURL);
+		if (dash.status_code() == 200)
+		{
+
+		}
+	}
+
+	void Video::FetchFromReddit()
 	{
 		log->info("Attempting to get additional video information");
 		log->info("Connecting to https://reddit.com/" + Id + ".json");
@@ -20,8 +35,8 @@ namespace Scarlett::Reddit
 				Link::Read(post);
 
 				auto redditVideo = post.at("secure_media"_u).at("reddit_video"_u);
-				MPEGManifestURL = ToU8String(redditVideo.at("dash_url"_u).as_string());
-				log->info("DASH URL: " + MPEGManifestURL);
+				DashURL = ToU8String(redditVideo.at("dash_url"_u).as_string());
+				log->info("DASH URL: " + DashURL);
 			}
 			catch (JSON::json_exception& e) {
 				scarlettNestedThrow("Failed to extract JSON from Video, " + std::string(e.what()));
@@ -34,17 +49,17 @@ namespace Scarlett::Reddit
 	 
 	bool Video::IsVideo(const JSON::value& json)
 	{
-		return (json.has_boolean_field("is_video"_u) && json.at("is_video"_u).as_bool());
+		return (json.has_boolean_field("is_video"_u) && json.at("is_video"_u).as_bool() && json.at("post_hint"_u).as_string() == "hosted:video"_u);
 	}
 
 	bool Video::operator==(Video& other)
 	{
-		return (Link::operator==(other) && other._HasAudio == _HasAudio && other.MPEGManifestURL == MPEGManifestURL);
+		return (Link::operator==(other) && other._HasAudio == _HasAudio && other.DashURL == DashURL);
 	}
 
 	bool Video::operator!=(Video& other)
 	{
-		return (Link::operator!=(other) && other._HasAudio == _HasAudio && other.MPEGManifestURL == MPEGManifestURL);
+		return (Link::operator!=(other) && other._HasAudio == _HasAudio && other.DashURL == DashURL);
 	}
 
 	bool Video::IsMP4(const std::string& MPEGManifestData)

@@ -3,6 +3,7 @@
 #include "BaseTypes/Link.hpp"
 #include "Comment.hpp"
 
+#include <string_view>
 #include <regex>
 
 namespace Scarlett::Reddit
@@ -12,9 +13,9 @@ namespace Scarlett::Reddit
 	class Video : public BaseTypes::Link
 	{
 	public:
-		// FIXME: Need a constructor w/ a reddit Id parameter
-		Video() = default;
-		void GetVideoInfo();
+		Video(const JSON::value json);
+		void Fetch();
+		void FetchFromReddit();
 		void Mux(std::filesystem::path destination);
 
 		/**
@@ -24,7 +25,7 @@ namespace Scarlett::Reddit
 
 		bool operator==(Video& other);
 		bool operator!=(Video& other);
-
+1
 		inline bool HasAudio() {
 			return _HasAudio;
 		}
@@ -40,8 +41,10 @@ namespace Scarlett::Reddit
 		}
 
 	private:
-		std::string AudioURL, VideoURL, MPEGManifestURL;
-		bool _HasAudio{ false }, _IsMP4{ false };
+		Video() = default;
+
+		std::string DashURL;
+		bool _IsMP4, _HasAudio;
 
 		bool IsMP4(const std::string& MPEGManifestData);
 		bool CheckforAudio(const std::string& MPEGManifestData);
