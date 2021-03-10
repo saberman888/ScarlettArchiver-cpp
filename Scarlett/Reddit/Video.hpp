@@ -9,7 +9,6 @@
 namespace Scarlett::Reddit
 {
 
-	// UNDONE: Need to finish this class
 	class Video : public BaseTypes::Link
 	{
 	public:
