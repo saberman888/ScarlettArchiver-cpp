@@ -57,9 +57,8 @@ namespace Scarlett::Reddit
 		void serialize(Archive& ar, const unsigned int version)
 		{
 			ar& boost::serialization::base_object<Link>(*this);
-			ar& AudioURL;
 			ar& VideoURL;
-			ar& MPEGManifestURL;
+			ar& DashURL;
 			ar& Audio.value_or("(null)");
 		}
 		using Link::GetContent;
