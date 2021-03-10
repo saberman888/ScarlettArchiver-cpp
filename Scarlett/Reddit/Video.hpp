@@ -13,9 +13,9 @@ namespace Scarlett::Reddit
 	class Video : public BaseTypes::Link
 	{
 	public:
-		Video(const JSON::value json);
+		Video(const JSON::value& json);
 		void Fetch();
-		void FetchFromReddit();
+		//void RedditFetch();
 		void Mux(std::filesystem::path destination);
 
 		/**
@@ -27,27 +27,28 @@ namespace Scarlett::Reddit
 		bool operator!=(Video& other);
 
 		inline bool HasAudio() {
-			return _HasAudio;
+			return (Audio? true : false);
 		}
 
 		inline std::string GetVideoURL()
 		{
-			return URL + "/" + VideoURL + (_IsMP4? ".mp4" : std::string());
+			return URL + "/" + URL;
 		}
 
 		inline std::string GetAudioURL()
 		{
-			return URL + "/" + AudioURL + (_IsMP4? ".mp4" : std::string());
+			return URL + "/" + Audio.value();
 		}
 
 	private:
 		Video() = default;
 
 		std::string DashURL;
-		bool _IsMP4, _HasAudio;
+		std::optional<std::string> Audio{ std::nullopt };
 
 		bool IsMP4(const std::string& MPEGManifestData);
 		bool CheckforAudio(const std::string& MPEGManifestData);
+		void ReadDash(const std::string& data);
 
 		friend class boost::serialization::access;
 		template<class Archive>
@@ -57,7 +58,10 @@ namespace Scarlett::Reddit
 			ar& AudioURL;
 			ar& VideoURL;
 			ar& MPEGManifestURL;
-			ar& _HasAudio;
+			if(!Audio)
+				ar& false
+			else
+				ar& Audio.value();
 		}
 		using Link::GetContent;
 	};
