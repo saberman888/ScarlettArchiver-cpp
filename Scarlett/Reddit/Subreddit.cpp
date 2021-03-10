@@ -49,8 +49,8 @@ namespace Scarlett::Reddit {
 		SubredditMetadata tempStats;
 		for (auto element : source.at("data"_u).as_array())
 		{
-			log->info("Reading Point: " + ToU8String(element.at("id"_u).as_string()));
-			std::cout << "Reading Point: " << ToU8String(element.at("id"_u).as_string()) << std::endl;
+			log->info("Reading Point: " + u8(element.at("id"_u).as_string()));
+			std::cout << "Reading Point: " << u8(element.at("id"_u).as_string()) << std::endl;
 
 			log->info("Reading element...");
 			if (Gallery::IsGallery(element))

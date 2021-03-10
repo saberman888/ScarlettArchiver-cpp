@@ -22,10 +22,10 @@ namespace Scarlett::Reddit::BaseTypes
 	void TextPost::Read(const JSON::value& json) {
 		try {
 			if (json.has_string_field("selftext"_u)) {
-				Text = ToU8String(json.at("selftext"_u).as_string());
+				Text = u8(json.at("selftext"_u).as_string());
 			}
 			else if (json.has_string_field("body"_u)) {
-				Text = ToU8String(json.at("body"_u).as_string());
+				Text = u8(json.at("body"_u).as_string());
 			}
 		}
 		catch (JSON::json_exception& e) {

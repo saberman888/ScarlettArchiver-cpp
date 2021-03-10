@@ -23,7 +23,7 @@ namespace Scarlett::Media::ImgurAccess
 		try {
 			if (json.has_field("data"_u))
 			{
-				link = ToU8String(json.at("data"_u).at("link"_u).as_string());
+				link = u8(json.at("data"_u).at("link"_u).as_string());
 			}
 		}
 		catch (JSON::json_exception& e) {

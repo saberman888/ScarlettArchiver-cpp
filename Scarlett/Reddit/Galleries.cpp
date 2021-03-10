@@ -18,7 +18,7 @@ namespace Scarlett::Reddit
 					auto mediaMetadata = json.at("media_metadata"_u).at(mediaId);
 
 					std::string imageExtension = Scarlett::splitString(
-						ToU8String(mediaMetadata.at("m"_u).as_string()), 
+						u8(mediaMetadata.at("m"_u).as_string()), 
 						'/')[1];
 					std::string imageURL = "https://i.redd.it/" + conv::to_utf8string(mediaId) + "." + imageExtension;
 					Images.push_back(imageURL);
