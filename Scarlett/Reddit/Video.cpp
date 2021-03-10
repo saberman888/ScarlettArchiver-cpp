@@ -9,9 +9,8 @@ namespace Scarlett::Reddit
 	{
 	}
 
-	void Video::Fetch()
+	void Video::FetchDash()
 	{
-		DashURL = URL + "/DASHPlaylist.mpd";
 		auto dash = Download(DashURL);
 		if (dash.status_code() == 200)
 		{
@@ -22,7 +21,7 @@ namespace Scarlett::Reddit
 		}
 	}
 
-	/*void Video::RedditFetch()
+	void Video::Fetch()
 	{
 		log->info("Attempting to get additional video information");
 		log->info("Connecting to https://reddit.com/" + Id + ".json");
@@ -36,9 +35,22 @@ namespace Scarlett::Reddit
 
 				Link::Read(post);
 
-				auto redditVideo = post.at("secure_media"_u).at("reddit_video"_u);
+				JSON::value redditVideo;
+				if (post.has_field("secure_media"_u))
+				{
+					redditVideo = post.at("secure_media"_u).at("reddit_video"_u);
+				}
+				else if(post.has_field("media"_u)){
+					redditVideo = post.at("media"_u).at("reddit_video"_u);
+				}
+
 				DashURL = u8(redditVideo.at("dash_url"_u).as_string());
+				VideoURL = u8(redditVideo.at("fallback_url"_u).as_string());
+
 				log->info("DASH URL: " + DashURL);
+				log->info("Video URL: " + VideoURL);
+
+				FetchDash();
 			}
 			catch (JSON::json_exception& e) {
 				scarlettNestedThrow("Failed to extract JSON from Video, " + std::string(e.what()));
@@ -47,7 +59,7 @@ namespace Scarlett::Reddit
 		else {
 			scarlettThrow("Failed to get video information for " + Id  + ", error: " + std::to_string(redditVideo.status_code()));
 		}
-	}*/
+	}
 	 
 	bool Video::IsVideo(const JSON::value& json)
 	{
