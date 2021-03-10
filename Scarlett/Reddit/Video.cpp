@@ -5,22 +5,24 @@ BOOST_CLASS_EXPORT(Scarlett::Reddit::Video)
 
 namespace Scarlett::Reddit
 {
-	Video::Video(const JSON::value json) : BaseTypes::Link(json)
+	Video::Video(const JSON::value& json) : BaseTypes::Link(json)
 	{
 	}
 
-	// UNFINISHED
 	void Video::Fetch()
 	{
 		DashURL = URL + "/DASHPlaylist.mpd";
 		auto dash = Download(DashURL);
 		if (dash.status_code() == 200)
 		{
-
+			ReadDash(u8(dash.extract_string().get()));
+		}
+		else {
+			scarlettThrow("Failed to download DASH for " + Id)
 		}
 	}
 
-	void Video::FetchFromReddit()
+	/*void Video::RedditFetch()
 	{
 		log->info("Attempting to get additional video information");
 		log->info("Connecting to https://reddit.com/" + Id + ".json");
@@ -35,7 +37,7 @@ namespace Scarlett::Reddit
 				Link::Read(post);
 
 				auto redditVideo = post.at("secure_media"_u).at("reddit_video"_u);
-				DashURL = ToU8String(redditVideo.at("dash_url"_u).as_string());
+				DashURL = u8(redditVideo.at("dash_url"_u).as_string());
 				log->info("DASH URL: " + DashURL);
 			}
 			catch (JSON::json_exception& e) {
@@ -45,7 +47,7 @@ namespace Scarlett::Reddit
 		else {
 			scarlettThrow("Failed to get video information for " + Id  + ", error: " + std::to_string(redditVideo.status_code()));
 		}
-	}
+	}*/
 	 
 	bool Video::IsVideo(const JSON::value& json)
 	{
@@ -54,12 +56,12 @@ namespace Scarlett::Reddit
 
 	bool Video::operator==(Video& other)
 	{
-		return (Link::operator==(other) && other._HasAudio == _HasAudio && other.DashURL == DashURL);
+		return (Link::operator==(other) && other.HasAudio() == HasAudio() && other.DashURL == DashURL);
 	}
 
 	bool Video::operator!=(Video& other)
 	{
-		return (Link::operator!=(other) && other._HasAudio == _HasAudio && other.DashURL == DashURL);
+		return (Link::operator!=(other) && other.HasAudio() == HasAudio() && other.DashURL == DashURL);
 	}
 
 	bool Video::IsMP4(const std::string& MPEGManifestData)
@@ -83,6 +85,20 @@ namespace Scarlett::Reddit
 		}
 		log->info(Id + " doesn't have any audio.");
 		return false;
+	}
+
+	void Video::ReadDash(const std::string& data)
+	{
+
+		if (CheckforAudio(data)) {
+			if (IsMP4(data))
+			{
+				Audio = "DASH_audio.mp4";
+			}
+			else {
+				Audio = "audio";
+			}
+		}
 	}
 
 	void Video::Mux(std::filesystem::path source)
