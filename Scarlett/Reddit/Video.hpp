@@ -14,8 +14,8 @@ namespace Scarlett::Reddit
 	{
 	public:
 		Video(const JSON::value& json);
+
 		void Fetch();
-		//void RedditFetch();
 		void Mux(std::filesystem::path destination);
 
 		/**
@@ -32,7 +32,7 @@ namespace Scarlett::Reddit
 
 		inline std::string GetVideoURL()
 		{
-			return URL + "/" + URL;
+			return VideoURL;
 		}
 
 		inline std::string GetAudioURL()
@@ -42,8 +42,10 @@ namespace Scarlett::Reddit
 
 	private:
 		Video() = default;
+		void FetchDash();
 
 		std::string DashURL;
+		std::string VideoURL;
 		std::optional<std::string> Audio{ std::nullopt };
 
 		bool IsMP4(const std::string& MPEGManifestData);
@@ -58,10 +60,7 @@ namespace Scarlett::Reddit
 			ar& AudioURL;
 			ar& VideoURL;
 			ar& MPEGManifestURL;
-			if(!Audio)
-				ar& false
-			else
-				ar& Audio.value();
+			ar& Audio.value_or("(null)");
 		}
 		using Link::GetContent;
 	};
