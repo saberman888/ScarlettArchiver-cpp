@@ -25,7 +25,7 @@ namespace Scarlett::Reddit
 
 		bool operator==(Video& other);
 		bool operator!=(Video& other);
-1
+
 		inline bool HasAudio() {
 			return _HasAudio;
 		}
