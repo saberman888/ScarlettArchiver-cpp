@@ -46,7 +46,7 @@ namespace Scarlett::Reddit {
 
 
 	void Subreddit::Read(const JSON::value& source) {
-		SubredditMetadata tempStats;
+		RedditStatistics tempStats;
 		for (auto element : source.at("data"_u).as_array())
 		{
 			log->info("Reading Point: " + u8(element.at("id"_u).as_string()));
@@ -57,35 +57,35 @@ namespace Scarlett::Reddit {
 			{
 				log->info("Found a Gallery");
 				auto potentialPost = std::make_shared<Gallery>(element);
-				tempStats.Galleries += 1;
+				tempStats.Update<Gallery>();
 				posts.push_back(potentialPost);
 			}
 			else if (Reddit::Video::IsVideo(element)) {
 				log->info("Found a Video");
 				auto potentialPost = std::make_shared<Video>(element);
-				tempStats.Videos += 1;
+				tempStats.Update<Video>();
 
 				log->info("Getting dash info");
 				auto Directvideo = std::dynamic_pointer_cast<Video>(potentialPost);
-				Directvideo.get()->FetchFromReddit();
+				Directvideo.get()->Fetch();
 
 				posts.push_back(potentialPost);
 			}
 			else if (Reddit::SelfPost::IsSelfPost(element)) {
 				log->info("Found a Self Post");
 				auto potentialPost = std::make_shared<SelfPost>(element);
-				tempStats.SelfPosts += 1;
+				tempStats.Update<SelfPost>();
 				posts.push_back(potentialPost);
 			}
 			else {
 				log->info("Found a Link");
 				auto potentialPost = std::make_shared<BaseTypes::Link>(element);
-				tempStats.Links += 1;
+				tempStats.Update<BaseTypes::Link>();
 				posts.push_back(potentialPost);
 			}
 		}
 		log->info("Updated stats");
-		sub->UpdateStats(tempStats);
+		//sub->stats(tempStats);
 	}
 	void Subreddit::WriteAll()
 	{
