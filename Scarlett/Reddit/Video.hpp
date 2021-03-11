@@ -2,9 +2,12 @@
 
 #include "BaseTypes/Link.hpp"
 #include "Comment.hpp"
+#include "Media/VideoInfo.hpp"
 
 #include <string_view>
 #include <regex>
+#include <tinyxml2.h>
+#include <boost/serialization/vector.hpp>
 
 
 namespace Scarlett::Reddit
@@ -30,41 +33,65 @@ namespace Scarlett::Reddit
 		bool operator==(Video& other);
 		bool operator!=(Video& other);
 
-		inline bool HasAudio() {
-			return (Audio? true : false);
+		inline const int getMaxHeight()
+		{
+			return maxHeight;
 		}
 
-		inline std::string GetVideoURL()
+		inline const int getMaxWidth()
 		{
-			return VideoURL;
+			return maxWidth;
 		}
 
-		inline std::string GetAudioURL()
+		inline const int getMaxFPS()
 		{
-			return URL + "/" + Audio.value();
+			return maxFPS;
+		}
+
+		inline const size_t getTotalVideos()
+		{
+			return videos.size();
+		}
+
+		inline const std::vector<Media::VideoInfo> getVideos()
+		{
+			return videos;
+		}
+
+		inline const std::optional<Media::VideoInfo> getAudio()
+		{
+			return audio;
+		}
+
+		inline const bool hasAudio()
+		{
+			return (audio? true : false);
+		}
+
+
+		inline const std::string getURL(const Media::VideoInfo& vi)
+		{
+			return URL + "/" + vi.BaseURL;
 		}
 
 	private:
 		Video() = default;
-		void FetchDash();
 
-		std::string DashURL;
-		std::string VideoURL;
-		std::optional<std::string> Audio{ std::nullopt };
+		std::optional<int> maxHeight{ std::nullopt }, maxWidth{ std::nullopt }, maxFPS{ std::nullopt };
+		std::optional<Media::VideoInfo> audio{ std::nullopt };
+		std::vector<Media::VideoInfo> videos;
 
-		bool IsMP4(const std::string& MPEGManifestData);
-		bool CheckforAudio(const std::string& MPEGManifestData);
-		void ReadDash(const std::string& data);
-
+		// TODO: Serialization for VideoInfo types
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
 			ar& boost::serialization::base_object<Link>(*this);
-			ar& VideoURL;
-			ar& DashURL;
-			ar& Audio.value_or("(null)");
+			ar& maxHeight;
+			ar& maxWidth;
+			ar& maxFPS;
 		}
+
 		using Link::GetContent;
 	};
 };
