@@ -28,29 +28,22 @@ namespace Scarlett::Reddit
 	};
 
 	template<class T>
-	void RedditStatistics::Update() 
+	void RedditStatistics::Update()
 	{
-		Links += 1;
+		if constexpr (std::is_same<Gallery, T>::value)
+		{
+			Galleries += 1;
+		}
+		else if constexpr (std::is_same<SelfPost, T>::value) {
+			SelfPosts += 1;
+		}
+		else if constexpr (std::is_same<Video, T>::value) {
+			Videos += 1;
+		}
+		else {
+			Links += 1;
+		}
 	};
-
-	template<>
-	void RedditStatistics::Update<Video>()
-	{
-		Videos += 1;
-	}
-
-	template<>
-	void RedditStatistics::Update<SelfPost>()
-	{
-		SelfPosts += 1;
-	}
-
-	template<>
-	void RedditStatistics::Update<Gallery>()
-	{
-		Galleries += 1;
-	}
-
 
 	/*
 		SubredditMetadata holds information regarding the date, position, statistics and functions manipulating around a Subreddit
