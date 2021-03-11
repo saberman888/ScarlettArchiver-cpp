@@ -33,10 +33,6 @@ namespace Scarlett::Reddit {
 			return sub->HasNext();
 		}
 
-		template<class T>
-		void Add(T post) {
-				posts.push_back(post);
-		}
 		void Read(const JSON::value& source);
 		void WriteAll();
 

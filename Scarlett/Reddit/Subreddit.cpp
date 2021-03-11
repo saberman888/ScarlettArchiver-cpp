@@ -46,7 +46,7 @@ namespace Scarlett::Reddit {
 
 
 	void Subreddit::Read(const JSON::value& source) {
-		RedditStatistics tempStats;
+		struct RedditStatistics tempStats;
 		for (auto element : source.at("data"_u).as_array())
 		{
 			log->info("Reading Point: " + u8(element.at("id"_u).as_string()));
@@ -85,6 +85,7 @@ namespace Scarlett::Reddit {
 			}
 		}
 		log->info("Updated stats");
+		// TODO: Implement stat updater
 		//sub->stats(tempStats);
 	}
 	void Subreddit::WriteAll()
