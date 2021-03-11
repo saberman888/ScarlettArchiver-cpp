@@ -8,7 +8,7 @@ namespace Vun::Helpers
 		for (std::map<std::string, std::string>::const_iterator it = data.begin(); it != data.end(); it++)
 		{
 			returnData.append(
-				((it == data.begin()) ? "?" : "&")
+				((it == data.begin()) ? "" : "&")
 				+ it->first
 				+ "="
 				+ it->second
