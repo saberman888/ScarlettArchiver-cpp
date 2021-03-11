@@ -6,7 +6,7 @@ namespace Scarlett::Reddit {
 	Subreddit::Subreddit(const struct ScarlettOptions::POptions& cmdOptions)
 	{
 		sub = std::make_unique<SubredditMetadata>(cmdOptions);
-		log->info("Scarlett Constructor initiated");
+		log->info(sub->Subreddit + " has been instantiated.");
 
 		SubStorePath = std::filesystem::path("subreddits") / sub->Subreddit;
 		log->info("Storing at " + SubStorePath.string());
