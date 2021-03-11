@@ -6,16 +6,16 @@ find_package(Boost REQUIRED COMPONENTS program_options)
 find_package(cpprestsdk REQUIRED)
 
 option(NDEBUG ON)
+add_compile_options(-D_TURN_OFF_PLATFORM_STRING=1)
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -O0")
 set(CMAKE_CXX_FLAGS "-Wall -Werror -Wfatal-errors")
-set(_TURN_OFF_PLATFORM_STRING ON)
 
 if(NDEBUG)
-    add_compile_option(-DNDEBUG=1)
+    add_compile_options(-DNDEBUG=1)
 endif()
 
 
-add_library(libVun STATIC helpers.cpp Reddit.cpp PushShift.cpp)
+add_library(Vun STATIC helpers.cpp Reddit.cpp PushShift.cpp)
 
-target_link_libraries(libVun LINK_PUBLIC cpprestsdk::cpprest Boost::program_options)
+target_link_libraries(Vun LINK_PUBLIC cpprestsdk::cpprest Boost::program_options)

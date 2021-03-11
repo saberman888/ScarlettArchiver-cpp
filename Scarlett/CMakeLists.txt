@@ -14,7 +14,8 @@ if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
-set(NDEBUG ON)
+option(NDEBUG ON)
+add_compile_options(-D_TURN_OFF_PLATFORM_STRING=1)
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -O0")
 set(CMAKE_CXX_FLAGS "-I . -Wall -Wfatal-errors")
@@ -25,6 +26,6 @@ if(NDEBUG)
 endif()
 
 include_directories(${CMAKE_SOURCE_DIR})
-add_executable(Scarlett exceptions.cpp Logger.cpp Misc.cpp StringOps.cpp SubredditMetadata.cpp Images/Imgur.cpp Reddit/Linkable.cpp Reddit/Postable.cpp Reddit/Comment.cpp Reddit/TextPost.cpp Reddit/Link.cpp Reddit/Video.cpp Reddit/Galleries.cpp Reddit/Subreddit.cpp ParseOptions.cpp Scarlett.cpp main.cpp)
+add_executable(Scarlett Scarlett/exceptions.cpp Scarlett/Logger.cpp Scarlett/Misc.cpp Scarlett/StringOps.cpp Reddit/SubredditMetadata.cpp Media/Imgur.cpp Reddit/BaseTypes/Linkable.cpp Reddit/BaseTypes/Postable.cpp Reddit/Comment.cpp Reddit/BaseTypes/TextPost.cpp Reddit/BaseTypes/Link.cpp Reddit/Video.cpp Reddit/Galleries.cpp Reddit/Subreddit.cpp Scarlett/ParseOptions.cpp Scarlett/Scarlett.cpp main.cpp)
 
 target_link_libraries(Scarlett LINK_PUBLIC libVun spdlog::spdlog OpenMP::OpenMP_CXX cpprestsdk::cpprest Boost::program_options Boost::serialization)
