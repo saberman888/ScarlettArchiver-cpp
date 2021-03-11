@@ -17,7 +17,7 @@ namespace Scarlett::Reddit::BaseTypes
 	{
 		try {
 			Author = u8(json.at("author"_u).as_string());
-			Id = u8(json.at("Id"_u).as_string());
+			Id = u8(json.at("id"_u).as_string());
 			Permalink = u8(json.at("permalink"_u).as_string());
 			CreatedUTC = static_cast<time_t>(json.at("created_utc"_u).as_integer());
 		}
