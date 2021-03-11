@@ -3,9 +3,9 @@
 #include <iosfwd>
 #include <optional>
 #include <regex>
-#include "Scarlett/Misc.hpp"
-#include "Scarlett/ParseOptions.hpp"
-#include "Scarlett/Logger.hpp"
+#include "Core/Misc.hpp"
+#include "Core/ParseOptions.hpp"
+#include "Core/Logger.hpp"
 #include "Video.hpp"
 #include "SelfPost.hpp"
 #include "Galleries.hpp"

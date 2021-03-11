@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <optional>
-#include "Scarlett/Misc.hpp"
+#include "Core/Misc.hpp"
 #include "BaseTypes/TextPost.hpp"
 #include <boost/serialization/export.hpp>
 namespace Scarlett::Reddit

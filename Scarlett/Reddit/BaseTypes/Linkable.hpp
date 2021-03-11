@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Scarlett/exceptions.hpp"
-#include "Scarlett/StringOps.hpp"
+#include "Core/exceptions.hpp"
+#include "Core/StringOps.hpp"
 #include <boost/archive/text_oarchive.hpp>
 
 namespace JSON = web::json;
