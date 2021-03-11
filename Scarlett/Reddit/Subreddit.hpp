@@ -39,7 +39,7 @@ namespace Scarlett::Reddit {
 		template<class T>
 		void Write(std::filesystem::path destination, std::string filename, std::shared_ptr<T> post)
 		{
-			static_assert((std::is_base_of<Reddit::Linkable, T>::value || std::is_base_of<Reddit::Link, T>::value), "post does not derive from Reddit::Linkable");
+			static_assert((std::is_base_of<Reddit::BaseTypes::Linkable, T>::value || std::is_base_of<Reddit::BaseTypes::Link, T>::value), "post does not derive from Reddit::Linkable");
 
 			auto tempTime = std::gmtime(post->CreatedUTC);
 
