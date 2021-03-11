@@ -6,9 +6,13 @@
 #include <string_view>
 #include <regex>
 
+
 namespace Scarlett::Reddit
 {
 
+	/*
+		TODO: In the future make it less dependent on getting the JSON directly from Reddit
+	*/
 	class Video : public BaseTypes::Link
 	{
 	public:
@@ -19,6 +23,7 @@ namespace Scarlett::Reddit
 
 		/**
 		* Checks if the provided json has an is_video tag, and if it is in fact: a boolean.
+		* It checks for the values: is_value and post_hint.
 		*/
 		static bool IsVideo(const JSON::value& json);
 

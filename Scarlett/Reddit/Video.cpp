@@ -14,7 +14,8 @@ namespace Scarlett::Reddit
 		auto dash = Download(DashURL);
 		if (dash.status_code() == 200)
 		{
-			ReadDash(u8(dash.extract_string().get()));
+			auto data = dash.extract_utf8string(true);
+			ReadDash(data.get());
 		}
 		else {
 			scarlettThrow("Failed to download DASH for " + Id)
