@@ -38,7 +38,9 @@ namespace Scarlett::Reddit::BaseTypes
 	void Link::Read(const JSON::value& json)
 	{
 		try {
-			Hint = u8(json.at("post_hint"_u).as_string());
+			if (json.has_string_field("post_hint"_u)) {
+				Hint = u8(json.at("post_hint"_u).as_string());
+			}
 		}
 		catch (const JSON::json_exception& e) {
 			scarlettNestedThrow(e.what());
