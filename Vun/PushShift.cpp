@@ -9,7 +9,6 @@ namespace Vun::PushShift {
 		b.set_path(conv::to_string_t(endpoint));
 		b.append_query(conv::to_string_t(Vun::Helpers::GenerateParamData(URLComponents)));
 
-		std::wcout << b.to_string() << std::endl;
 		static HttpClient::http_client client(b.to_uri());
 
 		auto result = client.request(web::http::methods::GET);
