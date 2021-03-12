@@ -7,10 +7,12 @@ namespace Scarlett::Reddit
 {
 	Video::Video(const JSON::value& json) : BaseTypes::Link(json)
 	{
+		Fetch();
 	}
 
 	void Video::Fetch()
 	{
+		audio.emplace();
 		auto dashData = Download(URL + "/DASHPlaylist.mpd");
 		if (dashData.status_code() == 200)
 		{
@@ -41,16 +43,16 @@ namespace Scarlett::Reddit
 					
 					if (mimeType == "audio/mp4")
 					{
-						audio->mimeType = "audio/mp4";
-						audio->Read(Rep);
+						audio.emplace(Rep->FirstChildElement("BaseURL")->GetText());
 					}
 					else {
-						Media::VideoInfo vi;
-						vi.mimeType = "video/mp4";
-						vi.Read(Rep);
-						videos.push_back(vi);
-					}
 
+						auto video = std::make_tuple<int, std::string>(
+							std::stoi(Rep->Attribute("height")),
+							Rep->FirstChildElement("BaseURL")->GetText()
+							);
+						AddVideo(video);
+					}
 				}
 			}
 
@@ -67,12 +69,27 @@ namespace Scarlett::Reddit
 
 	bool Video::operator==(Video& other)
 	{
-		return (Link::operator==(other) && other.HasAudio() == HasAudio() && other.DashURL == DashURL);
+		return (Link::operator==(other) && audio.value_or("null") == other.audio.value_or("null"));
 	}
 
 	bool Video::operator!=(Video& other)
 	{
-		return (Link::operator!=(other) && other.HasAudio() == HasAudio() && other.DashURL == DashURL);
+		return (Link::operator!=(other) && audio.value_or("null") != other.audio.value_or("null"));
+	}
+
+	void Video::AddVideo(const std::tuple<int, std::string> video)
+	{
+		if (videos.size() != 0)
+		{
+			for (std::vector<std::tuple<int, std::string>>::iterator it = videos.begin(); it != videos.end(); it++)
+			{
+				if (std::get<int>(*it) > std::get<int>(video)) {
+					videos.emplace(it, video);
+					return;
+				}
+			}
+		}
+		videos.emplace_back(video);
 	}
 
 	void Video::Mux(std::filesystem::path source)

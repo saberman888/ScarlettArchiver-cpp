@@ -2,11 +2,10 @@
 
 #include "BaseTypes/Link.hpp"
 #include "Comment.hpp"
-#include "Media/VideoInfo.hpp"
-
 #include <string_view>
 #include <regex>
 #include <tinyxml2.h>
+#include <utility>
 #include <boost/serialization/vector.hpp>
 
 
@@ -20,8 +19,6 @@ namespace Scarlett::Reddit
 	{
 	public:
 		Video(const JSON::value& json);
-
-		void Fetch();
 		void Mux(std::filesystem::path destination);
 
 		/**
@@ -33,53 +30,31 @@ namespace Scarlett::Reddit
 		bool operator==(Video& other);
 		bool operator!=(Video& other);
 
-		inline const int getMaxHeight()
-		{
-			return maxHeight;
-		}
-
-		inline const int getMaxWidth()
-		{
-			return maxWidth;
-		}
-
-		inline const int getMaxFPS()
-		{
-			return maxFPS;
-		}
-
 		inline const size_t getTotalVideos()
 		{
 			return videos.size();
 		}
 
-		inline const std::vector<Media::VideoInfo> getVideos()
+		inline const std::vector<std::tuple<int, std::string>> getVideos()
 		{
 			return videos;
 		}
 
-		inline const std::optional<Media::VideoInfo> getAudio()
+		inline const std::string getAudioURL()
 		{
-			return audio;
+			return audio.value_or("null");
 		}
 
 		inline const bool hasAudio()
 		{
-			return (audio? true : false);
+			return audio.has_value();
 		}
-
-
-		inline const std::string getURL(const Media::VideoInfo& vi)
-		{
-			return URL + "/" + vi.BaseURL;
-		}
-
 	private:
 		Video() = default;
+		void Fetch();
 
-		std::optional<int> maxHeight{ std::nullopt }, maxWidth{ std::nullopt }, maxFPS{ std::nullopt };
-		std::optional<Media::VideoInfo> audio{ std::nullopt };
-		std::vector<Media::VideoInfo> videos;
+		std::optional<std::string> audio{ std::nullopt };
+		std::vector<std::tuple<int, std::string>> videos;
 
 		// TODO: Serialization for VideoInfo types
 		friend class boost::serialization::access;
@@ -87,10 +62,9 @@ namespace Scarlett::Reddit
 		void serialize(Archive& ar, const unsigned int version)
 		{
 			ar& boost::serialization::base_object<Link>(*this);
-			ar& maxHeight;
-			ar& maxWidth;
-			ar& maxFPS;
 		}
+
+		void AddVideo(const std::tuple<int, std::string> video);
 
 		using Link::GetContent;
 	};
