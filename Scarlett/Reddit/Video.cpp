@@ -77,11 +77,11 @@ namespace Scarlett::Reddit
 		return (Link::operator!=(other) && audio.value_or("null") != other.audio.value_or("null"));
 	}
 
-	void Video::AddVideo(const std::tuple<int, std::string> video)
+	void Video::AddVideo(const VideoInfo video)
 	{
 		if (videos.size() != 0)
 		{
-			for (std::vector<std::tuple<int, std::string>>::iterator it = videos.begin(); it != videos.end(); it++)
+			for (std::vector<VideoInfo>::iterator it = videos.begin(); it != videos.end(); it++)
 			{
 				if (std::get<int>(*it) > std::get<int>(video)) {
 					videos.emplace(it, video);
