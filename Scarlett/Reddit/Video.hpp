@@ -30,21 +30,17 @@ namespace Scarlett::Reddit
 
 
 		
-		inline const size_t getTotalVideos()
+		inline const size_t TotalVideos()
 		{
 			return videos.size();
 		}
 
-		inline const std::vector<VideoInfo> getVideos()
+		inline const std::vector<VideoInfo> GetVideos()
 		{
 			return videos;
 		}
 
-		inline const std::string getAudioURL()
-		{
-			return audio.value_or("null");
-		}
-
+		const std::string GetAudioURL();
 		inline const bool hasAudio()
 		{
 			return audio.has_value();

@@ -67,6 +67,18 @@ namespace Scarlett::Reddit
 		return (json.has_boolean_field("is_video"_u) && json.at("is_video"_u).as_bool() && json.at("post_hint"_u).as_string() == "hosted:video"_u);
 	}
 
+	const std::string Video::GetAudioURL()
+	{
+		if (audio)
+		{
+			return URL + "/" + audio.value();
+		}
+		else {
+			scarlettThrow("This Video does not have audio!");
+		}
+		return std::string();
+	}
+
 	bool Video::operator==(Video& other)
 	{
 		return (Link::operator==(other) && audio.value_or("null") == other.audio.value_or("null"));
