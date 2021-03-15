@@ -29,10 +29,6 @@ namespace Scarlett::Reddit
 		}
     }
 
-	void Comment::GetPushShiftComments()
-	{
-		// TODO: Implementing getting the comments from pushsshift
-	}
 
 	void Comment::Read(const JSON::value& json)
 	{
