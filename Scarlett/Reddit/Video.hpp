@@ -41,7 +41,7 @@ namespace Scarlett::Reddit
 		}
 
 		const std::string GetAudioURL();
-		inline const bool hasAudio()
+		inline const bool HasAudio()
 		{
 			return audio.has_value();
 		}
