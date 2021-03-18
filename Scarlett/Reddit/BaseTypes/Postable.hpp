@@ -5,6 +5,7 @@
 #include "Core/exceptions.hpp"
 #include "Core/StringOps.hpp"
 #include <boost/archive/text_oarchive.hpp>
+#include <boost/serialization/nvp.hpp>
 namespace JSON = web::json;
 
 namespace Scarlett::Reddit::BaseTypes
@@ -16,7 +17,7 @@ namespace Scarlett::Reddit::BaseTypes
 	{
 	public:
 		Postable() = default;
-		time_t CreatedUTC{0L};
+		time_t CreatedUTC{ 0L };
 		std::string Author;
 		std::string Id;
 		std::string Permalink;
@@ -29,17 +30,18 @@ namespace Scarlett::Reddit::BaseTypes
 
 		void Read(const JSON::value& json);
 		bool timediff(time_t end, time_t begin);
+
 	private:
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
-			ar& CreatedUTC;
-			ar& Author;
-			ar& Id;
-			ar& Permalink;
-		}
 
+			ar& BOOST_SERIALIZATION_NVP(CreatedUTC);
+			ar& BOOST_SERIALIZATION_NVP(Author);
+			ar& BOOST_SERIALIZATION_NVP(Id);
+			ar& BOOST_SERIALIZATION_NVP(Permalink);
+		}
 	};
 
 }
