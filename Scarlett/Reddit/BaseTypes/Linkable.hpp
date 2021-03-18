@@ -2,7 +2,8 @@
 
 #include "Core/exceptions.hpp"
 #include "Core/StringOps.hpp"
-#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/nvp.hpp>
 
 namespace JSON = web::json;
 
@@ -27,9 +28,9 @@ namespace Scarlett::Reddit::BaseTypes
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
-			ar& Domain;
-			ar& Title;
-			ar& URL;
+			ar& BOOST_SERIALIZATION_NVP(Domain);
+			ar& BOOST_SERIALIZATION_NVP(Title);
+			ar& BOOST_SERIALIZATION_NVP(URL);
 		}
 	};
 

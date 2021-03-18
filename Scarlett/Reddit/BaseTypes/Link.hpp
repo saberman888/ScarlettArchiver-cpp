@@ -35,9 +35,9 @@ namespace Scarlett::Reddit::BaseTypes
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
-			ar& boost::serialization::base_object<Linkable>(*this);
-			ar& boost::serialization::base_object<Postable>(*this);
-			ar& Hint.value_or("(null)");
+			ar& BOOST_SERIALIZATION_BASE_OBJECT_NVP(Linkable);
+			ar& BOOST_SERIALIZATION_BASE_OBJECT_NVP(Postable);
+			ar& BOOST_SERIALIZATION_NVP(Hint.value_or("(null)"));
 		}
 	};
 	
