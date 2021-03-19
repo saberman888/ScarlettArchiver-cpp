@@ -28,9 +28,10 @@ namespace Scarlett::Reddit::BaseTypes
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
-			ar& BOOST_SERIALIZATION_NVP(Domain);
-			ar& BOOST_SERIALIZATION_NVP(Title);
-			ar& BOOST_SERIALIZATION_NVP(URL);
+			using namespace boost::serialization;
+			ar& make_nvp("Domain", Domain);
+			ar& make_nvp("Title", Title);
+			ar& make_nvp("URL", URL);
 		}
 	};
 

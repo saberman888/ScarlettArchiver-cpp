@@ -30,8 +30,9 @@ namespace Scarlett::Reddit
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
-			ar& BOOST_SERIALIZATION_BASE_OBJECT_NVP(BaseTypes::Linkable);
-			ar& BOOST_SERIALIZATION_BASE_OBJECT_NVP(BaseTypes::TextPost);
+			using namespace boost::serialization;
+			ar& make_nvp("Linkable", base_object<BaseTypes::Linkable>(*this));
+			ar& make_nvp("Linkable", base_object<BaseTypes::TextPost>(*this));
 		}
 
 	};

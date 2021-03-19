@@ -37,11 +37,11 @@ namespace Scarlett::Reddit::BaseTypes
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
-
-			ar& BOOST_SERIALIZATION_NVP(CreatedUTC);
-			ar& BOOST_SERIALIZATION_NVP(Author);
-			ar& BOOST_SERIALIZATION_NVP(Id);
-			ar& BOOST_SERIALIZATION_NVP(Permalink);
+			using namespace boost::serialization;
+			ar& make_nvp("CreationDate", CreatedUTC);
+			ar& make_nvp("Author", Author);
+			ar& make_nvp("Id", Id);
+			ar& make_nvp("Permalink", Permalink);
 		}
 	};
 
