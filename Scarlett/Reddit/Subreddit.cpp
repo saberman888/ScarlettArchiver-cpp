@@ -67,7 +67,7 @@ namespace Scarlett::Reddit {
 
 				log->info("Getting dash info");
 				auto Directvideo = std::dynamic_pointer_cast<Video>(potentialPost);
-				Directvideo.get()->Fetch();
+				//Directvideo.get()->Fetch();
 
 				posts.push_back(potentialPost);
 			}

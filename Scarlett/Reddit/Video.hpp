@@ -5,6 +5,7 @@
 #include <tinyxml2.h>
 #include <utility>
 #include <boost/serialization/vector.hpp>
+#include <boost/serialization/utility.hpp>
 
 
 namespace Scarlett::Reddit
@@ -27,8 +28,6 @@ namespace Scarlett::Reddit
 			Glue video and audio together into one file using ffmpeg with Mux
 		*/
 		void Mux(std::filesystem::path destination);
-
-
 		
 		inline const size_t TotalVideos()
 		{
@@ -59,16 +58,17 @@ namespace Scarlett::Reddit
 		void Fetch();
 
 		// Occasionally, a video will not have any audio whatsoever; hence why it's optional
-		std::optional<std::string> audio{ std::nullopt };
+		boost::optional<std::string> audio{ boost::none };
 		std::vector<VideoInfo> videos;
 
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
-			ar& boost::serialization::base_object<Link>(*this);
-			ar& audio;
-			ar& videos;
+			ar& BOOST_SERIALIZATION_BASE_OBJECT_NVP(BaseTypes::Linkable);
+			ar& BOOST_SERIALIZATION_NVP(audio);
+			// TODO: Implement serialization for videos
+			//ar& videos;
 		}
 
 		/*
@@ -76,7 +76,5 @@ namespace Scarlett::Reddit
 		* This makes it so everytime you get the back, you always get the best resolution immediately.
 		*/
 		void AddVideo(const VideoInfo video);
-
-		using Link::GetContent;
 	};
 };

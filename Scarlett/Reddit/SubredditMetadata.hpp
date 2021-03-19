@@ -80,14 +80,14 @@ namespace Scarlett::Reddit
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
-			ar& Subreddit;
-			ar& mktime(&StartDate);
-			ar& mktime(&EndDate);
-			ar& mktime(&DatePointer);
-			ar& stats.Videos;
-			ar& stats.Galleries;
-			ar& stats.Links;
-			ar& stats.SelfPosts;
+			ar& BOOST_SERIALIZATION_NVP(Subreddit);
+			ar& boost::serialization::make_nvp(BOOST_STRINGIZE(StartDate), mktime(&StartDate));
+			ar& boost::serialization::make_nvp(BOOST_STRINGIZE(EndDate), mktime(&EndDate));
+			ar& boost::serialization::make_nvp(BOOST_STRINGIZE(DatePointer), mktime(&DatePointer));
+			//ar& stats.Videos;
+			//ar& stats.Galleries;
+			//ar& stats.Links;
+			//ar& stats.SelfPosts;
 		}
 
 		/**

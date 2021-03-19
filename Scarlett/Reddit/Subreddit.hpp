@@ -48,8 +48,8 @@ namespace Scarlett::Reddit {
 			std::filesystem::create_directories(destination);
 
 			std::ofstream out(destination.string() + "/" + filename);
-			boost::archive::text_oarchive bta(out);
-			bta << *post.get();
+			boost::archive::xml_oarchive bta(out);
+			bta << BOOST_SERIALIZATION_NVP(*post.get());
 		}
 
 
