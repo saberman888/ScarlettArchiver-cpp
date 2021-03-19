@@ -65,8 +65,9 @@ namespace Scarlett::Reddit
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
-			ar& BOOST_SERIALIZATION_BASE_OBJECT_NVP(BaseTypes::Linkable);
-			ar& BOOST_SERIALIZATION_NVP(audio);
+			using namespace boost::serialization;
+			ar& make_nvp("Link", base_object<Link>(*this));
+			ar& make_nvp("Audio", audio);
 			// TODO: Implement serialization for videos
 			//ar& videos;
 		}
