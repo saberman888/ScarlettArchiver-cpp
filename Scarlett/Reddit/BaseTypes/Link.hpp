@@ -6,6 +6,7 @@
 #include "Media/Imgur.hpp"
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/base_object.hpp>
+#include <boost/serialization/optional.hpp>
 #include "Core/Logger.hpp"
 namespace Scarlett::Reddit::BaseTypes
 {
@@ -22,7 +23,8 @@ namespace Scarlett::Reddit::BaseTypes
 
 		// PushShift's json has a hint value and I think Reddit doesn't?
 		// This string is optional because I'm not totally sure if it's available on all Reddit or PushShift data
-		std::optional<std::string> Hint{ std::nullopt };
+		// It's a boost optional because, a normal one can't be serialized with boost's serialization library
+		boost::optional<std::string> Hint{ boost::none };
 
 		bool operator==(Link& other);
 		bool operator!=(Link& other);
@@ -37,7 +39,7 @@ namespace Scarlett::Reddit::BaseTypes
 		{
 			ar& BOOST_SERIALIZATION_BASE_OBJECT_NVP(Linkable);
 			ar& BOOST_SERIALIZATION_BASE_OBJECT_NVP(Postable);
-			ar& BOOST_SERIALIZATION_NVP(Hint.value_or("(null)"));
+			ar& BOOST_SERIALIZATION_NVP(Hint);
 		}
 	};
 	
