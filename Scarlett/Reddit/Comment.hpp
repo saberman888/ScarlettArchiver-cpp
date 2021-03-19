@@ -5,6 +5,8 @@
 #include "Core/Misc.hpp"
 #include "BaseTypes/TextPost.hpp"
 #include <boost/serialization/export.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/optional.hpp>
 namespace Scarlett::Reddit
 {
 	
@@ -12,7 +14,7 @@ namespace Scarlett::Reddit
 	{
 	public:
 		Comment(const std::string& ParentId);
-		Comment(const JSON::value& json, std::optional<std::string> ParentId = std::nullopt);
+		Comment(const JSON::value& json, boost::optional<std::string> ParentId = boost::none);
 		std::vector<std::unique_ptr<Comment>> replies; 
 		void GetRedditComments();
 		void GetPushShiftComments();
@@ -23,12 +25,11 @@ namespace Scarlett::Reddit
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
-			ar& boost::serialization::base_object<TextPost>(*this);
-			std::string pidName = ParentId.value_or("(null)");
-			ar& pidName;
+			ar& BOOST_SERIALIZATION_BASE_OBJECT_NVP(BaseTypes::TextPost);
+			ar& BOOST_SERIALIZATION_NVP(ParentId);
 		}
 
-		std::optional<std::string> ParentId;
+		boost::optional<std::string> ParentId{ boost::none };
 		void Read(const JSON::value& json);
 	};	
 	using CommentTree = std::vector<std::unique_ptr<Comment>>;

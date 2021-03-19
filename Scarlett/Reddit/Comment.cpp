@@ -4,10 +4,11 @@ BOOST_CLASS_EXPORT(Scarlett::Reddit::Comment)
 namespace Scarlett::Reddit
 {
 
-    Comment::Comment(const std::string& ParentId) : ParentId(ParentId)
+    Comment::Comment(const std::string& ParentId)
     {
+		this->ParentId.emplace(ParentId);
     }
-	Comment::Comment(const JSON::value& json, std::optional<std::string> ParentId) : ParentId(ParentId)
+	Comment::Comment(const JSON::value& json, boost::optional<std::string> ParentId)
 	{
 		TextPost::Read(json);
 	}
