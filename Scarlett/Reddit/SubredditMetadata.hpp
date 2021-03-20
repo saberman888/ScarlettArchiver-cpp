@@ -25,6 +25,18 @@ namespace Scarlett::Reddit
 		{
 			return Videos + Links + SelfPosts + Galleries;
 		}
+
+
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive& ar, const unsigned int version)
+		{
+			using namespace boost::serialization;
+			ar& make_nvp("Videos", Videos);
+			ar& make_nvp("Links", Links);
+			ar& make_nvp("SelfPosts", SelfPosts);
+			ar& make_nvp("Galleries", Galleries);
+		}
 	};
 
 	template<class T>
@@ -91,10 +103,7 @@ namespace Scarlett::Reddit
 
 			auto TemporaryDatePointer = mktime(&DatePointer);
 			ar& make_nvp("DatePointer", TemporaryDatePointer);
-			//ar& stats.Videos;
-			//ar& stats.Galleries;
-			//ar& stats.Links;
-			//ar& stats.SelfPosts;
+			ar& make_nvp("Reddit-Statistics", stats);
 		}
 
 		/**
