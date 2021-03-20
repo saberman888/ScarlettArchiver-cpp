@@ -17,7 +17,6 @@ namespace Scarlett::Reddit
 		Comment(const JSON::value& json, boost::optional<std::string> ParentId = boost::none);
 		std::vector<std::unique_ptr<Comment>> replies; 
 		void GetRedditComments();
-		void GetPushShiftComments();
 
 	private:
 		Comment(){}
