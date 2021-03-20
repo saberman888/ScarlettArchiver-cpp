@@ -82,9 +82,15 @@ namespace Scarlett::Reddit
 		{
 			using namespace boost::serialization;
 			ar& make_nvp("TargetSubreddit", Subreddit);
-			ar& make_nvp("StartDate", mktime(&StartDate));
-			ar& make_nvp("EndDate", mktime(&EndDate));
-			ar& make_nvp("DatePointer", mktime(&DatePointer));
+
+			auto TemporaryStartDate = mktime(&StartDate);
+			ar& make_nvp("StartDate", TemporaryStartDate);
+
+			auto TemporaryEndDate = mktime(&EndDate);
+			ar& make_nvp("EndDate", TemporaryEndDate);
+
+			auto TemporaryDatePointer = mktime(&DatePointer);
+			ar& make_nvp("DatePointer", TemporaryDatePointer);
 			//ar& stats.Videos;
 			//ar& stats.Galleries;
 			//ar& stats.Links;
