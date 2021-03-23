@@ -37,19 +37,24 @@ namespace Scarlett::Reddit {
 		void WriteAll();
 
 		template<class T>
-		void Write(std::filesystem::path destination, std::string filename, std::shared_ptr<T> post)
+		void WritePost(std::shared_ptr<T> post, const std::string tag)
 		{
+			using namespace std::filesystem;
 			static_assert((std::is_base_of<Reddit::BaseTypes::Linkable, T>::value || std::is_base_of<Reddit::BaseTypes::Link, T>::value), "post does not derive from Reddit::Linkable");
 
 			auto tempTime = std::gmtime(post->CreatedUTC);
 
-			destination /= std::to_string(tempTime->tm_year);
-			destination /= std::to_string(tempTime->tm_mon);
+			auto destination = SubStorePath /  path(std::to_string(tempTime->tm_year)) / path(std::to_string(tempTime->tm_mon));
 			std::filesystem::create_directories(destination);
+			serializeData(post, tag, std::filesystem::path(post->Id + ".xml"));
+		}
 
-			std::ofstream out(destination.string() + "/" + filename);
-			boost::archive::xml_oarchive bta(out);
-			bta << BOOST_SERIALIZATION_NVP(*post.get());
+		template<class T>
+		void serializeData(const T& data, const std::string Tag, const std::filesystem::path filename)
+		{
+			std::ofstream out(filename.string());
+			boost::archive::xml_oarchive xoa(out);
+			xoa << boost::serialization::make_nvp(Tag.c_str(), data);
 		}
 
 
