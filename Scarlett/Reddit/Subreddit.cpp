@@ -64,12 +64,6 @@ namespace Scarlett::Reddit {
 				log->info("Found a Video");
 				auto potentialPost = std::make_shared<Video>(element);
 				tempStats.Update<Video>();
-
-				log->info("Getting dash info");
-				auto Directvideo = std::dynamic_pointer_cast<Video>(potentialPost);
-				//Directvideo.get()->Fetch();
-
-				posts.push_back(potentialPost);
 			}
 			else if (Reddit::SelfPost::IsSelfPost(element)) {
 				log->info("Found a Self Post");
@@ -90,10 +84,38 @@ namespace Scarlett::Reddit {
 	}
 	void Subreddit::WriteAll()
 	{
+		using namespace std::filesystem;
+		using namespace boost::serialization;
+
+		serializeData(*sub.get(), "metadata", (SubStorePath / "metadata.xml"));
+
 		for (std::vector<std::shared_ptr<BaseTypes::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
 		{
-			//Write(SubStorePath, (*it)->Id + ".txt", *it);
-		}
+
+			if (std::dynamic_pointer_cast<Video>(*it))
+			{
+				auto vid = std::dynamic_pointer_cast<Video>(*it);
+				WritePost(vid, "Video");
+			
+			}
+			else if (std::dynamic_pointer_cast<BaseTypes::Link>(*it)) {
+				auto link = std::dynamic_pointer_cast<BaseTypes::Link>(*it);
+				WritePost(link, "Link");
+			}
+			else if (std::dynamic_pointer_cast<Gallery>(*it))
+			{
+				auto gallery = std::dynamic_pointer_cast<Gallery>(*it);
+				WritePost(gallery, "Gallery");
+			}
+			else if (std::dynamic_pointer_cast<SelfPost>(*it)) {
+				auto selfpost = std::dynamic_pointer_cast<SelfPost>(*it);
+				WritePost(selfpost, "SelfPost");
+			} else {
+				WritePost(
+					*it,
+					"Linkable"
+				);
+			}
 		posts.clear();
 		posts.shrink_to_fit();
 	}
