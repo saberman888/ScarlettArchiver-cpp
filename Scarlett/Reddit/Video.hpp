@@ -45,12 +45,20 @@ namespace Scarlett::Reddit
 		{
 			return videos.size();
 		}
-
+		/*
+		* Returns a list of the same video, but in different qualities.
+		* Returns a vector of structs consisting of: 
+		*	int Height
+		*	std::string BaseURL
+		*/
 		inline const std::vector<VideoInfo> GetVideos()
 		{
 			return videos;
 		}
 
+		/*
+		*	Returns a full URL of the video's audio, if it's there.
+		*/
 		const std::string GetAudioURL();
 		inline const bool HasAudio()
 		{
