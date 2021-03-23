@@ -10,8 +10,20 @@
 
 namespace Scarlett::Reddit
 {
+	struct VideoInfo
+	{
+		int Height;
+		std::string BaseURL;
 
-	using VideoInfo = std::tuple<int, std::string>;
+		friend class boost::serialization::access;
+		template<class Archive>
+		void serialize(Archive& ar, const unsigned int version)
+		{
+			using namespace boost::serialization;
+			ar& make_nvp("Height", Height);
+			ar& make_nvp("BaseURL", BaseURL);
+		}
+	};
 
 	class Video : public BaseTypes::Link
 	{
@@ -68,8 +80,7 @@ namespace Scarlett::Reddit
 			using namespace boost::serialization;
 			ar& make_nvp("Link", base_object<Link>(*this));
 			ar& make_nvp("Audio", audio);
-			// TODO: Implement serialization for videos
-			//ar& videos;
+			ar& videos;
 		}
 
 		/*

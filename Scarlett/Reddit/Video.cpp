@@ -51,7 +51,11 @@ namespace Scarlett::Reddit
 							std::stoi(Rep->Attribute("height")),
 							Rep->FirstChildElement("BaseURL")->GetText()
 							);
-						AddVideo(video);
+						struct VideoInfo vi {
+							std::stoi(Rep->Attribute("height")),
+							Rep->FirstChildElement("BaseURL")->GetText()
+						};
+						AddVideo(vi);
 					}
 				}
 			}
@@ -95,7 +99,7 @@ namespace Scarlett::Reddit
 		{
 			for (std::vector<VideoInfo>::iterator it = videos.begin(); it != videos.end(); it++)
 			{
-				if (std::get<int>(*it) > std::get<int>(video)) {
+				if ((*it).Height > video.Height) {
 					videos.emplace(it, video);
 					return;
 				}
