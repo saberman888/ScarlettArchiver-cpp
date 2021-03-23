@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(Vun)
 set(CMAKE_CXX_STANDARD 17)
-
-find_package(Boost REQUIRED COMPONENTS program_options)
 find_package(cpprestsdk REQUIRED)
 
 option(NDEBUG ON)
@@ -20,4 +18,4 @@ endif()
 
 add_library(libVun STATIC helpers.cpp Reddit.cpp PushShift.cpp)
 
-target_link_libraries(libVun LINK_PUBLIC cpprestsdk::cpprest Boost::program_options)
+target_link_libraries(libVun LINK_PUBLIC cpprestsdk::cpprest)

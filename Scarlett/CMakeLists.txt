@@ -13,6 +13,7 @@ find_package(spdlog REQUIRED)
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
+    include_directories(${Boost_LIBRARY_DIRS})
 endif()
 
 if(GCC)
@@ -29,4 +30,4 @@ set(sourceFiles Core/exceptions.cpp Core/Logger.cpp Core/Misc.cpp Core/StringOps
 
 add_executable(Scarlett ${sourceFiles} Core/main.cpp)
 
-target_link_libraries(Scarlett LINK_PUBLIC libVun spdlog::spdlog cpprestsdk::cpprest Boost::program_options Boost::serialization)
+target_link_libraries(Scarlett LINK_PUBLIC libVun spdlog::spdlog cpprestsdk::cpprest ${BOOST_LIBRARIES})
