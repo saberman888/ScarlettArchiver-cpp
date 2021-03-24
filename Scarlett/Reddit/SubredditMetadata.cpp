@@ -19,15 +19,12 @@ namespace Scarlett::Reddit
 		if (!Start)
 		{
 			// If Start is not present, assign it to when Reddit first emerged since we have no idea when the Subreddit emerged
-			this->StartDate.tm_year = 2005;
-			this->StartDate.tm_mday = 23;
-			this->StartDate.tm_mon = 07;
-			if (!End)
-			{
-				// If End isn't either, assign it to today's date in UTC
-				const time_t current = 0;
-				this->EndDate = *std::gmtime(&current);
-			}
+			tm autoDate{ 0 };
+			autoDate.tm_year = 2005;
+			autoDate.tm_mday = 23;
+			autoDate.tm_mon = 07;
+
+			StartDate = mktime(&autoDate);
 		}
 		else {
 			/*
@@ -66,8 +63,17 @@ namespace Scarlett::Reddit
 			else {
 				throw std::runtime_error("Not a valid date format");
 			}
-			Scarlett::strptime(Start->c_str(), format.c_str(), &this->StartDate);
-			Scarlett::strptime(End->c_str(), format.c_str(), &this->EndDate);
+
+			if (Start) {
+				tm tempStart{ 0 };
+				Scarlett::strptime(Start->c_str(), format.c_str(), &tempStart);
+				StartDate = mktime(&tempStart);
+			}
+			if (End) {
+				tm tempEnd{ 0 };
+				Scarlett::strptime(End->c_str(), format.c_str(), &tempEnd);
+				EndDate = mktime(&tempEnd);
+			}
 		}
 		this->DatePointer = this->StartDate;
 	}	

@@ -16,17 +16,12 @@ namespace Scarlett::Reddit {
 	{
 
 		log->info("Fetching subreddit posts...");
-
-		// Copy DatePointer into before and increment it by 24 hours so, we can use it in our PushShift request
-		struct tm before = sub->DatePointer;
-		before.tm_mday += 1;
-
 		// Retrieve the next batch of posts by plugging StartDate into after and StartDate incremented by 24 hours into before.
 		// I want to be more specific when I have SearchSubmissions call for these twenty four hours instead of plugging in EndDate into before because,
 		// I think It might retrieve more data
 		auto result = Vun::PushShift::SearchSubmissions(StringMap{
-		  {"after", std::to_string(mktime(&sub->DatePointer))},
-		  {"before", std::to_string(mktime(&before))},
+		  {"after", std::to_string(sub->DatePointer)},
+		  {"before", std::to_string(sub->DatePointer += 86400)},
 		  {"metadata", "true"},
 		  {"size", "500"},
 		  {"subreddit", sub->Subreddit}
@@ -38,7 +33,7 @@ namespace Scarlett::Reddit {
 		}
 
 		// Increment CurrentPointedDate by 24 hours so we can ready for the next call.
-		sub->DatePointer.tm_mday += 1;
+		sub->DatePointer += 86400;
 		log->info("Incrementing by 24 hours for next fetch");
 
 		return result.extract_json().get();

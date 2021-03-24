@@ -69,7 +69,7 @@ namespace Scarlett::Reddit
 		SubredditMetadata(const struct ScarlettOptions::POptions ops);
 
 		std::string Subreddit;
-		struct tm StartDate { 0 }, EndDate{ 0 }, DatePointer{ 0 };
+		time_t StartDate { 0 }, EndDate{ 0 }, DatePointer{ 0 };
 
 		struct RedditStatistics stats;
 
@@ -79,8 +79,8 @@ namespace Scarlett::Reddit
 		inline bool HasNext()
 		{
 			return difftime( 
-				mktime(&EndDate),
-				mktime(&DatePointer)
+				EndDate,
+				DatePointer
 				);
 		}
 
