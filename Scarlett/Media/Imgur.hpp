@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core/StringOps.hpp"
-#include "Core/exceptions.hpp"
+#include "../Core/StringOps.hpp"
+#include "../Core/exceptions.hpp"
 #include <cpprest/http_client.h>
 #include <cpprest/json.h>
 #include <cpprest/http_msg.h>
