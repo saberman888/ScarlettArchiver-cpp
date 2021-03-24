@@ -5,7 +5,6 @@
 #include <tinyxml2.h>
 #include <utility>
 #include <boost/serialization/vector.hpp>
-#include <boost/serialization/utility.hpp>
 
 
 namespace Scarlett::Reddit
@@ -88,7 +87,7 @@ namespace Scarlett::Reddit
 			using namespace boost::serialization;
 			ar& make_nvp("Link", base_object<Link>(*this));
 			ar& make_nvp("Audio", audio);
-			ar& videos;
+			ar& make_nvp("VideoInformation", videos);
 		}
 
 		/*
