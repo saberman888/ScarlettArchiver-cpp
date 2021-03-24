@@ -14,11 +14,16 @@ namespace Scarlett::Reddit {
 
 	JSON::value Subreddit::Next()
 	{
+		using namespace std::chrono_literals;
 
 		log->info("Fetching subreddit posts...");
 		// Retrieve the next batch of posts by plugging StartDate into after and StartDate incremented by 24 hours into before.
 		// I want to be more specific when I have SearchSubmissions call for these twenty four hours instead of plugging in EndDate into before because,
 		// I think It might retrieve more data
+
+		// Also measure time between the push shift request because, sometimes returns that have very few elements
+		// can cause future requests to end in a code 429.
+		auto t1 = std::chrono::system_clock::now();
 		auto result = Vun::PushShift::SearchSubmissions(StringMap{
 		  {"after", std::to_string(sub->DatePointer)},
 		  {"before", std::to_string(sub->DatePointer += 86400)},
@@ -26,6 +31,13 @@ namespace Scarlett::Reddit {
 		  {"size", "500"},
 		  {"subreddit", sub->Subreddit}
 			});
+		auto t2 = std::chrono::system_clock::now();
+		auto milliSeconds = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
+		//std::cout << "Request time spent: " << milliSeconds.count() << std::endl;
+		if (milliSeconds.count() < 670)
+		{
+			std::this_thread::sleep_for(550ms);
+		}
 
 		if (result.status_code() != 200)
 		{
