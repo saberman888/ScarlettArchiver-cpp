@@ -51,9 +51,19 @@ namespace Scarlett::Reddit {
 		template<class T>
 		void serializeData(const T& data, const std::string Tag, const std::filesystem::path filename)
 		{
-			std::ofstream out(filename.string());
-			boost::archive::xml_oarchive xoa(out);
-			xoa << boost::serialization::make_nvp(Tag.c_str(), data);
+			std::ofstream out;
+			out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
+			try {
+				out.open(filename);
+				boost::archive::xml_oarchive xoa(out);
+				xoa << boost::serialization::make_nvp(Tag.c_str(), data);
+			}
+			catch (std::system_error& e) {
+				scarlettNestedThrow(e.what());
+			}
+			catch (std::exception& e) {
+				scarlettNestedThrow(e.what());
+			}
 		}
 
 
