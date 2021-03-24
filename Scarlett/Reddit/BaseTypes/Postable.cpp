@@ -22,7 +22,8 @@ namespace Scarlett::Reddit::BaseTypes
 			CreatedUTC = static_cast<time_t>(json.at("created_utc"_u).as_integer());
 		}
 		catch (const JSON::json_exception& e) {
-			scarlettNestedThrow(e.what());
+			auto msg = e.what();
+			scarlettNestedThrow(msg);
 		}
 	}
 	bool Postable::timediff(time_t end, time_t begin)
