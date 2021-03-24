@@ -8,6 +8,8 @@
 #include <map>
 #include <utility>
 #include <cstring>
+#include <chrono>
+#include <thread>
 
 namespace Scarlett::Reddit {
 	class Subreddit : protected Logger
@@ -43,8 +45,9 @@ namespace Scarlett::Reddit {
 
 			auto tempTime = *std::gmtime(&post->CreatedUTC);
 
-			auto destination = SubStorePath /  path(formatTime(tempTime, "%Y")) / path(formatTime(tempTime, "%m"));
+			auto destination = SubStorePath /  path(formatTime(tempTime, "%Y")) / path(formatTime(tempTime, "%m")) / formatTime(tempTime, "%d");
 			std::filesystem::create_directories(destination);
+			std::cout << "Writing " << post->Id << " to " << destination.string() << std::endl;
 			serializeData(*(post.get()), tag, (destination / std::filesystem::path(post->Id + ".xml")));
 		}
 
