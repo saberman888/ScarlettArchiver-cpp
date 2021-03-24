@@ -17,7 +17,8 @@ namespace Scarlett::Reddit
 		int Videos{ 0 }, Links{ 0 }, SelfPosts{ 0 }, Galleries{ 0 };
 
 		template<class T>
-		void Update();
+		void Append();
+		void Update(const RedditStatistics& rs);
 
 		inline int Sum()
 		{
@@ -38,7 +39,7 @@ namespace Scarlett::Reddit
 	};
 
 	template<class T>
-	void RedditStatistics::Update()
+	void RedditStatistics::Append()
 	{
 		if constexpr (std::is_same<Gallery, T>::value)
 		{

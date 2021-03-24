@@ -57,30 +57,29 @@ namespace Scarlett::Reddit {
 			{
 				log->info("Found a Gallery");
 				auto potentialPost = std::make_shared<Gallery>(element);
-				tempStats.Update<Gallery>();
+				tempStats.Append<Gallery>();
 				posts.push_back(potentialPost);
 			}
 			else if (Reddit::Video::IsVideo(element)) {
 				log->info("Found a Video");
 				auto potentialPost = std::make_shared<Video>(element);
-				tempStats.Update<Video>();
+				tempStats.Append<Video>();
 			}
 			else if (Reddit::SelfPost::IsSelfPost(element)) {
 				log->info("Found a Self Post");
 				auto potentialPost = std::make_shared<SelfPost>(element);
-				tempStats.Update<SelfPost>();
+				tempStats.Append<SelfPost>();
 				posts.push_back(potentialPost);
 			}
 			else {
 				log->info("Found a Link");
 				auto potentialPost = std::make_shared<BaseTypes::Link>(element);
-				tempStats.Update<BaseTypes::Link>();
+				tempStats.Append<BaseTypes::Link>();
 				posts.push_back(potentialPost);
 			}
 		}
 		log->info("Updated stats");
-		// TODO: Implement stat updater
-		//sub->stats(tempStats);
+		sub->stats.Update(tempStats);
 	}
 	void Subreddit::WriteAll()
 	{
