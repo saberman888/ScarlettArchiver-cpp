@@ -87,6 +87,9 @@ namespace Scarlett::Reddit {
 		using namespace std::filesystem;
 		using namespace boost::serialization;
 
+		if (!exists(SubStorePath))
+			create_directories(SubStorePath);
+
 		serializeData(*sub.get(), "metadata", (SubStorePath / "metadata.xml"));
 
 		for (std::vector<std::shared_ptr<BaseTypes::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
@@ -111,8 +114,8 @@ namespace Scarlett::Reddit {
 				auto selfpost = std::dynamic_pointer_cast<SelfPost>(*it);
 				WritePost(selfpost, "SelfPost");
 			}
-			posts.clear();
-			posts.shrink_to_fit();
 		}
+		posts.clear();
+		posts.shrink_to_fit();
 	}
 }
