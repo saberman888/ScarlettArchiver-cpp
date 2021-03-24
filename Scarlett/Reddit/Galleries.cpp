@@ -24,7 +24,8 @@ namespace Scarlett::Reddit
 					Images.push_back(imageURL);
 				}
 				catch (JSON::json_exception& e) {
-					scarlettNestedThrow("Failed to parse JSON for Gallery, " + std::string(e.what()));
+					std::string msg = "Failed to parse JSON for Gallery, " + std::string(e.what());
+					scarlettNestedThrow(msg);
 				}
 			}
 		}

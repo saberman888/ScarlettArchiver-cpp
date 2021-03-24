@@ -56,7 +56,8 @@ namespace Scarlett::Reddit
 				replies.push_back(std::move(tempComment));
 			}
 			catch (JSON::json_exception& e) {
-				scarlettNestedThrow("Failed to parse comment JSON from CommentListing, " + ParentId.value() + ", " + std::string(e.what()));
+				auto msg = "Failed to parse comment JSON from CommentListing, " + ParentId.value() + ", " + std::string(e.what());
+				scarlettNestedThrow(msg);
 			}
 		}
 	}
