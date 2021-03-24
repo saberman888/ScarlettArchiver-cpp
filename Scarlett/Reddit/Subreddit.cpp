@@ -1,4 +1,4 @@
-#include "Reddit/Subreddit.hpp"
+#include "Subreddit.hpp"
 #include <iostream>
 
 namespace Scarlett::Reddit {
@@ -96,7 +96,7 @@ namespace Scarlett::Reddit {
 			{
 				auto vid = std::dynamic_pointer_cast<Video>(*it);
 				WritePost(vid, "Video");
-			
+
 			}
 			else if (std::dynamic_pointer_cast<BaseTypes::Link>(*it)) {
 				auto link = std::dynamic_pointer_cast<BaseTypes::Link>(*it);
@@ -110,13 +110,9 @@ namespace Scarlett::Reddit {
 			else if (std::dynamic_pointer_cast<SelfPost>(*it)) {
 				auto selfpost = std::dynamic_pointer_cast<SelfPost>(*it);
 				WritePost(selfpost, "SelfPost");
-			} else {
-				WritePost(
-					*it,
-					"Linkable"
-				);
 			}
-		posts.clear();
-		posts.shrink_to_fit();
+			posts.clear();
+			posts.shrink_to_fit();
+		}
 	}
 }

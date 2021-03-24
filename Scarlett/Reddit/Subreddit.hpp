@@ -40,13 +40,12 @@ namespace Scarlett::Reddit {
 		void WritePost(std::shared_ptr<T> post, const std::string tag)
 		{
 			using namespace std::filesystem;
-			static_assert((std::is_base_of<Reddit::BaseTypes::Linkable, T>::value || std::is_base_of<Reddit::BaseTypes::Link, T>::value), "post does not derive from Reddit::Linkable");
 
-			auto tempTime = std::gmtime(post->CreatedUTC);
+			auto tempTime = *std::gmtime(&post->CreatedUTC);
 
-			auto destination = SubStorePath /  path(std::to_string(tempTime->tm_year)) / path(std::to_string(tempTime->tm_mon));
+			auto destination = SubStorePath /  path(std::to_string(tempTime.tm_year)) / path(std::to_string(tempTime.tm_mon));
 			std::filesystem::create_directories(destination);
-			serializeData(post, tag, std::filesystem::path(post->Id + ".xml"));
+			serializeData(*(post.get()), tag, std::filesystem::path(post->Id + ".xml"));
 		}
 
 		template<class T>
