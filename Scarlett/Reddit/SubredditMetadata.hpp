@@ -3,9 +3,7 @@
 #include <iosfwd>
 #include <optional>
 #include <regex>
-#include "Core/Misc.hpp"
-#include "Core/ParseOptions.hpp"
-#include "Core/Logger.hpp"
+#include "../Core/ParseOptions.hpp"
 #include "Video.hpp"
 #include "SelfPost.hpp"
 #include "Galleries.hpp"
@@ -89,6 +87,7 @@ namespace Scarlett::Reddit
 	private:
 		SubredditMetadata() = default;
 
+		friend boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
 		{
