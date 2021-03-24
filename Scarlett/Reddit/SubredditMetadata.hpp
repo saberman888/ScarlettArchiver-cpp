@@ -78,10 +78,7 @@ namespace Scarlett::Reddit
 		*/
 		inline bool HasNext()
 		{
-			return difftime( 
-				EndDate,
-				DatePointer
-				);
+			return !((EndDate - DatePointer) <= 0);
 		}
 
 
