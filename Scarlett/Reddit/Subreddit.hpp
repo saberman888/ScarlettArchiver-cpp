@@ -43,9 +43,9 @@ namespace Scarlett::Reddit {
 
 			auto tempTime = *std::gmtime(&post->CreatedUTC);
 
-			auto destination = SubStorePath /  path(std::to_string(tempTime.tm_year)) / path(std::to_string(tempTime.tm_mon));
+			auto destination = SubStorePath /  path(formatTime(tempTime, "%Y")) / path(formatTime(tempTime, "%m"));
 			std::filesystem::create_directories(destination);
-			serializeData(*(post.get()), tag, std::filesystem::path(post->Id + ".xml"));
+			serializeData(*(post.get()), tag, (destination / std::filesystem::path(post->Id + ".xml")));
 		}
 
 		template<class T>

@@ -21,6 +21,8 @@ namespace Scarlett
 	*/
 	char* strptime(const char* s, const char* f, struct tm* tm);
 
+	std::string formatTime(tm& _time, std::string format);
+
 	web::http::http_response Download(const std::string URL);
 
 	void Write(const JSON::value& src, const std::filesystem::path dest, const std::string filename);

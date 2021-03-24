@@ -11,6 +11,13 @@ namespace Scarlett
 		}
 		return (char*)(s + input.tellg());
 	}
+
+	std::string formatTime(tm& _time, std::string format)
+	{
+		std::stringstream ss;
+		ss << std::put_time(&_time, format.c_str());
+		return ss.str();
+	}
 	
 	web::http::http_response Download(const std::string URL)
 	{
