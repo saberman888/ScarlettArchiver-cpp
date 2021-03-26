@@ -64,7 +64,7 @@ namespace Scarlett::Reddit {
 		}
 
 		void Read(const JSON::value& source);
-		void WriteAll();
+		void WriteAll(bool clear = true);
 
 		template<class T>
 		void WritePost(std::shared_ptr<T> post, const std::string tag)

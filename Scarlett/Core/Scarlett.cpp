@@ -18,11 +18,10 @@ namespace Scarlett
 				auto NextIteration = sub->Next();
 				sub->Read(NextIteration);
 
-				if (sub->posts.size() >= 300 || !sub->HasNext()) {
+				if (sub->posts.size() >= 1000 || !sub->HasNext()) {
 					log->info("300 posts reached. Writing them all");
 					sub->WriteAll();
 				}
-
 
 			}
 			catch (std::exception& e) {
