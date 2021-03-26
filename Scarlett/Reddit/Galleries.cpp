@@ -44,7 +44,7 @@ namespace Scarlett::Reddit
 	bool Gallery::IsGallery(const JSON::value& json)
 	{
 		if ((json.has_boolean_field("is_gallery"_u) && json.at("is_gallery"_u).as_bool() && json.has_field("gallery_data"_u)) ||
-			(u8(json.at("url"_u).as_string()).find("imgur.com/a/") != std::string::npos ))
+			(Media::ImgurAccess::IsAlbum(u8(json.at("url"_u).as_string()))))
 			return true;
 		return false;
 	}
