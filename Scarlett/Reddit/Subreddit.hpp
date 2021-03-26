@@ -35,6 +35,34 @@ namespace Scarlett::Reddit {
 			return sub->HasNext();
 		}
 
+		template<class T>
+		void Add(std::shared_ptr<T> Post)
+		{
+			static_assert(
+				std::is_base_of<BaseTypes::Linkable, T>::value &&
+				std::is_base_of<BaseTypes::Postable, T>::value
+				);
+
+			if (posts.size() > 0)
+			{
+				for (decltype(posts)::iterator it = posts.begin(); it != posts.end(); it++)
+				{
+					// internal creation date
+					auto icd = std::dynamic_pointer_cast<BaseTypes::Postable>(*it);
+
+					if (Post->CreatedUTC > icd->CreatedUTC)
+					{
+						posts.emplace(it, Post);
+						return;
+					}
+				}
+				posts.push_back(Post);
+			}
+			else {
+				posts.push_back(Post);
+			}
+		}
+
 		void Read(const JSON::value& source);
 		void WriteAll();
 

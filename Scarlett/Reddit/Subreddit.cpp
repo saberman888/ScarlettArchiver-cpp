@@ -66,7 +66,7 @@ namespace Scarlett::Reddit {
 				log->info("Found a Gallery");
 				auto potentialPost = std::make_shared<Gallery>(element);
 				tempStats.Append<Gallery>();
-				posts.push_back(potentialPost);
+				Add(potentialPost);
 			}
 			else if (Reddit::Video::IsVideo(element)) {
 				log->info("Found a Video");
@@ -77,13 +77,13 @@ namespace Scarlett::Reddit {
 				log->info("Found a Self Post");
 				auto potentialPost = std::make_shared<SelfPost>(element);
 				tempStats.Append<SelfPost>();
-				posts.push_back(potentialPost);
+				Add(potentialPost);
 			}
 			else {
 				log->info("Found a Link");
 				auto potentialPost = std::make_shared<BaseTypes::Link>(element);
 				tempStats.Append<BaseTypes::Link>();
-				posts.push_back(potentialPost);
+				Add(potentialPost);
 			}
 		}
 		log->info("Updated stats");
