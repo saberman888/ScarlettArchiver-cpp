@@ -89,7 +89,7 @@ namespace Scarlett::Reddit {
 		log->info("Updated stats");
 		sub->stats.Update(tempStats);
 	}
-	void Subreddit::WriteAll()
+	void Subreddit::WriteAll(bool clear)
 	{
 		using namespace std::filesystem;
 		using namespace boost::serialization;
@@ -122,7 +122,9 @@ namespace Scarlett::Reddit {
 				WritePost(selfpost, "SelfPost");
 			}
 		}
-		posts.clear();
-		posts.shrink_to_fit();
+		if (clear) {
+			posts.clear();
+			posts.shrink_to_fit();
+		}
 	}
 }
