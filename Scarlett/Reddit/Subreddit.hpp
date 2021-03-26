@@ -67,6 +67,40 @@ namespace Scarlett::Reddit {
 		void WriteAll(bool clear = true);
 
 		template<class T>
+		void WriteMedia(const std::shared_ptr<T> post)
+		{
+			using namespace std::filesystem;
+
+			static_assert(
+				std::is_same<Gallery, T>::value || std::is_same<BaseTypes::Link, T>::value
+				);
+
+			if (!exists(SubStorePath / "media"))
+				create_directories(SubStorePath / "media");
+			const auto mediaPath = SubStorePath / "media";
+
+			if constexpr (std::is_same<Gallery, T>::value)
+			{
+				if (!exists(mediaPath / post->Id))
+					create_directories(mediaPath / post->Id);
+				const auto galPath = mediaPath / post->Id;
+				for (std::vector<std::string>::const_iterator it = post->GetImages().begin(); it != post->GetImages().end(); it++)
+				{
+					auto downloadResult = Download(*it).extract_utf8string();
+					std::ofstream out(mediaPath / path(post->Id + ".png"));
+					out << downloadResult.get();
+				}
+			}
+			else if constexpr (std::is_same<BaseTypes::Link, T>::value)
+			{
+				auto dlImage = Download(post->URL).extract_utf8string();
+
+				std::ofstream out(mediaPath / path(post->Id + ".png"));
+				out << dlImage.get();
+			}
+		}
+
+		template<class T>
 		void WritePost(std::shared_ptr<T> post, const std::string tag)
 		{
 			using namespace std::filesystem;

@@ -111,11 +111,14 @@ namespace Scarlett::Reddit {
 			else if (std::dynamic_pointer_cast<BaseTypes::Link>(*it)) {
 				auto link = std::dynamic_pointer_cast<BaseTypes::Link>(*it);
 				WritePost(link, "Link");
+				if (link->Hint.value_or("null") == "image")
+					WriteMedia(link);
 			}
 			else if (std::dynamic_pointer_cast<Gallery>(*it))
 			{
 				auto gallery = std::dynamic_pointer_cast<Gallery>(*it);
 				WritePost(gallery, "Gallery");
+				WriteMedia(gallery);
 			}
 			else if (std::dynamic_pointer_cast<SelfPost>(*it)) {
 				auto selfpost = std::dynamic_pointer_cast<SelfPost>(*it);
