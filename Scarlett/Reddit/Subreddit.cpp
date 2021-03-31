@@ -101,24 +101,26 @@ namespace Scarlett::Reddit {
 
 		for (std::vector<std::shared_ptr<BaseTypes::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
 		{
+			if (std::dynamic_pointer_cast<BaseTypes::Link>(*it)) {
 
-			if (std::dynamic_pointer_cast<Video>(*it))
-			{
-				auto vid = std::dynamic_pointer_cast<Video>(*it);
-				WritePost(vid, "Video");
+				if(std::dynamic_pointer_cast<Gallery>(*it))
+				{ 
+					auto gal = std::dynamic_pointer_cast<Gallery>(*it);
+					WritePost(gal, "Gallery");
+					WriteMedia(gal);
+				} else if (std::dynamic_pointer_cast<Video>(*it))
+				{
+					auto vid = std::dynamic_pointer_cast<Video>(*it);
+					WritePost(vid, "Video");
+					WriteMedia(vid);
+				}
+				else {
+					auto link = std::dynamic_pointer_cast<BaseTypes::Link>(*it);
+					WritePost(link , "Link");
+					if (link->Hint.value_or("null") == "image")
+						WriteMedia(link);
+				}
 
-			}
-			else if (std::dynamic_pointer_cast<BaseTypes::Link>(*it)) {
-				auto link = std::dynamic_pointer_cast<BaseTypes::Link>(*it);
-				WritePost(link, "Link");
-				if (link->Hint.value_or("null") == "image")
-					WriteMedia(link);
-			}
-			else if (std::dynamic_pointer_cast<Gallery>(*it))
-			{
-				auto gallery = std::dynamic_pointer_cast<Gallery>(*it);
-				WritePost(gallery, "Gallery");
-				WriteMedia(gallery);
 			}
 			else if (std::dynamic_pointer_cast<SelfPost>(*it)) {
 				auto selfpost = std::dynamic_pointer_cast<SelfPost>(*it);

@@ -71,9 +71,9 @@ namespace Scarlett::Reddit {
 		{
 			using namespace std::filesystem;
 
-			static_assert(
-				std::is_same<Gallery, T>::value || std::is_same<BaseTypes::Link, T>::value
-				);
+			/*static_assert(
+				std::is_base_of<T, BaseTypes::Link>::value || std::is_same<T, BaseTypes::Link>::value
+				);*/
 
 			if (!exists(SubStorePath / "media"))
 				create_directories(SubStorePath / "media");
@@ -84,7 +84,8 @@ namespace Scarlett::Reddit {
 				if (!exists(mediaPath / post->Id))
 					create_directories(mediaPath / post->Id);
 				const auto galPath = mediaPath / post->Id;
-				for (std::vector<std::string>::const_iterator it = post->GetImages().begin(); it != post->GetImages().end(); it++)
+				auto images = post->GetImages();
+				for (std::vector<std::string>::const_iterator it = images.begin(); it != images.end(); it++)
 				{
 					auto downloadResult = Download(*it).extract_utf8string();
 					std::ofstream out(mediaPath / path(post->Id + ".png"));
