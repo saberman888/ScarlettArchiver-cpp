@@ -1,4 +1,5 @@
 #include "Content.hpp"
+BOOST_CLASS_EXPORT_GUID(Scarlett::Media::Content, "ContentInfo");
 
 Scarlett::Media::Content::Content(const std::string& URL)
 {
@@ -50,5 +51,5 @@ std::string Scarlett::Media::Content::ContentType()
 
 Scarlett::Size Scarlett::Media::Content::ContentSize()
 {
-	return _ContentSize;
+	return _ContentSize.get_value_or(0);
 }

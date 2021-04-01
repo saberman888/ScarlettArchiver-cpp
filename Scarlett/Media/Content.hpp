@@ -1,5 +1,10 @@
 #pragma once
 
+#include <boost/optional.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/optional.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/export.hpp>
 #include <cpprest/http_client.h>
 #include <cpprest/base_uri.h>
 #include <cstddef>
@@ -54,9 +59,21 @@ namespace Scarlett {
 
 
 		private:
+
+			friend class boost::serialization::access;
+			template<class Archive>
+			void serialize(Archive& ar, const unsigned int version)
+			{
+				using boost::serialization;
+				ar& make_nvp(_ContentType, "ContentInfo");
+				ar& make_nvp(_ContentSize, "ContentSize");
+				ar& make_nvp(u8(URL.to_string()), "URL");
+			}
+
+
 			std::optional<web::http::http_response> Response{ std::nullopt };
 			std::vector<std::string> _ContentType;
-			Size _ContentSize{ 0 };
+			boost::optional<Size> _ContentSize{ 0 };
 			ScarlettURL URL;
 		};
 	}
