@@ -87,9 +87,11 @@ namespace Scarlett::Reddit {
 				auto images = post->GetImages();
 				for (std::vector<std::string>::const_iterator it = images.begin(); it != images.end(); it++)
 				{
-					auto downloadResult = Download(*it).extract_utf8string();
-					std::ofstream out(mediaPath / path(post->Id + ".png"));
-					out << downloadResult.get();
+					auto downloadResult = Download(*it);
+					auto file = downloadResult.extract_utf8string(true).get();
+
+					std::ofstream out(galPath.string());
+					out << file;
 				}
 			}
 			else if constexpr (std::is_same<BaseTypes::Link, T>::value)
