@@ -64,10 +64,11 @@ namespace Scarlett {
 			template<class Archive>
 			void serialize(Archive& ar, const unsigned int version)
 			{
-				using boost::serialization;
-				ar& make_nvp(_ContentType, "ContentInfo");
-				ar& make_nvp(_ContentSize, "ContentSize");
-				ar& make_nvp(u8(URL.to_string()), "URL");
+				using namespace boost::serialization;
+				ar& make_nvp("ContentInfo", _ContentType);
+				ar& make_nvp("ContentSize", _ContentSize);
+				auto url = u8(URL.to_string());
+				ar& make_nvp("URL", url);
 			}
 
 
