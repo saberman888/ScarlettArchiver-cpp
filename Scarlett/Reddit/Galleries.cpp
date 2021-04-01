@@ -6,6 +6,15 @@ namespace Scarlett::Reddit
 {
 	Gallery::Gallery(const JSON::value& json, const std::optional<std::string> ImgurClientId) : Link(json, ImgurClientId)	{
 		Read(json);	
+
+		// Since we have all the data, resolve the album if it is an imgur one
+		if (Media::ImgurAccess::IsImgurLink(URL) && ImgurClientId)
+		{
+			for (auto& urls : Media::ImgurAccess::GetAlbum(URL, ImgurClientId.value()))
+			{
+				Images.push_back(urls);
+			}
+		}
 	}
 
 	void Gallery::Read(const JSON::value& json)
@@ -21,7 +30,7 @@ namespace Scarlett::Reddit
 						u8(mediaMetadata.at("m"_u).as_string()), 
 						'/')[1];
 					std::string imageURL = "https://i.redd.it/" + conv::to_utf8string(mediaId) + "." + imageExtension;
-					Images.push_back(imageURL);
+					Images.push_back(Media::Content(imageURL));
 				}
 				catch (JSON::json_exception& e) {
 					std::string msg = "Failed to parse JSON for Gallery, " + std::string(e.what());
@@ -31,16 +40,6 @@ namespace Scarlett::Reddit
 		}
 	}
 
-	const std::vector<std::string> Gallery::GetImages()
-	{
-        if (!ImgurClientId)
-		{
-			return Images;
-		}
-		else {
-			return Media::ImgurAccess::ResolveAlbumURLs(URL, ImgurClientId.value());
-		}
-	}
 	bool Gallery::IsGallery(const JSON::value& json)
 	{
 		if ((json.has_boolean_field("is_gallery"_u) && json.at("is_gallery"_u).as_bool() && json.has_field("gallery_data"_u)) ||

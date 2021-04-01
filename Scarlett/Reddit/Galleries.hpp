@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseTypes/Link.hpp"
+#include "../Media/Content.hpp"
 #include <boost/serialization/vector.hpp>
 
 namespace Scarlett::Reddit
@@ -10,13 +11,15 @@ namespace Scarlett::Reddit
 	*/
 	class Gallery : public BaseTypes::Link	{
 	public:
-		// Initializes and then passes a json string into Read(const std::string& json)
+		// Reads the provided json into Gallery, and if the gallery/album is an Imgur album, it retrieves the images.
 		Gallery(const JSON::value& json, const std::optional<std::string> ImgurClientId = std::nullopt);
 		/**
-		 This simply returns a vector full of Image URLs if its not an Imgur URL.
-		 If this is an Imgur album, it runs through the Imgur API and gets the URLs directly and returns a vector full of them.
+		 This simply returns a vector full of Image URLs.
 		*/
-		const std::vector<std::string> GetImages();
+		inline const std::vector<Media::Content> GetImages()
+		{
+			return Images;
+		}
 		static bool IsGallery(const JSON::value& json); 
 
 		bool operator==(Gallery& other);
@@ -28,7 +31,7 @@ namespace Scarlett::Reddit
 		*/
 		void Read(const JSON::value& json);
 		// Where all the images will be stored
-		std::vector<std::string> Images;
+		std::vector<Media::Content> Images;
 		
 		Gallery(){}
 		friend class boost::serialization::access;
