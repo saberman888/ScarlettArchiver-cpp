@@ -27,7 +27,8 @@ namespace Scarlett::Media::ImgurAccess
 			}
 		}
 		catch (JSON::json_exception& e) {
-			scarlettNestedThrow("Failed to parse JSON from Imgur Link, " + std::string(e.what()));
+			auto msg = "Failed to parse JSON from Imgur Link, " + std::string(e.what());
+			scarlettNestedThrow(msg);
 		}
 		return link;
 	}
@@ -46,7 +47,8 @@ namespace Scarlett::Media::ImgurAccess
 			}
 		}
 		catch (JSON::json_exception& e) {
-			scarlettNestedThrow("Failed to parse JSON from Imgur Link, " + std::string(e.what()));
+			auto msg = "Failed to parse JSON from Imgur Link, " + std::string(e.what());
+			scarlettNestedThrow(msg);
 		}
 		return URLs;
 	}
@@ -61,37 +63,27 @@ namespace Scarlett::Media::ImgurAccess
 			return link;
 		}
 		else {
-			scarlettThrow("Failed to get Imgur image link from API: " + ImageHash);
+			auto msg = "Failed to get Imgur image link from API: " + ImageHash;
+			scarlettThrow(msg);
 		}
 		return std::string();
 	}
 
-	std::vector<std::string> GetAlbum(std::string Album, std::string ClientId)
+	std::vector<std::string> GetAlbum(std::string URL, std::string ClientId)
 	{
-		std::string endpoint = "/3/album/" + GetHash(Album) + "/images";
-		std::vector<std::string> Images;
-		auto result = ImgurGet(endpoint, ClientId);
-		if (result.status_code() == 200)
-		{
-			auto links = ParseAlbum(result.extract_json().get());
-			return links;
-		}
-		else {
-			scarlettThrow("Failed to get Imgur album data from API: " + Album);
-		}
-		return std::vector<std::string>();
-	}
 
-	std::vector<std::string> ResolveAlbumURLs(std::string URL, std::string ClientId)
-	{
-		std::vector<std::string> Images;
-		if (IsImgurLink(URL) && !IsDirect(URL))
+		if (IsAlbum(URL))
 		{
-			if (IsAlbum(URL))
+			auto result = ImgurGet("/3/album/" + GetHash(URL) + "/images", ClientId);
+			if (result.status_code() == 200)
 			{
-				Images = ImgurAccess::GetAlbum(URL, ClientId);
+				return ParseAlbum(result.extract_json().get());
+			}
+			else {
+				std::string msg = "Failed to get Imgur album data from API: " + URL;
+				scarlettThrow(msg);
 			}
 		}
-		return Images;
+		return std::vector<std::string>();
 	}
 }
