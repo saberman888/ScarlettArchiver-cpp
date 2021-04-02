@@ -25,6 +25,7 @@ namespace Scarlett {
 		class Content
 		{
 		public:
+			Content(){}
 			Content(const std::string& URL);
 			Content(const ScarlettURL URL)
 			{
