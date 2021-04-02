@@ -68,7 +68,7 @@ namespace Scarlett::Reddit
 		bool operator!=(Video& other);
 
 	private:
-		Video() = default;
+		Video() {};
 
 		/*
 		* Using the information from PushShift, Fetch() downloads the dash manifest or dash file, and 
