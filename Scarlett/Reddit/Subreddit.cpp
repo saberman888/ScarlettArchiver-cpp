@@ -117,8 +117,7 @@ namespace Scarlett::Reddit {
 				else {
 					auto link = std::dynamic_pointer_cast<BaseTypes::Link>(*it);
 					WritePost(link , "Link");
-					if (link->Hint.value_or("null") == "image")
-						WriteMedia(link);
+					WriteMedia(link);
 				}
 
 			}
