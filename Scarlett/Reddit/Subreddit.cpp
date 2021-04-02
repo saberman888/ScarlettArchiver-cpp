@@ -8,7 +8,7 @@ namespace Scarlett::Reddit {
 		sub = std::make_unique<SubredditMetadata>(cmdOptions);
 		log->info(sub->Subreddit + " has been instantiated.");
 
-		SubStorePath = std::filesystem::path("subreddits") / sub->Subreddit;
+		SubStorePath = std::filesystem::current_path() / "subreddits" / sub->Subreddit;
 		log->info("Storing at " + SubStorePath.string());
 	}
 

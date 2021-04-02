@@ -73,19 +73,15 @@ namespace Scarlett::Reddit {
 		{
 			using namespace std::filesystem;
 
-			/*static_assert(
-				std::is_base_of<T, BaseTypes::Link>::value || std::is_same<T, BaseTypes::Link>::value
-				);*/
-
-			if (!exists(SubStorePath / "media"))
-				create_directories(SubStorePath / "media");
 			const auto mediaPath = SubStorePath / "media";
+			create_directories(mediaPath);
+			
 
 			if constexpr (std::is_same<Gallery, T>::value)
 			{
-				if (!exists(mediaPath / post->Id))
-					create_directories(mediaPath / post->Id);
-				const auto galPath = mediaPath / post->Id;
+				const std::filesystem::path galPath = mediaPath / post->Id;
+				std::filesystem::create_directories(galPath);
+				
 				std::vector<Media::Content> images = post->GetImages();
 
 				for (auto i = 0; i < images.size()-1; i++)
@@ -97,8 +93,8 @@ namespace Scarlett::Reddit {
 						scarlettThrow(msg);
 					}
 					else {
-						auto filename = post->Id + std::to_string(i) + "." + c.Extension();
-						std::ofstream out(galPath / filename);
+						auto filename = galPath / (post->Id + "_" + std::to_string(i) + "." + c.Extension());
+						std::ofstream out(filename.string(), std::ios::binary | std::ios::out);
 						out << c.GetStringContent();
 					}
 				}
@@ -113,8 +109,8 @@ namespace Scarlett::Reddit {
 				}
 
 				if (post->URL.ContentType() == "image") {
-					auto filename = mediaPath / post->Id / path(post->Id + "." + post->URL.Extension());
-					std::ofstream out(filename);
+					auto filename = mediaPath / path(post->Id + "." + post->URL.Extension());
+					std::ofstream out(filename.string(), std::ios::binary | std::ios::out);
 					out << post->URL.GetStringContent();
 				}
 			}
