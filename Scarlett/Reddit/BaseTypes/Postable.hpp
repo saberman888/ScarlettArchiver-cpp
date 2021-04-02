@@ -17,7 +17,7 @@ namespace Scarlett::Reddit::BaseTypes
 	class Postable
 	{
 	public:
-		Postable() = default;
+		Postable() {};
 		time_t CreatedUTC{ 0L };
 		std::string Author;
 		std::string Id;

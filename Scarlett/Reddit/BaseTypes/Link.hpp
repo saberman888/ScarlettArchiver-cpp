@@ -13,7 +13,7 @@ namespace Scarlett::Reddit::BaseTypes
 	class Link : public Linkable, public Postable, protected Logger
 	{
 	public:
-		Link(){}
+		Link() = default;
 		Link(const JSON::value& json, const std::optional<std::string> ImgurClientId = std::nullopt);
 
 		/**

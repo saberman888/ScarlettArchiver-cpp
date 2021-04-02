@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../../Core/exceptions.hpp"
-#include "../../Core/StringOps.hpp"
+#include "../../Media/Content.hpp"
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/nvp.hpp>
 
@@ -15,12 +14,12 @@ namespace Scarlett::Reddit::BaseTypes
 	class Linkable
 	{
 	public:
-		Linkable() = default;
+		Linkable() {};
 		std::string Domain;
 		std::string Title;
-		std::string URL;
-		virtual bool operator==(const Linkable& other);
-		virtual bool operator!=(const Linkable& other); 
+		Media::Content URL;
+		virtual bool operator==(Linkable& other);
+		virtual bool operator!=(Linkable& other); 
 		void Read(const JSON::value& json);
 
 	private:
