@@ -8,9 +8,9 @@ namespace Scarlett::Reddit
 		Read(json);	
 
 		// Since we have all the data, resolve the album if it is an imgur one
-		if (Media::ImgurAccess::IsImgurLink(URL) && ImgurClientId)
+		if (Media::ImgurAccess::IsImgurLink(URL.GetURL()) && ImgurClientId)
 		{
-			for (auto& urls : Media::ImgurAccess::GetAlbum(URL, ImgurClientId.value()))
+			for (auto& urls : Media::ImgurAccess::GetAlbum(URL.GetURL(), ImgurClientId.value()))
 			{
 				Images.push_back(urls);
 			}
