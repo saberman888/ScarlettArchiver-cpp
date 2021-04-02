@@ -5,11 +5,13 @@
 #include "SelfPost.hpp"
 #include "Galleries.hpp"
 #include "SubredditMetadata.hpp"
+#include "../Media/Content.hpp"
 #include <map>
 #include <utility>
 #include <cstring>
 #include <chrono>
 #include <thread>
+#include <algorithm>
 
 namespace Scarlett::Reddit {
 	class Subreddit : protected Logger
@@ -84,22 +86,37 @@ namespace Scarlett::Reddit {
 				if (!exists(mediaPath / post->Id))
 					create_directories(mediaPath / post->Id);
 				const auto galPath = mediaPath / post->Id;
-				auto images = post->GetImages();
-				for (std::vector<std::string>::const_iterator it = images.begin(); it != images.end(); it++)
-				{
-					auto downloadResult = Download(*it);
-					auto file = downloadResult.extract_utf8string(true).get();
+				std::vector<Media::Content> images = post->GetImages();
 
-					std::ofstream out(galPath.string());
-					out << file;
+				for (auto i = 0; i < images.size()-1; i++)
+				{
+					Media::Content& c = images[i];
+					if (c.FetchContent() != 200)
+					{
+						const std::string msg = "Failed to download Gallery image: " + c.GetURL();
+						scarlettThrow(msg);
+					}
+					else {
+						auto filename = post->Id + std::to_string(i) + "." + c.Extension();
+						std::ofstream out(galPath / filename);
+						out << c.GetStringContent();
+					}
 				}
 			}
 			else if constexpr (std::is_same<BaseTypes::Link, T>::value)
 			{
-				auto dlImage = Download(post->URL).extract_utf8string();
+				auto sc = post->URL.FetchContent();
+				if (sc != 200)
+				{
+					auto msg = "Failed to download content from Link, " + post->URL.GetURL();
+					scarlettThrow(msg);
+				}
 
-				std::ofstream out(mediaPath / path(post->Id + ".png"));
-				out << dlImage.get();
+				if (post->URL.ContentType() == "image") {
+					auto filename = mediaPath / post->Id / path(post->Id + "." + post->URL.Extension());
+					std::ofstream out(filename);
+					out << post->URL.GetStringContent();
+				}
 			}
 		}
 
