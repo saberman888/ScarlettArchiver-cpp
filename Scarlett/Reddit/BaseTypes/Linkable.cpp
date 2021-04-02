@@ -3,13 +3,13 @@ BOOST_SERIALIZATION_ASSUME_ABSTRACT(Scarlett::Reddit::BaseTypes::Linkable);
 
 namespace Scarlett::Reddit::BaseTypes
 {
-	bool Linkable::operator==(const Linkable& other)
+	bool Linkable::operator==(Linkable& other)
 	{
-		return ((Domain == other.Domain) && (Title == other.Title) && (URL == other.URL));
+		return ((Domain == other.Domain) && (Title == other.Title) && (URL.GetURL() == other.URL.GetURL()));
 	}
-	bool Linkable::operator!=(const Linkable& other)
+	bool Linkable::operator!=(Linkable& other)
 	{
-		return ((Domain != other.Domain) && (Title != other.Title) && (URL != other.URL));
+		return ((Domain != other.Domain) && (Title != other.Title) && (URL.GetURL() != other.URL.GetURL()));
 	}
 	void Linkable::Read(const JSON::value& json)
 	{
