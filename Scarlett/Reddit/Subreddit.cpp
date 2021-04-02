@@ -54,7 +54,6 @@ namespace Scarlett::Reddit {
 
 
 	void Subreddit::Read(const JSON::value& source) {
-		struct RedditStatistics tempStats;
 		for (auto element : source.at("data"_u).as_array())
 		{
 			log->info("Reading Point: " + u8(element.at("id"_u).as_string()));
@@ -65,29 +64,24 @@ namespace Scarlett::Reddit {
 			{
 				log->info("Found a Gallery");
 				auto potentialPost = std::make_shared<Gallery>(element);
-				tempStats.Append<Gallery>();
 				Add(potentialPost);
 			}
 			else if (Reddit::Video::IsVideo(element)) {
 				log->info("Found a Video");
 				auto potentialPost = std::make_shared<Video>(element);
-				tempStats.Append<Video>();
+				Add(potentialPost);
 			}
 			else if (Reddit::SelfPost::IsSelfPost(element)) {
 				log->info("Found a Self Post");
 				auto potentialPost = std::make_shared<SelfPost>(element);
-				tempStats.Append<SelfPost>();
 				Add(potentialPost);
 			}
 			else {
 				log->info("Found a Link");
 				auto potentialPost = std::make_shared<BaseTypes::Link>(element);
-				tempStats.Append<BaseTypes::Link>();
 				Add(potentialPost);
 			}
 		}
-		log->info("Updated stats");
-		sub->stats.Update(tempStats);
 	}
 	void Subreddit::WriteAll(bool clear)
 	{

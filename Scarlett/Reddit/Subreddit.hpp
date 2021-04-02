@@ -45,6 +45,8 @@ namespace Scarlett::Reddit {
 				std::is_base_of<BaseTypes::Postable, T>::value
 				);
 
+			sub->stats.Append<T>();
+
 			if (posts.size() > 0)
 			{
 				for (decltype(posts)::iterator it = posts.begin(); it != posts.end(); it++)
