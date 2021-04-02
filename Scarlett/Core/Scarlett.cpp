@@ -19,7 +19,7 @@ namespace Scarlett
 				sub->Read(NextIteration);
 
 				if (sub->posts.size() >= 275|| !sub->HasNext()) {
-					log->info("300 posts reached. Writing them all");
+					log->info("275 posts reached. Writing them all");
 					sub->WriteAll();
 				}
 
