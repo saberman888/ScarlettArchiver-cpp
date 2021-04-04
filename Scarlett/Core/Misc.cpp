@@ -24,18 +24,4 @@ namespace Scarlett
 		web::http::client::http_client client(conv::to_string_t(URL));
 		return client.request(web::http::methods::GET).get();
 	}
-
-	void Write(const JSON::value& src, const std::filesystem::path dest, const std::string filename)
-	{
-		// TODO: Reimplement with cpprestsdk json
-		/*std::filesystem::create_directories(dest);
-		std::ofstream out(dest.string() + "/" + filename, std::ios::out);
-		out << src;*/
-	}	
-	
-	void Write(const std::string& buff, std::string filename)
-	{
-		std::ofstream out(filename, std::ios::out);
-		out << buff;
-	}
 }

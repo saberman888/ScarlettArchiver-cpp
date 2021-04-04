@@ -25,7 +25,4 @@ namespace Scarlett
 
 	web::http::http_response Download(const std::string URL);
 
-	void Write(const JSON::value& src, const std::filesystem::path dest, const std::string filename);
-	void Write(const std::string& buff, std::string filename);
-
 }

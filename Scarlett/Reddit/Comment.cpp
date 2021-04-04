@@ -33,10 +33,8 @@ namespace Scarlett::Reddit
 
 	void Comment::Read(const JSON::value& json)
 	{
-		Scarlett::Write(json, std::filesystem::path("logs"), "elem.json");
 		for (auto elem : json.at("data"_u).at("children"_u).as_array())
 		{
-			Scarlett::Write(elem.at("data"_u), "logs", "innerelement.json");
 			try {
 
 				auto com = elem.at("data"_u);
