@@ -24,6 +24,7 @@ namespace Scarlett::Reddit
 
 		bool operator==(Gallery& other);
 		bool operator!=(Gallery& other);
+		std::string GetContent() = delete;
 	private:
 		/**
 		 Reads Json data into Gallery. If it's a Reddit album then, it reads the provided json. If it's an Imgur album, it justs calls RedditCommon::Read only; 

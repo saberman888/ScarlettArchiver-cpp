@@ -66,6 +66,7 @@ namespace Scarlett::Reddit
 
 		bool operator==(Video& other);
 		bool operator!=(Video& other);
+		std::string GetContent() = delete;
 
 	private:
 		Video() {};
