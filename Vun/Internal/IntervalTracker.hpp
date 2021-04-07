@@ -8,61 +8,46 @@
 #include <cpprest/http_client.h>
 #include <thread>
 #include <algorithm>
+#include <exception>
 namespace Vun::Internal
 {
 	
-	using HTTPResponse = web::http::http_response;
+	using HttpResponse = web::http::http_response;
 	using HttpRequest = web::http::http_request;
 	using HttpClient = web::http::client::http_client;
 	using Millisecond = std::chrono::milliseconds;
-	class BasicClient
+	class RateTracker
 	{
 	public:
-		BasicClient(int  max_rate_minute_limit, std::optional<int> TotalTime = std::nullopt);
-		BasicClient(int MaxRequests, std::chrono::seconds TotalTime);
+		RateTracker(int max_rate_minute_limit, std::optional<int> TotalTime = std::nullopt);
 
-		std::deque<Millisecond> Cache;
-		std::chrono::milliseconds max_interval_time;
-		std::optional<std::chrono::seconds> MaxTime;
-		int TotalRequests;
+		
+		int TotalRequests{ 0 };
 
 		HttpResponse Send(const std::string& URL, const HttpRequest& req);
-		void checkTime();
 
-		inline std::chrono::milliseconds updateTimes()
-		{
+	private:
+		std::deque<Millisecond> Cache;
+		std::chrono::milliseconds max_interval_time{ 0 };
+		std::optional<std::chrono::seconds> MaxTime;
 
-			return std::chrono::system_clock::now();
+		inline Millisecond now() {
+			return std::chrono::duration_cast<Millisecond>(std::chrono::system_clock::now().time_since_epoch());
 		}
 
 		inline Millisecond delta()
 		{
-			return Cache.empty()? 0 :  now() - Cache[0];
+			return Cache.empty() ? Millisecond(0) : Millisecond(now().count() - Cache[0].count());
 		}
 
 		inline Millisecond latestInterval()
 		{
 			UpdateCache();
-			return (max_interval_time > delta())? (max_interval_secs - delta()) : 0;
+			return (max_interval_time > delta()) ? (max_interval_time - delta()) : Millisecond(0);
 		}
 
 		void UpdateCache();
-		void waitifnecessary();
+		void waitifnecessary(int n);
 
-		
-
-		template<class T, class... Args>
-		T exec(std::function<T(Args...)> request)
-		{
-			while(true)
-			{
-				auto t1 = std::chrono::system_clock::now();
-				T result = request();
-				auto timePoint = (std::chrono::system_clock::now() - t1);
-			}
-
-			deque.push_front(lastPoint);
-			return result;
-		}
-	}
+	};
 };
