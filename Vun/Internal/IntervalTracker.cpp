@@ -22,10 +22,9 @@ namespace Vun::Internal
 
 	}
 
-	RateTracker::RateTracker(int max_rate_minute_limit, std::optional<int> maxTries)
+	RateTracker::RateTracker(int max_rate_minute_limit)
 	{
 		this->minimum_time_interval = Millisecond(60000 / max_rate_minute_limit);
-		this->MaxTries = maxTries.value_or(MaxTries);
 	}
 
 	RateTracker::HttpResponse RateTracker::Send(const URI& srcUri, const HttpRequest& req)

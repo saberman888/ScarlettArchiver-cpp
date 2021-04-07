@@ -30,7 +30,7 @@ namespace Vun::Internal
 		* This constructor takes the max amound of acceptable requests per minute, and it divides it by 
 		* 60,000 to get the time difference between each requests in milliseconds
 		*/
-		RateTracker(int max_rate_minute_limit, std::optional<int> MaxTries);
+		RateTracker(int max_rate_minute_limit);
 
 		/*
 		* This sends the request and makes sure it doesn't exceed any limits. And if the request fails with a code 429,
