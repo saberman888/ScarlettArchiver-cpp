@@ -24,7 +24,7 @@ namespace Vun::Internal
 		
 		int TotalRequests{ 0 };
 
-		HttpResponse Send(const std::string& URL, const HttpRequest& req);
+		HttpResponse Send(const web::uri& srcUri, const HttpRequest& req);
 
 	private:
 		std::deque<Millisecond> Cache;

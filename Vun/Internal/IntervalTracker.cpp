@@ -29,10 +29,10 @@ namespace Vun::Internal
 		this->max_interval_time = Millisecond(60000 / max_rate_minute_limit);
 	}
 
-	HttpResponse RateTracker::Send(const std::string& URL, const HttpRequest& req)
+	HttpResponse RateTracker::Send(const web::uri& srcUri, const HttpRequest& req)
 	{
 
-		web::http::client::http_client cl(utility::conversions::to_string_t(URL));
+		web::http::client::http_client cl{srcUri.authority().to_string()};
 		HttpResponse hr;
 
 		bool complete = false;
