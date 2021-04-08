@@ -47,7 +47,7 @@ namespace Vun::Internal
 
 			if (hr.status_code() != 429 || hr.status_code() == 200)
 			{
-				complete == true;
+				complete = true;
 			}
 		}
 
