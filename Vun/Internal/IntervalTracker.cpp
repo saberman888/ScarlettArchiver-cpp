@@ -12,13 +12,15 @@ namespace Vun::Internal
 
 	void RateTracker::waitifnecessary(int n)
 	{
-
+		// Get an interval if there's any
 		Millisecond interval = interval = GetLatestInterval();
-		interval = interval.count() > 200 * static_cast<long long>(n) ? interval : Millisecond(200 * n);
-		interval = interval.count() < 3600 * 1000 ? interval : Millisecond(3600 * 1000);
+		
+		// Multiply the number of tries by 200ms and make sure it's under 1 hour
+		Millisecond waitTimes = Millisecond(200 * n);
+		waitTimes = waitTimes.count() < 3600 * 1000 ? waitTimes : Millisecond(3600 * 100);
 
-		if (interval < minimum_time_interval)
-			std::this_thread::sleep_for(interval);
+		std::this_thread::sleep_for(interval);
+		std::this_thread::sleep_for(waitTimes);
 
 	}
 
