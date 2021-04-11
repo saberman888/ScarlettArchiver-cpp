@@ -4,6 +4,7 @@
 #include <exception>
 #include <iosfwd>
 #include "Logger.hpp"
+#include <utility>
 
 #if defined(__FUNCTION__)
 #define __func__ __FUNCTION__
@@ -14,9 +15,9 @@ namespace Scarlett
 	class ScarlettException : public std::runtime_error
 	{
 	public:
-		ScarlettException(const std::string& message, unsigned int line, const std::string& func) : std::runtime_error("[" + std::string(func) + ":" + std::to_string(line) + "]: " + message){
-			this->message = "[" + std::string(func) + ":" + std::to_string(line) + "]: " + message;
-		}
+		ScarlettException(const std::string& message, unsigned int line, const std::string& func);
+		ScarlettException(const std::string&& message, unsigned int line, const std::string& func);
+
 		const char* what()
 		{
 			return message.c_str();

@@ -25,8 +25,7 @@ namespace Scarlett::Reddit::BaseTypes
 			}
 		}
 		catch (const JSON::json_exception& e) {
-			auto msg = e.what();
-			scarlettNestedThrow(msg);
+			scarlettNestedThrow(e.what());
 		}
 	}
 }

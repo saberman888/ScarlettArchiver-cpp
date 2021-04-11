@@ -29,8 +29,7 @@ namespace Scarlett::Reddit::BaseTypes
 			}
 		}
 		catch (JSON::json_exception& e) {
-			auto msg = "Failed to extract JSON from SelfPost, " + std::string(e.what());
-			scarlettNestedThrow(msg);
+			scarlettNestedThrow("Failed to extract JSON from SelfPost, " + std::string(e.what()));
 		}
 	}
 };

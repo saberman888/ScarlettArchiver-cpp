@@ -3,7 +3,17 @@
 
 namespace Scarlett
 {
+	ScarlettException::ScarlettException(const std::string& message, unsigned int line, const std::string& func)
+	{
+		this->message = "[" + std::string(func) + ":" + std::to_string(line) + "]: " + message;
+		std::runtime_error::runtime_error(message);
+	}
 
+
+	ScarlettException::ScarlettException(const std::string&& message, unsigned int line, const std::string& func)
+	{
+		ScarlettException::ScarlettException(std::forward<const std::string&>(message), line, func);
+	}
 	void printException(const std::exception& e, int level)
 	{
 		std::cerr << std::string(level, ' ') << "[exception]: " << e.what() << '\n';		

@@ -33,8 +33,7 @@ namespace Scarlett::Reddit
 					Images.push_back(Media::Content(imageURL));
 				}
 				catch (JSON::json_exception& e) {
-					std::string msg = "Failed to parse JSON for Gallery, " + std::string(e.what());
-					scarlettNestedThrow(msg);
+					scarlettNestedThrow("Failed to parse JSON for Gallery, " + std::string(e.what()));
 				}
 			}
 		}

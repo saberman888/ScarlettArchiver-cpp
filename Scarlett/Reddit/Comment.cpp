@@ -25,8 +25,7 @@ namespace Scarlett::Reddit
 			}
 		}
 		else {
-			std::string msg = "Failed to gather additional comments!, " + std::to_string(data.status_code());
-			scarlettThrow(msg);
+			scarlettThrow("Failed to gather additional comments!, " + std::to_string(data.status_code()));
 		}
     }
 
@@ -54,8 +53,7 @@ namespace Scarlett::Reddit
 				replies.push_back(std::move(tempComment));
 			}
 			catch (JSON::json_exception& e) {
-				auto msg = "Failed to parse comment JSON from CommentListing, " + ParentId.value() + ", " + std::string(e.what());
-				scarlettNestedThrow(msg);
+				scarlettNestedThrow("Failed to parse comment JSON from CommentListing, " + ParentId.value() + ", " + std::string(e.what()));
 			}
 		}
 	}

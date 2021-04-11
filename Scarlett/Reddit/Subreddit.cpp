@@ -31,8 +31,7 @@ namespace Scarlett::Reddit {
 
 		if (result.status_code() != 200)
 		{
-			auto msg = "Failed to fetch data from PushShift: " + u8(result.reason_phrase()) + " " + std::to_string(result.status_code());
-			scarlettThrow(msg);
+			scarlettThrow("Failed to fetch data from PushShift: " + u8(result.reason_phrase()) + " " + std::to_string(result.status_code()));
 		}
 
 		// Increment CurrentPointedDate by 24 hours so we can ready for the next call.
