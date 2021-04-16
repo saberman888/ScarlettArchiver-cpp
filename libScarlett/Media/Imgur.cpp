@@ -2,12 +2,12 @@
 
 namespace Scarlett::Media::ImgurAccess
 {
-	static Response ImgurGet(std::string endpoint, std::string ClientId)
+	static HttpResponse ImgurGet(std::string endpoint, std::string ClientId)
 	{
 
-		static HttpClient::http_client client(web::uri("https://api.imgur.com/"_u));
+		HttpClient client(web::uri("https://api.imgur.com/"_u));
 
-		Http::http_request req(Http::methods::GET);
+		HttpRequest req(HttpMethod::GET);
 		auto headers = req.headers();
 
 		std::string lefthandHeader = " CLIENT-ID " + ClientId;
