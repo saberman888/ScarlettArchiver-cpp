@@ -4,7 +4,6 @@
 #include <filesystem>
 #include <fstream>
 #include <cpprest/http_client.h>
-#include "StringOps.hpp"
 
 /*
 * A header file for misc functions and single functions that don't fit in any other header file
