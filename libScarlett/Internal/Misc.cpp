@@ -24,4 +24,19 @@ namespace Scarlett
 		web::http::client::http_client client(conv::to_string_t(URL));
 		return client.request(web::http::methods::GET).get();
 	}
+
+	std::string GenerateParamData(const StringMap& data)
+	{
+		std::string returnData;
+		for (std::map<std::string, std::string>::const_iterator it = data.begin(); it != data.end(); it++)
+		{
+			returnData.append(
+				((it == data.begin()) ? "" : "&")
+				+ it->first
+				+ "="
+				+ it->second
+			);
+		}
+		return returnData;
+	}
 }

@@ -9,9 +9,14 @@
 #include <thread>
 #include <algorithm>
 #include <exception>
-namespace Vun::Internal
+namespace Scarlett
 {
-	
+	using HttpResponse = web::http::http_response;
+	using HttpRequest = web::http::http_request;
+	using HttpClient = web::http::client::http_client;
+	using Millisecond = std::chrono::milliseconds;
+	using URI = web::uri;
+
 	/*
 	* RateTracker's duty is to keep track of requests done by classes like PushShift, and make sure they dont break rate limits.
 	* 
@@ -20,11 +25,6 @@ namespace Vun::Internal
 	class RateTracker
 	{
 	public:
-		using HttpResponse = web::http::http_response;
-		using HttpRequest = web::http::http_request;
-		using HttpClient = web::http::client::http_client;
-		using Millisecond = std::chrono::milliseconds;
-		using URI = web::uri;
 
 		/*
 		* This constructor takes the max amound of acceptable requests per minute, and it divides it by 

@@ -1,6 +1,6 @@
 #include "IntervalTracker.hpp"
 
-namespace Vun::Internal
+namespace Scarlett
 {
 	void RateTracker::UpdateCache()
 	{

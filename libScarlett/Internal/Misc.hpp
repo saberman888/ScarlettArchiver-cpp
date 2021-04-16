@@ -5,15 +5,17 @@
 #include <fstream>
 #include <cpprest/http_client.h>
 #include "StringOps.hpp"
+
 /*
 * A header file for misc functions and single functions that don't fit in any other header file
 */
-namespace HttpClient = web::http::client;
-namespace conv = utility::conversions;
-namespace JSON = web::json;
-
 namespace Scarlett
 {	
+	namespace HttpClient = web::http::client;
+	namespace conv = utility::conversions;
+	namespace JSON = web::json;
+	using StringMap = std::map<std::string, std::string>;
+
 	/**
 	* just like the normal strptime on Linux. I just needed an independent implementation because, MSVC doesn't have one
 	* @author Sai Vazquez
@@ -24,5 +26,8 @@ namespace Scarlett
 	std::string formatTime(tm& _time, std::string format);
 
 	web::http::http_response Download(const std::string URL);
+
+	// Converts anything in data to a var1=data&var2=data format
+	std::string GenerateParamData(const StringMap& data);
 
 }

@@ -16,6 +16,6 @@ if(NDEBUG)
 endif()
 
 
-add_library(libVun STATIC helpers.cpp Reddit.cpp PushShift.cpp)
+add_library(libVun STATIC helpers.cpp Reddit.cpp PushShift.cpp Internal/IntervalTracker.cpp)
 
 target_link_libraries(libVun LINK_PUBLIC cpprestsdk::cpprest)

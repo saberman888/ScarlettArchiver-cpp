@@ -8,12 +8,12 @@ set(CMAKE_CXX_STANDARD 17)
 option(NDEBUG ON)
 
 find_package(cpprestsdk REQUIRED)
-find_package(Boost REQUIRED COMPONENTS program_options serialization)
+find_package(Boost REQUIRED COMPONENTS system program_options serialization)
 find_package(spdlog REQUIRED)
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
-    include_directories(${Boost_LIBRARY_DIRS})
+
 endif()
 
 if(GCC)
