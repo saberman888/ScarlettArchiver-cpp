@@ -1,6 +1,6 @@
 #pragma once
 
-#include "helpers.hpp"
+#include "Internal/Helpers.hpp"
 #include "Internal/IntervalTracker.hpp"
 #include <cpprest/http_client.h>
 #include <vector>

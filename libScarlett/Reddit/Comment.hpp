@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <optional>
-#include "../Core/Misc.hpp"
+#include "../Internal/Helpers.hpp"
 #include "BaseTypes/TextPost.hpp"
 #include <boost/serialization/export.hpp>
 #include <boost/archive/xml_oarchive.hpp>

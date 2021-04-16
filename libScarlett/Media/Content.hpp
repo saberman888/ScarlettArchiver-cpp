@@ -12,9 +12,8 @@
 #include <string>
 #include <regex>
 #include <utility>
-#include "../Core/exceptions.hpp"
-#include "../Core/Misc.hpp"
-#include "../Core/StringOps.hpp"
+#include "../Internal/exceptions.hpp"
+#include "../Internal/Helpers.hpp"
 
 namespace Scarlett {
 	using StatusCode = web::http::status_code;

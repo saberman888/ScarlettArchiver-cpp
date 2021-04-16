@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Galleries.hpp"
-#include "Comment.hpp"
-#include "SelfPost.hpp"
-#include "Subreddit.hpp"
+#include "Reddit/Galleries.hpp"
+#include "Reddit/Comment.hpp"
+#include "Reddit/SelfPost.hpp"
+#include "Reddit/Subreddit.hpp"

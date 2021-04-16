@@ -7,7 +7,8 @@
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/optional.hpp>
-#include "../../Core/Logger.hpp"
+#include "../../Internal/Logger.hpp"
+
 namespace Scarlett::Reddit::BaseTypes
 {
 	class Link : public Linkable, public Postable, protected Logger
