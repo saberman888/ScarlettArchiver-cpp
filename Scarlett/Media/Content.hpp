@@ -11,6 +11,7 @@
 #include <optional>
 #include <string>
 #include <regex>
+#include <utility>
 #include "../Core/exceptions.hpp"
 #include "../Core/Misc.hpp"
 #include "../Core/StringOps.hpp"
@@ -31,6 +32,11 @@ namespace Scarlett {
 			{
 				this->URL = URL;
 			}
+			
+			Content(const std::string&& URL)
+            {
+                this->URL = URL;
+            }
 
 			inline const auto GetContent()
 			{
