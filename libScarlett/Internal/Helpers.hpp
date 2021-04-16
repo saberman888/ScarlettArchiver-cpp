@@ -25,9 +25,20 @@ namespace Scarlett
 
 	std::string formatTime(tm& _time, std::string format);
 
-	web::http::http_response Download(const std::string URL);
-
 	// Converts anything in data to a var1=data&var2=data format
 	std::string GenerateParamData(const StringMap& data);
+
+	inline bool contains(const std::string& lhs, const std::string rhs)
+	{
+		return (lhs.rfind(rhs) != std::string::npos);
+	}
+	std::vector<std::string> splitString(std::string data, char delimeter);
+	std::string SearchAndReplace(std::string Input, const std::string ToBeReplaced, const std::string Replacement);
+
+	inline std::string u8(const utility::string_t& source) {
+		return utility::conversions::to_utf8string(source);
+	}
+
+	utility::string_t operator ""_u(const char* source, size_t csize);
 
 }
