@@ -17,7 +17,7 @@ namespace Scarlett::Reddit {
 	class Subreddit : protected Logger
 	{
 	public:
-		Subreddit(const struct ScarlettOptions::POptions& cmdOptions);
+		Subreddit(const std::string Start, const std::string End);
 
 		// Where we're going to keep our subreddit metadata
 		std::unique_ptr<SubredditMetadata> sub;

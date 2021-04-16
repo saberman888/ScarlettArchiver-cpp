@@ -4,9 +4,9 @@
 namespace Scarlett::Reddit
 { 
 	
-	SubredditMetadata::SubredditMetadata(const struct ScarlettOptions::POptions ops)
+	SubredditMetadata::SubredditMetadata(const std::string StartTime, const std::string EndTime)
 	{
-		InitializeDates(ops.StartTime, ops.EndTime);
+		InitializeDates(StartTime, EndTime);
 		Subreddit = ops.Subreddit;
 	}
 

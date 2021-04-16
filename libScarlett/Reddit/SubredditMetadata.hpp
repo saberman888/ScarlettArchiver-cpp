@@ -3,7 +3,7 @@
 #include <iosfwd>
 #include <optional>
 #include <regex>
-#include "../Core/ParseOptions.hpp"
+//#include "../Core/ParseOptions.hpp"
 #include "Video.hpp"
 #include "SelfPost.hpp"
 #include "Galleries.hpp"
@@ -66,7 +66,7 @@ namespace Scarlett::Reddit
 		/*
 			Pass Boost program options to the constructor
 		*/
-		SubredditMetadata(const struct ScarlettOptions::POptions ops);
+		SubredditMetadata(const std::string StartTime, const std::string EndTime);
 
 		std::string Subreddit;
 		time_t StartDate { 0 }, EndDate{ 0 }, DatePointer{ 0 };
