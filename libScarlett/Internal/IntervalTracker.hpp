@@ -15,6 +15,7 @@ namespace Scarlett
 	using HttpRequest = web::http::http_request;
 	using HttpClient = web::http::client::http_client;
 	using Millisecond = std::chrono::milliseconds;
+	using HttpMethod = web::http::methods;
 	using URI = web::uri;
 
 	/*

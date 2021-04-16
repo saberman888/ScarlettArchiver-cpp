@@ -14,6 +14,7 @@ namespace Scarlett
 	namespace conv = utility::conversions;
 	namespace JSON = web::json;
 	using StringMap = std::map<std::string, std::string>;
+	using WideString = utility::string_t;
 
 	/**
 	* just like the normal strptime on Linux. I just needed an independent implementation because, MSVC doesn't have one
@@ -34,7 +35,7 @@ namespace Scarlett
 	std::vector<std::string> splitString(std::string data, char delimeter);
 	std::string SearchAndReplace(std::string Input, const std::string ToBeReplaced, const std::string Replacement);
 
-	inline std::string u8(const utility::string_t& source) {
+	inline std::string u8(const WideString& source) {
 		return utility::conversions::to_utf8string(source);
 	}
 
