@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PushShift.hpp"
+#include "../PushShift.hpp"
 #include "Video.hpp"
 #include "SelfPost.hpp"
 #include "Galleries.hpp"
