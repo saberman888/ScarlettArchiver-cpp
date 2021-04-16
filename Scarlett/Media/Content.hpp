@@ -32,11 +32,6 @@ namespace Scarlett {
 			{
 				this->URL = URL;
 			}
-			
-			Content(const std::string&& URL)
-            {
-                this->URL = URL;
-            }
 
 			inline const auto GetContent()
 			{
