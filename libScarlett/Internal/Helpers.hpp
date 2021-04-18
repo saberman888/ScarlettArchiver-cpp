@@ -10,11 +10,16 @@
 */
 namespace Scarlett
 {	
-	namespace HttpClient = web::http::client;
 	namespace conv = utility::conversions;
 	namespace JSON = web::json;
 	using StringMap = std::map<std::string, std::string>;
 	using WideString = utility::string_t;
+	using HttpResponse = web::http::http_response;
+	using HttpRequest = web::http::http_request;
+	using HttpClient = web::http::client::http_client;
+	using Millisecond = std::chrono::milliseconds;
+	using HttpMethod = web::http::methods;
+	using URI = web::uri;
 
 	/**
 	* just like the normal strptime on Linux. I just needed an independent implementation because, MSVC doesn't have one
