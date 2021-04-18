@@ -9,15 +9,9 @@
 #include <thread>
 #include <algorithm>
 #include <exception>
+#include "Helpers.hpp"
 namespace Scarlett
 {
-	using HttpResponse = web::http::http_response;
-	using HttpRequest = web::http::http_request;
-	using HttpClient = web::http::client::http_client;
-	using Millisecond = std::chrono::milliseconds;
-	using HttpMethod = web::http::methods;
-	using URI = web::uri;
-
 	/*
 	* RateTracker's duty is to keep track of requests done by classes like PushShift, and make sure they dont break rate limits.
 	* 

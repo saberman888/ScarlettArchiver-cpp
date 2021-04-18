@@ -29,7 +29,7 @@ namespace Scarlett
 		this->minimum_time_interval = Millisecond(60000 / max_rate_minute_limit);
 	}
 
-	RateTracker::HttpResponse RateTracker::Send(const URI& srcUri, const HttpRequest& req)
+	HttpResponse RateTracker::Send(const URI& srcUri, const HttpRequest& req)
 	{
 		web::http::client::http_client cl{ srcUri.authority().to_string() };
 		HttpResponse hr;
