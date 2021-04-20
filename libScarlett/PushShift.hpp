@@ -20,14 +20,14 @@ namespace conv = utility::conversions;
 
 typedef web::http::http_response Response;
 
-namespace Vun {
+namespace Scarlett {
 	class PushShift {
 	public:
 		static Response SearchSubmissions(const std::map<std::string, std::string>& URLComponents);
 		static Response SearchComments(const std::map<std::string, std::string>& URLComponents);
 	private:
 		static Response PushShiftGet(std::string endpoint, const std::map<std::string, std::string>& URLComponents);
-		static const Vun::Internal::RateTracker& GetRateLimiter();
+		static const RateTracker& GetRateLimiter();
 	};
 };
 
