@@ -10,6 +10,6 @@
 // add headers that you want to pre-compile here
 #include "exceptions.hpp"
 #include "Logger.hpp"
-#include "StringOps.hpp"
+#include "Helpers.hpp"
 
 #endif //PCH_H
