@@ -20,6 +20,8 @@ namespace Scarlett
 	using Millisecond = std::chrono::milliseconds;
 	using HttpMethod = web::http::methods;
 	using URI = web::uri;
+	using StatusCode = web::http::status_code;
+	using Size = utility::size64_t;
 
 	/**
 	* just like the normal strptime on Linux. I just needed an independent implementation because, MSVC doesn't have one
@@ -45,5 +47,16 @@ namespace Scarlett
 	}
 
 	utility::string_t operator ""_u(const char* source, size_t csize);
+
+	inline HttpResponse Download(URI source)
+	{
+		HttpClient cl(source);
+		return cl.request(web::http::methods::GET).get();
+	}
+
+	inline HttpResponse Download(std::string&& source)
+	{
+		return Download(conv::to_string_t(std::forward<std::string>(source)));
+	}
 
 }
