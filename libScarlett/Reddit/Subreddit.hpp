@@ -91,8 +91,7 @@ namespace Scarlett::Reddit {
 					Media::Content& c = images[i];
 					if (c.FetchContent() != 200)
 					{
-						const std::string msg = "Failed to download Gallery image: " + c.GetURLString();
-						scarlettThrow(msg);
+						scarlettThrow("Failed to download Gallery image: " + c.GetURLString());
 					}
 					else {
 						auto filename = galPath / (post->Id + "_" + std::to_string(i) + "." + c.Extension());
@@ -106,8 +105,7 @@ namespace Scarlett::Reddit {
 				auto sc = post->URL.FetchContent();
 				if (sc != 200)
 				{
-					auto msg = "Failed to download content from Link, " + post->URL.GetURLString();
-					scarlettThrow(msg);
+					scarlettThrow("Failed to download content from Link, " + post->URL.GetURLString());
 				}
 
 				if (post->URL.ContentType() == "image") {
