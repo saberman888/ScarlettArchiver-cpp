@@ -3,7 +3,7 @@
 #include <iostream>
 namespace Scarlett {
 
-	Response PushShift::PushShiftGet(std::string endpoint, const std::map<std::string, std::string>& URLComponents)
+	HttpResponse PushShift::PushShiftGet(std::string endpoint, const std::map<std::string, std::string>& URLComponents)
 	{
 		web::uri_builder b;
 
@@ -21,15 +21,15 @@ namespace Scarlett {
 
 	const RateTracker& PushShift::GetRateLimiter()
 	{
-		static const RateTracker rt{ 120 };
+		static RateTracker rt{ 120 };
 		return rt;
 	}
 	
-	Response PushShift::SearchSubmissions(const std::map<std::string, std::string>& URLComponents)
+	HttpResponse PushShift::SearchSubmissions(const std::map<std::string, std::string>& URLComponents)
 	{
 		return PushShiftGet("/reddit/submission/search", URLComponents);
 	}
-	Response PushShift::SearchComments(const std::map<std::string, std::string>& URLComponents)
+	HttpResponse PushShift::SearchComments(const std::map<std::string, std::string>& URLComponents)
 	{
 		return PushShiftGet("/reddit/search/comment", URLComponents);
 	}
