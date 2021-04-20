@@ -30,9 +30,10 @@ endif()
 
 
 set(Internal Internal/exceptions.cpp Internal/Helpers.cpp Internal/IntervalTracker.cpp Internal/Logger.cpp)
+set(Client Client/Reddit.cpp Client/PushShift.cpp)
 set(Reddit Reddit/BaseTypes/Postable.cpp Reddit/BaseTypes/Linkable.cpp Reddit/BaseTypes/Link.cpp Reddit/BaseTypes/TextPost.cpp Reddit/Comment.cpp Reddit/Galleries.cpp Reddit/SelfPost.cpp Reddit/Video.cpp Reddit/SubredditMetadata.cpp Reddit/Subreddit.cpp)
 set(Media Media/Content.cpp Media/Imgur.cpp)
-set(Libraries spdlog::spdlog cpprestsdk::cpprest)
+set(Libraries spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest)
 
-add_library(libScarlett STATIC ${Internal} ${Media} ${Reddit} PushShift.cpp)
+add_library(libScarlett STATIC ${Internal} ${Media} ${Client} ${Reddit} PushShift.cpp)
 target_link_libraries(libScarlett LINK_PUBLIC  ${Internal} ${Media})
