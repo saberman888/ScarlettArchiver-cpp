@@ -5,11 +5,11 @@ namespace Scarlett::Reddit::BaseTypes
 {
 	bool Linkable::operator==(Linkable& other)
 	{
-		return ((Domain == other.Domain) && (Title == other.Title) && (URL.GetURL() == other.URL.GetURL()));
+		return ((Domain == other.Domain) && (Title == other.Title) && (URL.GetURLString() == other.URL.GetURLString()));
 	}
 	bool Linkable::operator!=(Linkable& other)
 	{
-		return ((Domain != other.Domain) && (Title != other.Title) && (URL.GetURL() != other.URL.GetURL()));
+		return ((Domain != other.Domain) && (Title != other.Title) && (URL.GetURLString() != other.URL.GetURLString()));
 	}
 	void Linkable::Read(const JSON::value& json)
 	{

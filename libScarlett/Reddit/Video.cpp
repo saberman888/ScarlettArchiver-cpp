@@ -13,7 +13,7 @@ namespace Scarlett::Reddit
 	void Video::Fetch()
 	{
 		audio.emplace();
-		auto dashData = Download(URL.GetURL() + "/DASHPlaylist.mpd");
+		auto dashData = Download(URL.GetURLString() + "/DASHPlaylist.mpd");
 		if (dashData.status_code() == 200)
 		{
 			// Extract the string from the response handle
@@ -75,7 +75,7 @@ namespace Scarlett::Reddit
 	{
 		if (audio)
 		{
-			return URL.GetURL() + "/" + audio.value();
+			return URL.GetURLString() + "/" + audio.value();
 		}
 		else {
 			scarlettThrow("This Video does not have audio!");
