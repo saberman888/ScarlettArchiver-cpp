@@ -17,7 +17,7 @@ namespace Scarlett::Reddit {
 	class Subreddit : protected Logger
 	{
 	public:
-		Subreddit(const std::string Start, const std::string End);
+		Subreddit(const std::string Subreddit, const std::string Start, const std::string End);
 
 		// Where we're going to keep our subreddit metadata
 		std::unique_ptr<SubredditMetadata> sub;
@@ -91,7 +91,7 @@ namespace Scarlett::Reddit {
 					Media::Content& c = images[i];
 					if (c.FetchContent() != 200)
 					{
-						const std::string msg = "Failed to download Gallery image: " + c.GetURL();
+						const std::string msg = "Failed to download Gallery image: " + c.GetURLString();
 						scarlettThrow(msg);
 					}
 					else {
@@ -106,7 +106,7 @@ namespace Scarlett::Reddit {
 				auto sc = post->URL.FetchContent();
 				if (sc != 200)
 				{
-					auto msg = "Failed to download content from Link, " + post->URL.GetURL();
+					auto msg = "Failed to download content from Link, " + post->URL.GetURLString();
 					scarlettThrow(msg);
 				}
 

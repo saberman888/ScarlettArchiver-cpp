@@ -3,9 +3,9 @@
 
 namespace Scarlett::Reddit {
 
-	Subreddit::Subreddit(const std::string Start, const std::string End)
+	Subreddit::Subreddit(const std::string Subreddit, const std::string Start, const std::string End)
 	{
-		sub = std::make_unique<SubredditMetadata>(Start, End);
+		sub = std::make_unique<SubredditMetadata>(Subreddit, Start, End);
 		log->info(sub->Subreddit + " has been instantiated.");
 
 		SubStorePath = std::filesystem::current_path() / "subreddits" / sub->Subreddit;
@@ -21,7 +21,7 @@ namespace Scarlett::Reddit {
 		// I want to be more specific when I have SearchSubmissions call for these twenty four hours instead of plugging in EndDate into before because,
 		// I think It might retrieve more data
 
-		auto result = Vun::PushShift::SearchSubmissions(StringMap{
+		auto result = PushShift::SearchSubmissions(StringMap{
 		  {"after", std::to_string(sub->DatePointer)},
 		  {"before", std::to_string(sub->DatePointer += 86400)},
 		  {"metadata", "true"},
