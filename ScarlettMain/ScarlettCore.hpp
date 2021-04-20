@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Reddit/RedditAssets.hpp"
+#include "Scarlett.hpp"
 #include <iosfwd>
 
 namespace Scarlett
