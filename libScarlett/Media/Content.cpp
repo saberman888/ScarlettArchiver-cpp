@@ -4,7 +4,7 @@ BOOST_CLASS_EXPORT_GUID(Scarlett::Media::Content, "ContentInfo");
 Scarlett::Media::Content::Content(const std::string& URL)
 {
 	try {
-		this->URL = ScarlettURL(
+		this->URL = URI(
 			utility::conversions::to_string_t(URL)
 		);
 	}
@@ -13,10 +13,10 @@ Scarlett::Media::Content::Content(const std::string& URL)
 	}
 }
 
-Scarlett::StatusCode Scarlett::Media::Content::FetchContent(std::optional<std::string> URL)
+Scarlett::StatusCode Scarlett::Media::Content::FetchContent(std::optional<URI> URL)
 {
 	Response.emplace(Download(URL.value_or(
-		u8(this->URL.to_string())
+		this->URL
 	)));
 
 	if (!Response->headers().empty()) {

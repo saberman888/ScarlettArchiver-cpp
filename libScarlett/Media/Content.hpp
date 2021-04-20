@@ -16,9 +16,7 @@
 #include "../Internal/Helpers.hpp"
 
 namespace Scarlett {
-	using StatusCode = web::http::status_code;
-	using ScarlettURL = web::uri;
-	using Size = utility::size64_t;
+
 
 
 	namespace Media {
@@ -27,7 +25,7 @@ namespace Scarlett {
 		public:
 			Content(){}
 			Content(const std::string& URL);
-			Content(const ScarlettURL URL)
+			Content(const URI URL)
 			{
 				this->URL = URL;
 			}
@@ -47,12 +45,18 @@ namespace Scarlett {
 				return Response->extract_json().get();
 			}
 
-			inline const std::string GetURL()
+			inline const std::string GetURLString()
 			{
 				return u8(URL.to_string());
 			}
 
-			StatusCode FetchContent(std::optional<std::string> URL = std::nullopt);
+			inline const URI GetURL()
+			{
+				return URL;
+			}
+
+
+			StatusCode FetchContent(std::optional<URI> URL = std::nullopt);
 
 			std::string Extension();
 			std::string ContentType();
@@ -76,7 +80,7 @@ namespace Scarlett {
 			std::optional<web::http::http_response> Response{ std::nullopt };
 			std::vector<std::string> _ContentType;
 			boost::optional<Size> _ContentSize{ 0 };
-			ScarlettURL URL;
+			URI URL;
 		};
 	}
 }
