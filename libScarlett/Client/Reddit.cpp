@@ -1,6 +1,6 @@
 #include "Reddit.hpp"
 
-namespace Vun::Reddit
+namespace Scarlett::Client
 {
 	template<Client C>
 	std::string RedditAuthorization<C>::GenerateScope()

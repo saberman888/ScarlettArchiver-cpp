@@ -12,7 +12,7 @@ namespace HttpClient = web::http::client;
 namespace OAuth2 = web::http::oauth2::experimental;
 namespace conv = utility::conversions;
 
-namespace Vun::Reddit
+namespace Scarlett::Client
 {
 	enum RedditScope
 	{

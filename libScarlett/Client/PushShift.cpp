@@ -1,7 +1,7 @@
 #include "PushShift.hpp"
 #include <fstream>
 #include <iostream>
-namespace Scarlett {
+namespace Scarlett::Client {
 
 	HttpResponse PushShift::PushShiftGet(std::string endpoint, const std::map<std::string, std::string>& URLComponents)
 	{

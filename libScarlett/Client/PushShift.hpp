@@ -12,7 +12,7 @@
 #include <chrono>
 #include <thread>
 
-namespace Scarlett {
+namespace Scarlett::Client {
 	class PushShift {
 	public:
 		static HttpResponse SearchSubmissions(const std::map<std::string, std::string>& URLComponents);

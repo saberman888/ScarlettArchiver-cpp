@@ -21,7 +21,7 @@ namespace Scarlett::Reddit {
 		// I want to be more specific when I have SearchSubmissions call for these twenty four hours instead of plugging in EndDate into before because,
 		// I think It might retrieve more data
 
-		auto result = PushShift::SearchSubmissions(StringMap{
+		auto result = Client::PushShift::SearchSubmissions(StringMap{
 		  {"after", std::to_string(sub->DatePointer)},
 		  {"before", std::to_string(sub->DatePointer += 86400)},
 		  {"metadata", "true"},
