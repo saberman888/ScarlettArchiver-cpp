@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(cpprestsdk REQUIRED)
 find_package(Boost REQUIRED COMPONENTS program_options serialization)
 find_package(spdlog REQUIRED)
+find_package(tinyxml2 REQUIRED)
 
 option(NDEBUG ON)
 add_compile_options(-D_TURN_OFF_PLATFORM_STRING=1)
@@ -23,8 +24,8 @@ if(NDEBUG)
 endif()
 
 if(Boost_FOUND)
-	include_directories(${BOOST_INCLUDE_DIRS})
-	include_directories(${BOOST_LIBRARY_DIRS})
+	include_directories(${Boost_INCLUDE_DIRS})
+	include_directories(${Boost_LIBRARY_DIRS})
 endif()
 
 
@@ -33,7 +34,7 @@ set(Internal Internal/exceptions.cpp Internal/Helpers.cpp Internal/IntervalTrack
 set(Client Client/Reddit.cpp Client/PushShift.cpp)
 set(Reddit Reddit/BaseTypes/Postable.cpp Reddit/BaseTypes/Linkable.cpp Reddit/BaseTypes/Link.cpp Reddit/BaseTypes/TextPost.cpp Reddit/Comment.cpp Reddit/Galleries.cpp Reddit/SelfPost.cpp Reddit/Video.cpp Reddit/SubredditMetadata.cpp Reddit/Subreddit.cpp)
 set(Media Media/Content.cpp Media/Imgur.cpp)
-set(Libraries spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest)
+set(Libraries spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest tinyxml2::tinyxml2 ${Boost_LIBRARIES})
 
 add_library(libScarlett STATIC ${Internal} ${Media} ${Client} ${Reddit})
 target_link_libraries(libScarlett LINK_PUBLIC  ${Libraries})

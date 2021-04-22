@@ -7,10 +7,12 @@ option(NDEBUG ON)
 find_package(cpprestsdk REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system program_options serialization)
 find_package(spdlog REQUIRED)
+find_package(tinyxml2 REQUIRED)
 
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
+    include_directories(${Boost_LIBRAY_DIRS})
 endif()
 
 if(GCC)
@@ -30,4 +32,4 @@ add_compile_options(-D_TURN_OFF_PLATFORM_STRING=1)
 
 add_executable(Scarlett main.cpp ParseOptions.cpp ScarlettCore.cpp)
 
-target_link_libraries(Scarlett LINK_PRIVATE libScarlett spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest ${BOOST_LIBRARIES})
+target_link_libraries(Scarlett LINK_PRIVATE libScarlett spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest tinyxml ${Boost_LIBRARIES})
