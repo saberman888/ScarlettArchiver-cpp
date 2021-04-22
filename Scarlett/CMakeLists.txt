@@ -35,5 +35,5 @@ set(Reddit Reddit/BaseTypes/Postable.cpp Reddit/BaseTypes/Linkable.cpp Reddit/Ba
 set(Media Media/Content.cpp Media/Imgur.cpp)
 set(Libraries spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest)
 
-add_library(libScarlett STATIC ${Internal} ${Media} ${Client} ${Reddit} PushShift.cpp)
-target_link_libraries(libScarlett LINK_PUBLIC  ${Internal} ${Media})
+add_library(libScarlett STATIC ${Internal} ${Media} ${Client} ${Reddit})
+target_link_libraries(libScarlett LINK_PUBLIC  ${Libraries})

@@ -8,6 +8,7 @@ find_package(cpprestsdk REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system program_options serialization)
 find_package(spdlog REQUIRED)
 
+
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 endif()
@@ -27,6 +28,6 @@ endif()
 
 add_compile_options(-D_TURN_OFF_PLATFORM_STRING=1)
 
-add_executable("Scarlett Archiver" main.cpp ParseOptions.cpp Scarlett.cpp)
+add_executable(Scarlett main.cpp ParseOptions.cpp ScarlettCore.cpp)
 
-target_link_libraries(ScarlettMain LINK_PUBLIC libScarlett spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest ${BOOST_LIBRARIES})
+target_link_libraries(Scarlett LINK_PRIVATE libScarlett spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest ${BOOST_LIBRARIES})
