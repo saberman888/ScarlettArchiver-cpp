@@ -2,6 +2,7 @@
 
 namespace Scarlett::Client
 {
+#if 0
 	template<Client C>
 	std::string RedditAuthorization<C>::GenerateScope()
 	{
@@ -79,4 +80,5 @@ namespace Scarlett::Client
 
 		client = std::make_shared<HttpClient::http_client>(web::uri("https://www.reddit.com/", clientConfig));
 	}
+	#endif
 };

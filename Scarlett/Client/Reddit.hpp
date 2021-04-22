@@ -14,6 +14,7 @@ namespace conv = utility::conversions;
 
 namespace Scarlett::Client
 {
+#if 0
 	enum RedditScope
 	{
 		identity = 0,
@@ -95,4 +96,5 @@ namespace Scarlett::Client
 	{
 		client = RedditAuthorization<C>::getClient();
 	}
+	#endif
 };
