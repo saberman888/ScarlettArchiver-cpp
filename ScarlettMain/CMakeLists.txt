@@ -32,4 +32,4 @@ add_compile_options(-D_TURN_OFF_PLATFORM_STRING=1)
 
 add_executable(Scarlett main.cpp ParseOptions.cpp ScarlettCore.cpp)
 
-target_link_libraries(Scarlett LINK_PRIVATE libScarlett spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest tinyxml ${Boost_LIBRARIES})
+target_link_libraries(Scarlett LINK_PRIVATE libScarlett spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest tinyxml2::tinyxml2 ${Boost_LIBRARIES})
