@@ -12,7 +12,7 @@ namespace Scarlett
 			spdlog::set_pattern("[%H:%M:%S %z][thread %t] %v");
 
 		}
-		catch (const spdlog::spdlog_ex& ex) {
+		catch (const spdlog::spdlog_ex&) {
 			throw;
 		}
 	}

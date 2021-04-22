@@ -8,7 +8,7 @@ Scarlett::Media::Content::Content(const std::string& URL)
 			utility::conversions::to_string_t(URL)
 		);
 	}
-	catch (const std::exception& e) {
+	catch (const std::exception&) {
 		throw;
 	}
 }
