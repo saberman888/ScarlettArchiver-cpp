@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Scarlett.hpp"
 #include <iosfwd>
-
+#include "ParseOptions.hpp"
+#include "Scarlett.hpp"
 namespace Scarlett
 {
 	class ScarlettCore
@@ -12,7 +12,7 @@ namespace Scarlett
 		ScarlettCore(int argc, char* argv[]);
 		void Run();
 		struct ScarlettOptions::POptions Options;
-		std::shared_ptr<Reddit::Subreddit> sub;
+		std::shared_ptr<Scarlett::Reddit::Subreddit> sub;
 		std::shared_ptr<spdlog::logger> log;
 	};
 }

@@ -1,4 +1,4 @@
-#include "../Core/Scarlett.hpp"
+#include "ScarlettCore.hpp"
 #include <iostream>
 using namespace std;
 
