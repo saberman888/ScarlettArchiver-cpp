@@ -25,7 +25,7 @@ if(GCC)
 	set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 elseif(MSVC)
 	set(CMAKE_CXX_FLAGS "/EHa /MP")
-	set(CMAKE_CXX_FLAGS_DEBUG "/Zs /Zi /Zf /W3 /Od /JMC /fsanitize=address")
+	set(CMAKE_CXX_FLAGS_DEBUG "/Zi /Zf /W3 /Od /JMC /fsanitize=address")
 	set(CMAKE_CXX_FLAGS_RELEASE "/O2 /Oi")
 endif()
 
