@@ -4,32 +4,36 @@ set(CMAKE_CXX_STANDARD 17)
 
 option(NDEBUG ON)
 
-find_package(cpprestsdk REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system program_options serialization)
 find_package(spdlog REQUIRED)
-find_package(tinyxml2 REQUIRED)
 
+if(CMAKE_BUILD_TARGET|"Release")
+	add_compile_options(-DNDEBUG=1)
+	set(RELEASE ON)
+elseif(CMAKE_BUILD_TARGET|"Debug")
+	set(DEBUG ON)
+endif()
 
 if(Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-    include_directories(${Boost_LIBRAY_DIRS})
+	if(DEBUG) 
+		include_directories(${Boost_LIBRARY_DIR_DEBUG})
+	else() 
+		include_directories(${Boost_LIBRARY_DIR_RELEASE}) 
+	endif()
+	include_directories(${Boost_INCLUDE_DIRS})
 endif()
+
 
 if(GCC)
-    set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -O0")
-    set(CMAKE_CXX_FLAGS "-I . -Wall -Wfatal-errors")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb -O0 -Wextra -Wfatal-errors -pedantic -Wsign-conversion -Wconversion")
+    set(CMAKE_CXX_FLAGS "-Wall -Werror")
+	set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+elseif(MSVC)
+	set(CMAKE_CXX_FLAGS "/EHa /MP")
+	set(CMAKE_CXX_FLAGS_DEBUG "/Zi /Zf /W3 /Od /JMC /fsanitize=address")
+	set(CMAKE_CXX_FLAGS_RELEASE "/O2 /Oi")
 endif()
-
-if(MSVC)
-    add_compile_options(-D_CRT_SECURE_NO_WARNINGS)
-endif()
-
-if(NDEBUG)
-    add_compile_options(-DNDEBUG=1)
-endif()
-
-add_compile_options(-D_TURN_OFF_PLATFORM_STRING=1)
 
 add_executable(Scarlett main.cpp ParseOptions.cpp ScarlettCore.cpp)
 
-target_link_libraries(Scarlett LINK_PRIVATE libScarlett spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest tinyxml2::tinyxml2 ${Boost_LIBRARIES})
+target_link_libraries(Scarlett LINK_PRIVATE libScarlett spdlog::spdlog spdlog::spdlog_header_only ${Boost_LIBRARIES})
