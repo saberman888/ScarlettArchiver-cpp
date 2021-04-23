@@ -2,6 +2,7 @@
 
 #include <boost/optional.hpp>
 #include <boost/archive/xml_oarchive.hpp>
+#include <boost/arhcive/xml_iarchive.hpp>
 #include <boost/serialization/optional.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/export.hpp>

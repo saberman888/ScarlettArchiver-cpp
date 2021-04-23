@@ -5,6 +5,7 @@
 #include "../../Internal/exceptions.hpp"
 #include "../../Internal/Helpers.hpp"
 #include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/nvp.hpp>
 
 namespace JSON = web::json;
