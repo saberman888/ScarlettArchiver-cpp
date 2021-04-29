@@ -67,6 +67,7 @@ namespace Scarlett::Reddit
 			Pass Boost program options to the constructor
 		*/
 		SubredditMetadata(const std::string Subreddit, const std::string StartTime, const std::string EndTime);
+		SubredditMetadata() = default;
 
 		std::string Subreddit;
 		time_t StartDate { 0 }, EndDate{ 0 }, DatePointer{ 0 };
@@ -83,7 +84,6 @@ namespace Scarlett::Reddit
 
 
 	private:
-		SubredditMetadata() = default;
 
 		friend boost::serialization::access;
 		template<class Archive>
