@@ -11,6 +11,11 @@ namespace Scarlett::Reddit {
 		SubStorePath = std::filesystem::current_path() / "subreddits" / sub->Subreddit;
 		log->info("Storing at " + SubStorePath.string());
 	}
+	Subreddit::Subreddit(const std::filesystem::path source) : SubStorePath(source)
+	{
+
+	}
+
 
 	JSON::value Subreddit::Next()
 	{
@@ -41,6 +46,17 @@ namespace Scarlett::Reddit {
 		return result.extract_json().get();
 	}
 
+	void Subreddit::Load()
+	{
+		// First load metadata
+		if (std::filesystem::exists(SubStorePath / "SubredditMetadata.xml"))
+		{
+
+		}
+		else {
+			scarlettThrow("Couldn't find SubredditMetadata.xml in " + SubStorePath.string());
+		}
+	}
 
 	void Subreddit::Read(const JSON::value& source) {
 		for (auto element : source.at("data"_u).as_array())
@@ -52,22 +68,22 @@ namespace Scarlett::Reddit {
 			if (Gallery::IsGallery(element))
 			{
 				log->info("Found a Gallery");
-				auto potentialPost = std::make_shared<Gallery>(element);
+				auto potentialPost = boost::make_shared<Gallery>(element);
 				Add(potentialPost);
 			}
 			else if (Reddit::Video::IsVideo(element)) {
 				log->info("Found a Video");
-				auto potentialPost = std::make_shared<Video>(element);
+				auto potentialPost = boost::make_shared<Video>(element);
 				Add(potentialPost);
 			}
 			else if (Reddit::SelfPost::IsSelfPost(element)) {
 				log->info("Found a Self Post");
-				auto potentialPost = std::make_shared<SelfPost>(element);
+				auto potentialPost = boost::make_shared<SelfPost>(element);
 				Add(potentialPost);
 			}
 			else {
 				log->info("Found a Link");
-				auto potentialPost = std::make_shared<BaseTypes::Link>(element);
+				auto potentialPost = boost::make_shared<BaseTypes::Link>(element);
 				Add(potentialPost);
 			}
 		}
@@ -80,34 +96,34 @@ namespace Scarlett::Reddit {
 		if (!exists(SubStorePath))
 			create_directories(SubStorePath);
 
-		serializeData(*sub.get(), "metadata", (SubStorePath / "metadata.xml"));
+		serializeData(sub.get(), "metadata", (SubStorePath / "metadata.xml"));
 
-		for (std::vector<std::shared_ptr<BaseTypes::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
+		for (std::vector<boost::shared_ptr<BaseTypes::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
 		{
 			try {
-				if (std::dynamic_pointer_cast<BaseTypes::Link>(*it)) {
+				if (boost::dynamic_pointer_cast<BaseTypes::Link>(*it)) {
 
-					if (std::dynamic_pointer_cast<Gallery>(*it))
+					if (boost::dynamic_pointer_cast<Gallery>(*it))
 					{
-						auto gal = std::dynamic_pointer_cast<Gallery>(*it);
+						auto gal = boost::dynamic_pointer_cast<Gallery>(*it);
 						WritePost(gal, "Gallery");
 						WriteMedia(gal);
 					}
-					else if (std::dynamic_pointer_cast<Video>(*it))
+					else if (boost::dynamic_pointer_cast<Video>(*it))
 					{
-						auto vid = std::dynamic_pointer_cast<Video>(*it);
+						auto vid = boost::dynamic_pointer_cast<Video>(*it);
 						WritePost(vid, "Video");
 						WriteMedia(vid);
 					}
 					else {
-						auto link = std::dynamic_pointer_cast<BaseTypes::Link>(*it);
+						auto link = boost::dynamic_pointer_cast<BaseTypes::Link>(*it);
 						WritePost(link, "Link");
 						WriteMedia(link);
 					}
 
 				}
-				else if (std::dynamic_pointer_cast<SelfPost>(*it)) {
-					auto selfpost = std::dynamic_pointer_cast<SelfPost>(*it);
+				else if (boost::dynamic_pointer_cast<SelfPost>(*it)) {
+					auto selfpost = boost::dynamic_pointer_cast<SelfPost>(*it);
 					WritePost(selfpost, "SelfPost");
 				}
 			}

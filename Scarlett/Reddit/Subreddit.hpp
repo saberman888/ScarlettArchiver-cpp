@@ -18,6 +18,7 @@ namespace Scarlett::Reddit {
 	{
 	public:
 		Subreddit(const std::string Subreddit, const std::string Start, const std::string End);
+		Subreddit(const std::filesystem::path source);
 
 		// Where we're going to keep our subreddit metadata
 		std::unique_ptr<SubredditMetadata> sub;
@@ -38,7 +39,7 @@ namespace Scarlett::Reddit {
 		}
 
 		template<class T>
-		void Add(std::shared_ptr<T> Post)
+		void Add(boost::shared_ptr<T> Post)
 		{
 			static_assert(
 				std::is_base_of<BaseTypes::Linkable, T>::value &&
@@ -49,10 +50,10 @@ namespace Scarlett::Reddit {
 
 			if (posts.size() > 0)
 			{
-				for (decltype(posts)::iterator it = posts.begin(); it != posts.end(); it++)
+				for (decltype(posts)::const_iterator it = posts.begin(); it != posts.end(); it++)
 				{
 					// internal creation date
-					auto icd = std::dynamic_pointer_cast<BaseTypes::Postable>(*it);
+					auto icd = boost::dynamic_pointer_cast<BaseTypes::Postable>(*it);
 
 					if (Post->CreatedUTC > icd->CreatedUTC)
 					{
@@ -71,7 +72,7 @@ namespace Scarlett::Reddit {
 		void WriteAll(bool clear = true);
 
 		template<class T>
-		void WriteMedia(const std::shared_ptr<T> post)
+		void WriteMedia(const boost::shared_ptr<T> post)
 		{
 			using namespace std::filesystem;
 
@@ -117,7 +118,7 @@ namespace Scarlett::Reddit {
 		}
 
 		template<class T>
-		void WritePost(std::shared_ptr<T> post, const std::string tag)
+		void WritePost(boost::shared_ptr<T> post, const std::string tag)
 		{
 			using namespace std::filesystem;
 
@@ -127,6 +128,31 @@ namespace Scarlett::Reddit {
 			std::filesystem::create_directories(destination);
 			std::cout << "Writing " << post->Id << " to " << destination.string() << std::endl;
 			serializeData(*(post.get()), tag, (destination / std::filesystem::path(post->Id + ".xml")));
+		}
+
+		template<class T>
+		boost::shared_ptr<T> deserializeData(const std::filesystem::path source, const std::string& Tag)
+		{
+			std::ifstream in;
+			boost::shared_ptr<T> obj;
+			in.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+			try
+			{
+				in.open(source);
+				boost::archive::xml_iarchive xia(in);
+				xia >> boost::serialization::make_nvp(source.c_str(), obj);
+
+				if (boost::dynamic_pointer_cast<T>(obj) == nullptr)
+				{
+					scarlettThrow("Wrong type.");
+				}
+
+				return obj;
+			}
+			catch (std::exception& e) {
+				scarlettNestedThrow(e.what());
+			}
+			return obj;
 		}
 
 		template<class T>
@@ -147,8 +173,9 @@ namespace Scarlett::Reddit {
 			}
 		}
 
+		void Load();
 
-		std::vector< std::shared_ptr<BaseTypes::Linkable> > posts;
+		std::vector< boost::shared_ptr<BaseTypes::Linkable> > posts;
 
 		// Where we're going to store sub paths
 		std::filesystem::path SubStorePath;
