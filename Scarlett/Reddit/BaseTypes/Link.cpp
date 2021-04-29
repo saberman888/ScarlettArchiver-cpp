@@ -1,5 +1,6 @@
 #include "Link.hpp"
 BOOST_CLASS_EXPORT(Scarlett::Reddit::BaseTypes::Link)
+BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::BaseTypes::Link)
 
 
 namespace Scarlett::Reddit::BaseTypes

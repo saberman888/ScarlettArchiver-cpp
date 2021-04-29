@@ -6,6 +6,7 @@
 #include <boost/serialization/optional.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/export.hpp>
+#include <boost/serialization/shared_ptr.hpp>
 #include <cpprest/http_client.h>
 #include <cpprest/base_uri.h>
 #include <cstddef>

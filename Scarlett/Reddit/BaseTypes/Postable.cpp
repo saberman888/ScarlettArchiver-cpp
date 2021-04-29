@@ -1,5 +1,6 @@
 #include "Postable.hpp"
 BOOST_SERIALIZATION_ASSUME_ABSTRACT(Scarlett::Reddit::BaseTypes::Postable);
+BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::BaseTypes::Postable);
 
 namespace Scarlett::Reddit::BaseTypes
 {

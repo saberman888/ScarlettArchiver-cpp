@@ -1,5 +1,6 @@
 #include "Content.hpp"
 BOOST_CLASS_EXPORT_GUID(Scarlett::Media::Content, "ContentInfo");
+BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Media::Content);
 
 Scarlett::Media::Content::Content(const std::string& URL)
 {

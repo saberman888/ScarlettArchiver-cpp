@@ -1,6 +1,5 @@
 #include "TextPost.hpp"
-
-
+BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::BaseTypes::TextPost);
 
 namespace Scarlett::Reddit::BaseTypes
 {
