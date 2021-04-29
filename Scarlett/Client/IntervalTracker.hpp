@@ -9,8 +9,8 @@
 #include <thread>
 #include <algorithm>
 #include <exception>
-#include "Helpers.hpp"
-namespace Scarlett
+#include "../Internal/Helpers.hpp"
+namespace Scarlett::Client
 {
 	/*
 	* RateTracker's duty is to keep track of requests done by classes like PushShift, and make sure they dont break rate limits.

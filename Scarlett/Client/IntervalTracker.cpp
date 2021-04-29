@@ -1,6 +1,6 @@
 #include "IntervalTracker.hpp"
 
-namespace Scarlett
+namespace Scarlett::Client
 {
 	void RateTracker::UpdateCache()
 	{

@@ -44,7 +44,7 @@ endif()
 
 
 
-set(Internal Internal/exceptions.cpp Internal/Helpers.cpp Internal/IntervalTracker.cpp Internal/Logger.cpp)
+set(Internal Internal/exceptions.cpp Internal/Helpers.cpp "Client/IntervalTracker.cpp" Internal/Logger.cpp)
 set(Client Client/Reddit.cpp Client/PushShift.cpp)
 set(Reddit Reddit/BaseTypes/Postable.cpp Reddit/BaseTypes/Linkable.cpp Reddit/BaseTypes/Link.cpp Reddit/BaseTypes/TextPost.cpp Reddit/Comment.cpp Reddit/Galleries.cpp Reddit/SelfPost.cpp Reddit/Video.cpp Reddit/SubredditMetadata.cpp Reddit/Subreddit.cpp)
 set(Media Media/Content.cpp Media/Imgur.cpp)
