@@ -1,5 +1,6 @@
 #include "SubredditMetadata.hpp"
 #include <iostream>
+BOOST_CLASS_EXPORT(Scarlett::Reddit::SubredditMetadata);
 
 namespace Scarlett::Reddit
 { 
