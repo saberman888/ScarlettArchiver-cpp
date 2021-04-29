@@ -13,7 +13,7 @@ namespace Scarlett::Reddit {
 	}
 	Subreddit::Subreddit(const std::filesystem::path source) : SubStorePath(source)
 	{
-
+		Load();
 	}
 
 
@@ -27,11 +27,11 @@ namespace Scarlett::Reddit {
 		// I think It might retrieve more data
 
 		auto result = Client::PushShift::SearchSubmissions(StringMap{
-		  {"after", std::to_string(sub->DatePointer)},
-		  {"before", std::to_string(sub->DatePointer += 86400)},
+		  {"after", std::to_string(sub.DatePointer)},
+		  {"before", std::to_string(sub.DatePointer += 86400)},
 		  {"metadata", "true"},
 		  {"size", "500"},
-		  {"subreddit", sub->Subreddit}
+		  {"subreddit", sub.Subreddit}
 			});
 
 		if (result.status_code() != 200)
@@ -40,7 +40,7 @@ namespace Scarlett::Reddit {
 		}
 
 		// Increment CurrentPointedDate by 24 hours so we can ready for the next call.
-		sub->DatePointer += 86400;
+		sub.DatePointer += 86400;
 		log->info("Incrementing by 24 hours for next fetch");
 
 		return result.extract_json().get();
@@ -49,9 +49,9 @@ namespace Scarlett::Reddit {
 	void Subreddit::Load()
 	{
 		// First load metadata
-		if (std::filesystem::exists(SubStorePath / "SubredditMetadata.xml"))
+		if (std::filesystem::exists(SubStorePath / "metadata.xml"))
 		{
-
+			this->sub.LoadFromSource(SubStorePath);
 		}
 		else {
 			scarlettThrow("Couldn't find SubredditMetadata.xml in " + SubStorePath.string());
@@ -96,7 +96,7 @@ namespace Scarlett::Reddit {
 		if (!exists(SubStorePath))
 			create_directories(SubStorePath);
 
-		serializeData(sub.get(), "metadata", (SubStorePath / "metadata.xml"));
+		serializeData(sub, "metadata", (SubStorePath / "metadata.xml"));
 
 		for (std::vector<boost::shared_ptr<BaseTypes::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
 		{

@@ -21,7 +21,7 @@ namespace Scarlett::Reddit {
 		Subreddit(const std::filesystem::path source);
 
 		// Where we're going to keep our subreddit metadata
-		std::unique_ptr<SubredditMetadata> sub;
+		SubredditMetadata sub;
 
 		/*
 			Retrieves the posts from the next 24 hours, and increments StartDate by 24 hours for another iteration.
@@ -35,7 +35,7 @@ namespace Scarlett::Reddit {
 		*/
 		inline bool HasNext()
 		{
-			return sub->HasNext();
+			return sub.HasNext();
 		}
 
 		template<class T>
@@ -128,31 +128,6 @@ namespace Scarlett::Reddit {
 			std::filesystem::create_directories(destination);
 			std::cout << "Writing " << post->Id << " to " << destination.string() << std::endl;
 			serializeData(*(post.get()), tag, (destination / std::filesystem::path(post->Id + ".xml")));
-		}
-
-		template<class T>
-		boost::shared_ptr<T> deserializeData(const std::filesystem::path source, const std::string& Tag)
-		{
-			std::ifstream in;
-			boost::shared_ptr<T> obj;
-			in.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-			try
-			{
-				in.open(source);
-				boost::archive::xml_iarchive xia(in);
-				xia >> boost::serialization::make_nvp(source.c_str(), obj);
-
-				if (boost::dynamic_pointer_cast<T>(obj) == nullptr)
-				{
-					scarlettThrow("Wrong type.");
-				}
-
-				return obj;
-			}
-			catch (std::exception& e) {
-				scarlettNestedThrow(e.what());
-			}
-			return obj;
 		}
 
 		template<class T>

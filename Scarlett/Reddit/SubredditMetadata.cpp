@@ -77,7 +77,31 @@ namespace Scarlett::Reddit
 			}
 		}
 		this->DatePointer = this->StartDate;
-	}	
+	}
+
+	bool SubredditMetadata::LoadFromSource(const std::filesystem::path source)
+	{
+		std::ifstream in;
+		in.exceptions(std::ofstream::failbit | std::ofstream::badbit);
+		try {
+			SubredditMetadata m;
+
+			in.open(source / "metadata.xml");
+			boost::archive::xml_iarchive xia(in);
+			xia >> boost::serialization::make_nvp("metadata", m);
+
+			this->Subreddit = m.Subreddit;
+			this->StartDate = m.StartDate;
+			this->EndDate = m.EndDate;
+			this->stats = m.stats;
+		}
+		catch (std::system_error& e) {
+			scarlettNestedThrow(e.what());
+		}
+		catch (std::exception& e) {
+			scarlettNestedThrow(e.what());
+		}
+	}
 	void RedditStatistics::Update(const RedditStatistics& rs)
 	{
 		Videos += rs.Videos;

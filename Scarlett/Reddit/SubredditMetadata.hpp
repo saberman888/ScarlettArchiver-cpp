@@ -82,6 +82,8 @@ namespace Scarlett::Reddit
 			return !((EndDate - DatePointer) <= 0);
 		}
 
+		bool LoadFromSource(const std::filesystem::path source);
+
 
 	private:
 
