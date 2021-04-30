@@ -79,7 +79,7 @@ namespace Scarlett::Reddit
 		this->DatePointer = this->StartDate;
 	}
 
-	bool SubredditMetadata::LoadFromSource(const std::filesystem::path source)
+	void SubredditMetadata::DeSerialize(const std::filesystem::path source)
 	{
 		std::ifstream in;
 		in.exceptions(std::ofstream::failbit | std::ofstream::badbit);
@@ -102,6 +102,25 @@ namespace Scarlett::Reddit
 			scarlettNestedThrow(e.what());
 		}
 	}
+
+	void SubredditMetadata::Serialize(const std::filesystem::path destination)
+	{
+		std::ofstream out;
+		out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
+		try {
+			out.open(destination / "metadata.xml");
+			boost::archive::xml_oarchive xoa(out);
+			xoa << boost::serialization::make_nvp("metadata", *this);
+		}
+		catch (std::system_error& e) {
+			scarlettNestedThrow(e.what());
+		}
+		catch (std::exception& e) {
+			scarlettNestedThrow(e.what());
+		}
+	}
+
+
 	void RedditStatistics::Update(const RedditStatistics& rs)
 	{
 		Videos += rs.Videos;

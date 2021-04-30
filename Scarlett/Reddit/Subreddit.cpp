@@ -6,9 +6,9 @@ namespace Scarlett::Reddit {
 	Subreddit::Subreddit(const std::string Subreddit, const std::string Start, const std::string End)
 	{
 		sub = std::make_unique<SubredditMetadata>(Subreddit, Start, End);
-		log->info(sub->Subreddit + " has been instantiated.");
+		log->info(sub.Subreddit + " has been instantiated.");
 
-		SubStorePath = std::filesystem::current_path() / "subreddits" / sub->Subreddit;
+		SubStorePath = std::filesystem::current_path() / "subreddits" / sub.Subreddit;
 		log->info("Storing at " + SubStorePath.string());
 	}
 	Subreddit::Subreddit(const std::filesystem::path source) : SubStorePath(source)
@@ -51,7 +51,7 @@ namespace Scarlett::Reddit {
 		// First load metadata
 		if (std::filesystem::exists(SubStorePath / "metadata.xml"))
 		{
-			this->sub.LoadFromSource(SubStorePath);
+			this->sub.DeSerialize(SubStorePath);
 		}
 		else {
 			scarlettThrow("Couldn't find SubredditMetadata.xml in " + SubStorePath.string());

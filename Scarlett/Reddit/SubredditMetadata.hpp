@@ -59,7 +59,7 @@ namespace Scarlett::Reddit
 	/*
 		SubredditMetadata holds information regarding the date, position, statistics and functions manipulating around a Subreddit
 	*/
-	class SubredditMetadata : protected Logger
+	class SubredditMetadata : protected Logger, public Serializable
 	{
 	public:
 
@@ -82,7 +82,8 @@ namespace Scarlett::Reddit
 			return !((EndDate - DatePointer) <= 0);
 		}
 
-		bool LoadFromSource(const std::filesystem::path source);
+		void DeSerialize(const std::filesystem::path source);
+		void Serialize(const std::filesystem::path destination);
 
 
 	private:
