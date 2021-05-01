@@ -16,9 +16,9 @@ namespace Scarlett
 	
 	void printException(const std::exception& e, int level)
 	{
-		std::cerr << std::string(level, ' ') << "[exception]: " << e.what() << '\n';		
+		std::cerr << std::string(level, '\t') << "[exception]: " << e.what() << '\n';		
 		auto log = GetGlobalLogger();
-		log->error(std::string(level, ' ') + "[exception]: " + e.what());
+		log->error(std::string(level, '\t') + "[exception]: " + e.what());
 		try {
 			std::rethrow_if_nested(e);
 			
