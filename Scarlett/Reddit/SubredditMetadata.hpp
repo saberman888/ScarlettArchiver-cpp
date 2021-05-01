@@ -3,7 +3,6 @@
 #include <iosfwd>
 #include <optional>
 #include <regex>
-//#include "../Core/ParseOptions.hpp"
 #include "Video.hpp"
 #include "SelfPost.hpp"
 #include "Galleries.hpp"
@@ -59,7 +58,7 @@ namespace Scarlett::Reddit
 	/*
 		SubredditMetadata holds information regarding the date, position, statistics and functions manipulating around a Subreddit
 	*/
-	class SubredditMetadata : protected Logger, public Serializable
+	class SubredditMetadata : protected Logger
 	{
 	public:
 
@@ -81,10 +80,6 @@ namespace Scarlett::Reddit
 		{
 			return !((EndDate - DatePointer) <= 0);
 		}
-
-		void DeSerialize(const std::filesystem::path source);
-		void Serialize(const std::filesystem::path destination);
-
 
 	private:
 
