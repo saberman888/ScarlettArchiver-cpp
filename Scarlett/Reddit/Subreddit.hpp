@@ -6,6 +6,7 @@
 #include "Galleries.hpp"
 #include "SubredditMetadata.hpp"
 #include "../Media/Content.hpp"
+#include "../Internal/Serializable.hpp"
 #include <map>
 #include <utility>
 #include <cstring>
@@ -21,7 +22,7 @@ namespace Scarlett::Reddit {
 		Subreddit(const std::filesystem::path source);
 
 		// Where we're going to keep our subreddit metadata
-		SubredditMetadata sub;
+		std::unique_ptr<SubredditMetadata> sub;
 
 		/*
 			Retrieves the posts from the next 24 hours, and increments StartDate by 24 hours for another iteration.
@@ -35,7 +36,7 @@ namespace Scarlett::Reddit {
 		*/
 		inline bool HasNext()
 		{
-			return sub.HasNext();
+			return sub->HasNext();
 		}
 
 		template<class T>
@@ -125,27 +126,11 @@ namespace Scarlett::Reddit {
 			auto tempTime = *std::gmtime(&post->CreatedUTC);
 
 			auto destination = SubStorePath /  path(formatTime(tempTime, "%Y")) / path(formatTime(tempTime, "%m")) / formatTime(tempTime, "%d");
+			auto filename = post->Id + ".xml";
 			std::filesystem::create_directories(destination);
 			std::cout << "Writing " << post->Id << " to " << destination.string() << std::endl;
-			serializeData(*(post.get()), tag, (destination / std::filesystem::path(post->Id + ".xml")));
-		}
+			Internal::Serialize<boost::shared_ptr<T>>(destination / filename, post, "obj");
 
-		template<class T>
-		void serializeData(const T& data, const std::string Tag, const std::filesystem::path filename)
-		{
-			std::ofstream out;
-			out.exceptions(std::ofstream::failbit | std::ofstream::badbit);
-			try {
-				out.open(filename);
-				boost::archive::xml_oarchive xoa(out);
-				xoa << boost::serialization::make_nvp(Tag.c_str(), data);
-			}
-			catch (std::system_error& e) {
-				scarlettNestedThrow(e.what());
-			}
-			catch (std::exception& e) {
-				scarlettNestedThrow(e.what());
-			}
 		}
 
 		void Load();
