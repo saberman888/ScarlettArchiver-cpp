@@ -6,13 +6,14 @@ namespace Scarlett::Reddit {
 	Subreddit::Subreddit(const std::string Subreddit, const std::string Start, const std::string End)
 	{
 		sub = std::make_unique<SubredditMetadata>(Subreddit, Start, End);
-		log->info(sub.Subreddit + " has been instantiated.");
+		log->info(sub->Subreddit + " has been instantiated.");
 
-		SubStorePath = std::filesystem::current_path() / "subreddits" / sub.Subreddit;
+		SubStorePath = std::filesystem::current_path() / "subreddits" / sub->Subreddit;
 		log->info("Storing at " + SubStorePath.string());
 	}
 	Subreddit::Subreddit(const std::filesystem::path source) : SubStorePath(source)
 	{
+		sub = std::make_unique<SubredditMetadata>();
 		Load();
 	}
 
@@ -27,11 +28,11 @@ namespace Scarlett::Reddit {
 		// I think It might retrieve more data
 
 		auto result = Client::PushShift::SearchSubmissions(StringMap{
-		  {"after", std::to_string(sub.DatePointer)},
-		  {"before", std::to_string(sub.DatePointer += 86400)},
+		  {"after", std::to_string(sub->DatePointer)},
+		  {"before", std::to_string(sub->DatePointer += 86400)},
 		  {"metadata", "true"},
 		  {"size", "500"},
-		  {"subreddit", sub.Subreddit}
+		  {"subreddit", sub->Subreddit}
 			});
 
 		if (result.status_code() != 200)
@@ -40,7 +41,7 @@ namespace Scarlett::Reddit {
 		}
 
 		// Increment CurrentPointedDate by 24 hours so we can ready for the next call.
-		sub.DatePointer += 86400;
+		sub->DatePointer += 86400;
 		log->info("Incrementing by 24 hours for next fetch");
 
 		return result.extract_json().get();
@@ -51,7 +52,8 @@ namespace Scarlett::Reddit {
 		// First load metadata
 		if (std::filesystem::exists(SubStorePath / "metadata.xml"))
 		{
-			this->sub.DeSerialize(SubStorePath);
+			auto metadata = Internal::DeSerialize<SubredditMetadata*>(SubStorePath / "metadata.xml", "metadata");
+			sub.reset(metadata);
 		}
 		else {
 			scarlettThrow("Couldn't find SubredditMetadata.xml in " + SubStorePath.string());
@@ -96,7 +98,7 @@ namespace Scarlett::Reddit {
 		if (!exists(SubStorePath))
 			create_directories(SubStorePath);
 
-		serializeData(sub, "metadata", (SubStorePath / "metadata.xml"));
+		Internal::Serialize(SubStorePath / "metadata.xml", sub, "metadata");
 
 		for (std::vector<boost::shared_ptr<BaseTypes::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
 		{
