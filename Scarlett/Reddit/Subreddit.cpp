@@ -52,8 +52,7 @@ namespace Scarlett::Reddit {
 		// First load metadata
 		if (std::filesystem::exists(SubStorePath / "metadata.xml"))
 		{
-			auto metadata = Internal::DeSerialize<SubredditMetadata*>(SubStorePath / "metadata.xml", "metadata");
-			sub.reset(metadata);
+			sub.reset(Internal::DeSerialize<SubredditMetadata*>(SubStorePath / "metadata.xml", "metadata"));
 		}
 		else {
 			scarlettThrow("Couldn't find SubredditMetadata.xml in " + SubStorePath.string());
@@ -98,7 +97,7 @@ namespace Scarlett::Reddit {
 		if (!exists(SubStorePath))
 			create_directories(SubStorePath);
 
-		Internal::Serialize(SubStorePath / "metadata.xml", sub, "metadata");
+		Internal::Serialize(SubStorePath / "metadata.xml", *sub, "metadata");
 
 		for (std::vector<boost::shared_ptr<BaseTypes::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
 		{
