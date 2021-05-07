@@ -38,6 +38,6 @@ elseif(MSVC)
 	set(CMAKE_CXX_FLAGS_RELEASE "/O2 /Oi")
 endif()
 
-add_executable(Scarlett main.cpp ParseOptions.cpp ScarlettCore.cpp)
+add_executable(ScarlettArchiver main.cpp ParseOptions.cpp ScarlettCore.cpp)
 
-target_link_libraries(Scarlett LINK_PRIVATE libScarlett spdlog::spdlog spdlog::spdlog_header_only ${Boost_LIBRARIES})
+target_link_libraries(ScarlettArchiver LINK_PRIVATE Scarlett spdlog::spdlog spdlog::spdlog_header_only ${Boost_LIBRARIES})
