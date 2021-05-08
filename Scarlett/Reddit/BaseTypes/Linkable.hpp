@@ -19,7 +19,7 @@ namespace Scarlett::Reddit::BaseTypes
 		std::string Title;
 		Media::Content URL;
 		virtual bool operator==(Linkable& other);
-		virtual bool operator!=(Linkable& other); 
+		virtual bool operator!=(Linkable& other);
 		void Read(const JSON::value& json);
 
 	private:

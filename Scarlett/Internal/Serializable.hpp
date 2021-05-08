@@ -43,9 +43,10 @@ namespace Scarlett::Internal
 
 			if constexpr (std::is_pointer<T>::value)
 			{
+                // Use a simpler type without any pointers
                 using simpleT = typename std::remove_pointer<T>::type;
                 
-                
+                // Allocate a new instance, deserialize and return
 				simpleT* temp = new simpleT;
 				xia >> boost::serialization::make_nvp(Tag.c_str(), *temp);
                 return temp;
