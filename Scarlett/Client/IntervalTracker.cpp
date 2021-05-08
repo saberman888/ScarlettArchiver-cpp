@@ -13,7 +13,7 @@ namespace Scarlett::Client
 	void RateTracker::waitifnecessary(int n)
 	{
 		// Get an interval if there's any
-		Millisecond interval = interval = GetLatestInterval();
+        Millisecond interval = GetLatestInterval();
 		
 		// Multiply the number of tries by 200ms and make sure it's under 1 hour
 		Millisecond waitTimes = Millisecond(200 * n);
@@ -38,8 +38,10 @@ namespace Scarlett::Client
 		int tries = 0;
 		while (!complete && tries < MaxTries)
 		{
+            // Depending on how many retries and how long the last attempt was wait if neccessary
 			waitifnecessary(tries);
 
+            // Next, initiate a request, time it, and push it into cache
 			auto beginTime = Now();
 			hr = cl.request(req).get();
 			Millisecond enddiff = Now() - beginTime;

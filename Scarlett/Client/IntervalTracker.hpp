@@ -70,7 +70,7 @@ namespace Scarlett::Client
 		}
 
 		/*
-		* Removes any old or data that doesn't break limits
+		* Removes any old data that doesn't break limits
 		*/
 		void UpdateCache();
 
