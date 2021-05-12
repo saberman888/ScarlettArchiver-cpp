@@ -55,20 +55,13 @@ template<typename T>
 class OAuth2Helper
 {
 public:
-
-
-    OAuth2Helper(WString Name,
-        WString client_key,
-        WString client_secret,
-        WString auth_endpoint,
-        WString token_endpoint,
-        WString redirect_uri);
-    
-    OAuth2Helper(WString Name,
-        WString client_key,
-        WString auth_endpoint,
-        WString token_endpoint,
-        WString redirect_uri);
+    OAuth2Helper() = default;
+    void setClientKey(const WString& key);
+    void setSecret(const WString& secret);
+    void setAuthorizationEndpoint(const WString& endpoint);
+    void setTokenEndpoint(const WString& endpoint);
+    void setUserAgent(const WString& useragent);
+    void setRedirectUri(const WString& uri);
 
     constexpr bool init(
                 const WString Name,
@@ -83,11 +76,17 @@ public:
 protected:
     pplx::task<bool> Authorize();
     void open_browser_auth();
+    inline void setUserCredentials(const WString Username, const WString Password)
+    {
+        this->Username = Username;
+        this->Password = Password;
+    }
 
     http_client_config m_http_config;
     std::unique_ptr<oauth2_config> m_oauth2_config;
 
 private:
+    WString Username, Password;
     bool generate_state;
     constexpr bool is_enabled() const;
     utility::string_t m_name;
@@ -95,41 +94,32 @@ private:
 };
 
 
-template<typename T>
-OAuth2Helper<T>::OAuth2Helper(const WString Name, const WString client_key, const WString client_secret, const WString auth_endpoint, const WString token_endpoint, const WString redirect_uri)
-{
-    if (!init(Name, client_key, client_secret, auth_endpoint, token_endpoint, redirect_uri))
-    {
-        // TODO: throw exception
-    }
-}
+
 
 template<typename T>
-OAuth2Helper<T>::OAuth2Helper(const WString Name, const WString client_key, const WString auth_endpoint, const WString token_endpoint, const WString redirect_uri)
-{
-    if (!init(Name, client_key, WString(), auth_endpoint, token_endpoint, redirect_uri))
-    {
-        // TODO: Throw exeception
-    }
-}
-
-template<typename T>
-constexpr bool OAuth2Helper<T>::init(const WString Name, const WString client_key, const WString client_secret, const WString auth_endpoint, const WString token_endpoint, const WString redirect_uri)
+constexpr bool OAuth2Helper<T>::init()
 {
     m_name = Name;
-    m_oauth2_config = std::make_unique<oauth2_config>(client_key, client_secret, auth_endpoint, token_endpoint, redirect_uri);
-    m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, *m_oauth2_config);
-    if constexpr (std::is_same<T, ImplicitGrant>::value)
+    if constexpr (std::is_same<T, Password>::value)
     {
-        m_oauth2_config->set_implicit_grant(true);
-        generate_state = true;
-    }
-    else if constexpr (std::is_same<T, Code>::value) {
-        generate_state = false;
+        m_oauth2_config = std::make_unique<oauth2_config>(
+            client_key,
+            client_secret,
+            "",
+
+            );
     }
     else {
-        generate_state = false;
+        m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, *m_oauth2_config);
+        m_oauth2_config = std::make_unique<oauth2_config>(client_key, client_secret, auth_endpoint, token_endpoint, redirect_uri);
+        if constexpr (std::is_same<T, ImplicitGrant>::value)
+        {
+            m_oauth2_config->set_implicit_grant(true);
+            generate_state = true;
+            
+        }
     }
+
     return true;
 }
 
@@ -158,6 +148,7 @@ pplx::task<bool> OAuth2Helper<T>:: Authorize()
     open_browser_auth();
     return m_listener->listen_for_code();
 }
+
 
 template<typename T>
 void OAuth2Helper<T>::run()
@@ -188,4 +179,10 @@ void OAuth2Helper<T>::run()
         ucout << "Skipped " << m_name.c_str()
             << " session sample because app key or secret is empty. Please see instructions." << std::endl;
     }
+}
+
+template<>
+void OAuthHelper<Password>::run()
+{
+
 }
