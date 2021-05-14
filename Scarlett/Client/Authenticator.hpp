@@ -4,6 +4,7 @@
 #include "cpprest/http_client.h"
 #include "cpprest/http_listener.h"
 #include "cpprest/uri.h"
+#include "../Internal/Helpers.hpp"
 
 using WString =  utility::string_t;
 
