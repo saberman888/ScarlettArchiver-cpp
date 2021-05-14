@@ -8,17 +8,19 @@
 #include <memory>
 #include <mutex>
 
-using WString = utility::string_t;
-using URI = web::uri;
-using oauth2_config = web::http::oauth2::experimental::oauth2_config;
-using http_listener = web::http::experimental::listener::http_listener;
-using http_request = web::http::http_request;
-using oauth2_exception = web::http::oauth2::experimental::oauth2_exception;
-using status_codes = web::http::status_codes;
-using http_client_config = web::http::client::http_client_config;
+
+namespace Scarlett
+{
+    using URI = web::uri;
+    using oauth2_config = web::http::oauth2::experimental::oauth2_config;
+    using http_listener = web::http::experimental::listener::http_listener;
+    using http_request = web::http::http_request;
+    using oauth2_exception = web::http::oauth2::experimental::oauth2_exception;
+    using status_codes = web::http::status_codes;
+    using http_client_config = web::http::client::http_client_config;
 
 #if defined(_WIN32) && !defined(__cplusplus_winrt)
-// Extra includes for Windows desktop.
+    // Extra includes for Windows desktop.
 #include <windows.h>
 
 #include <Shellapi.h>
@@ -28,161 +30,154 @@ using http_client_config = web::http::client::http_client_config;
 //
 // Utility method to open browser on Windows, OS X and Linux systems.
 //
-static void open_browser(utility::string_t auth_uri)
-{
-    #if defined(_WIN32) && !defined(__cplusplus_winrt)
+    static void open_browser(utility::string_t auth_uri)
+    {
+#if defined(_WIN32) && !defined(__cplusplus_winrt)
         // NOTE: Windows desktop only.
         auto r = ShellExecuteW(NULL, L"open", auth_uri.c_str(), NULL, NULL, SW_SHOWNORMAL);
-       #elif defined(__APPLE__)
+#elif defined(__APPLE__)
         // NOTE: OS X only.
         // NOTE: OS X only.
         string_t browser_cmd(U("open \"") + auth_uri + U("\""));
         (void)system(browser_cmd.c_str());
-    #else
+#else
         // NOTE: Linux/X11 only.
         string_t browser_cmd(U("xdg-open \"") + auth_uri + U("\""));
         (void)system(browser_cmd.c_str());
-    #endif
-}
-
-class ImplicitGrant;
-class Code;
-class AOA; // Application Only OAuth
-class Password;
-
-
-template<typename T>
-class OAuth2Helper
-{
-public:
-    OAuth2Helper() = default;
-    void setClientKey(const WString& key);
-    void setSecret(const WString& secret);
-    void setAuthorizationEndpoint(const WString& endpoint);
-    void setTokenEndpoint(const WString& endpoint);
-    void setUserAgent(const WString& useragent);
-    void setRedirectUri(const WString& uri);
-
-    constexpr bool init(
-                const WString Name,
-                const WString client_key, 
-                const WString client_secret, 
-                const WString auth_endpoint, 
-                const WString token_endpoint, 
-                const WString redirect_uri);
-
-    void run();
-
-protected:
-    pplx::task<bool> Authorize();
-    void open_browser_auth();
-    inline void setUserCredentials(const WString Username, const WString Password)
-    {
-        this->Username = Username;
-        this->Password = Password;
+#endif
     }
 
-    http_client_config m_http_config;
-    std::unique_ptr<oauth2_config> m_oauth2_config;
-
-private:
-    WString Username, Password;
-    bool generate_state;
-    constexpr bool is_enabled() const;
-    utility::string_t m_name;
-    std::unique_ptr<oauth2_code_listener> m_listener;
-};
+    class ImplicitGrant;
+    class Code;
+    class AOA; // Application Only OAuth
+    class _Password;
 
 
-
-
-template<typename T>
-constexpr bool OAuth2Helper<T>::init()
-{
-    m_name = Name;
-    if constexpr (std::is_same<T, Password>::value)
+    template<typename T>
+    class OAuth2Helper
     {
-        m_oauth2_config = std::make_unique<oauth2_config>(
-            client_key,
-            client_secret,
-            "",
-
-            );
-    }
-    else {
-        m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, *m_oauth2_config);
-        m_oauth2_config = std::make_unique<oauth2_config>(client_key, client_secret, auth_endpoint, token_endpoint, redirect_uri);
-        if constexpr (std::is_same<T, ImplicitGrant>::value)
+    public:
+        OAuth2Helper(const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent)
         {
-            m_oauth2_config->set_implicit_grant(true);
-            generate_state = true;
-            
+            init(client_key, secret, redirect_uri, useragent);
         }
-    }
 
-    return true;
-}
-
-template<typename T>
-constexpr bool OAuth2Helper<T>::is_enabled() const
-{
-    if constexpr (std::is_same<T, ImplicitGrant>::value)
-    {
-        return !m_oauth2_config->client_key().empty();
-    }
-    else {
-        return !m_oauth2_config->client_key()->empty() && !m_oauth2_config->client_secret()->empty();
-    }
-}
-
-template<typename T>
-void OAuth2Helper<T>::open_browser_auth()
-{
-    auto auth_uri(m_oauth2_config->build_authorization_uri(generate_state));
-    open_browser(auth_uri);
-}
-
-template<typename T>
-pplx::task<bool> OAuth2Helper<T>:: Authorize()
-{
-    open_browser_auth();
-    return m_listener->listen_for_code();
-}
-
-
-template<typename T>
-void OAuth2Helper<T>::run()
-{
-    if (is_enabled())
-    {
-        if (!m_oauth2_config->token().is_valid_access_token())
+        OAuth2Helper(const WideString Username, const WideString Password, const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent)
         {
-            if (Authorize().get())
+            setUserCredentials(Username, Password);
+            init(client_key, secret, redirect_uri, useragent);
+        }
+
+        inline void init(const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent)
+        {
+            //m_name = Name;
+            if constexpr (std::is_same<T, _Password>::value)
             {
-                m_http_config.set_oauth2(*m_oauth2_config);
-                if constexpr (std::is_same<T, AOA>::value)
+                auto tokenEndpoint = "/api/v1/access_token" + GenerateParamData(StringMap{
+                    {"grant_type", "password"},
+                    {"username", u8(Username)},
+                    {"password", u8(Password) }});
+
+                m_oauth2_config = std::make_unique<oauth2_config>(
+                    client_key,
+                    secret,
+                    L"",
+                    utility::conversions::to_string_t(tokenEndpoint),
+                    redirect_uri
+                    );
+
+                m_oauth2_config->set_bearer_auth(true);
+            }
+            else {
+                m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, *m_oauth2_config);
+                m_oauth2_config = std::make_unique<oauth2_config>(client_key, client_secret, auth_endpoint, token_endpoint, redirect_uri);
+                if constexpr (std::is_same<T, ImplicitGrant>::value)
                 {
-                    // TODO: Implement AOA specific token retrieval
+                    m_oauth2_config->set_implicit_grant(true);
+                    generate_state = true;
+
                 }
-                else {
-                    ucout << m_oauth2_config->token().access_token();
+            }
+        }
+
+        inline void GetToken()
+        {
+            if (is_enabled())
+            {
+                if (!m_oauth2_config->token().is_valid_access_token())
+                {
+                    if constexpr (std::is_same_v<T, _Password>)
+                    {
+                        m_http_config.set_oauth2(*m_oauth2_config);
+                        m_oauth2_config->token_from_refresh();
+                    }
+                    else {
+                        if (Authorize().get())
+                        {
+                            m_http_config.set_oauth2(*m_oauth2_config);
+                            if constexpr (std::is_same<T, AOA>::value)
+                            {
+                                // TODO: Implement AOA specific token retrieval
+                            }
+                            else {
+                                ucout << m_oauth2_config->token().access_token();
+                            }
+                        }
+                        else
+                        {
+                            ucout << "Authorization failed for " << m_name.c_str() << "." << std::endl;
+                        }
+                    }
                 }
             }
             else
             {
-                ucout << "Authorization failed for " << m_name.c_str() << "." << std::endl;
+                ucout << "Skipped " << m_name.c_str()
+                    << " session sample because app key or secret is empty. Please see instructions." << std::endl;
             }
         }
-    }
-    else
-    {
-        ucout << "Skipped " << m_name.c_str()
-            << " session sample because app key or secret is empty. Please see instructions." << std::endl;
-    }
-}
 
-template<>
-void OAuthHelper<Password>::run()
-{
+        inline void setUserCredentials(const WideString& Username, const WideString& Password)
+        {
+            this->Username = Username;
+            this->Password = Password;
+        }
 
+
+    protected:
+        inline pplx::task<bool> Authorize()
+        {
+            open_browser_auth();
+            return m_listener->listen_for_code();
+        }
+
+        inline void open_browser_auth()
+        {
+            auto auth_uri(m_oauth2_config->build_authorization_uri(generate_state));
+            open_browser(auth_uri);
+        }
+
+        http_client_config m_http_config;
+        std::unique_ptr<oauth2_config> m_oauth2_config;
+
+    private:
+        WideString Username, Password;
+        bool generate_state;
+
+        inline bool is_enabled() const
+        {
+            {
+                if constexpr (std::is_same<T, ImplicitGrant>::value)
+                {
+                    return !m_oauth2_config->client_key().empty();
+                }
+                else {
+                    return !m_oauth2_config->client_key().empty() && !m_oauth2_config->client_secret().empty();
+                }
+            }
+
+        }
+        utility::string_t m_name;
+        std::unique_ptr<oauth2_code_listener> m_listener;
+    };
 }
