@@ -66,25 +66,33 @@ namespace Scarlett
             init(client_key, secret, redirect_uri, useragent);
         }
 
-        inline void init(const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent)
+        inline void setUserCredentials(const WideString& username, const WideString& password)
         {
-            if constexpr (std::is_same<T, _Password>::value)
-            {
-                m_oauth2_config = std::make_unique<oauth2_config>(
-                    client_key,
-                    secret,
-                    ""_u,
-                    ""_u,
-                    redirect_uri
-                    );
+            this->Username = username;
+            this->Password = password;
+        }
+        inline WideString getUsername() { return Username; }
+        inline WideString getPassword() { return Password; }
 
-                m_oauth2_config->set_bearer_auth(true);
-                m_oauth2_config->set_user_agent(useragent);
-            }
-            else {
-                m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, *m_oauth2_config);
-                m_oauth2_config = std::make_unique<oauth2_config>(client_key, client_secret, auth_endpoint, token_endpoint, redirect_uri);
-            }
+        inline void setClientKey(const WideString client_key) { m_oauth2_config->set_client_key(client_key); }
+        inline WideString getClientKey() { return m_oauth2_config->client_key(); }
+        
+        inline void setClientSecret(const WideString client_secret) { m_oauth2_config->set_client_secret(client_secret); }
+        inline WideString getClientSecret() { m_oauth2_config->client_secret(); }
+
+        inline void setImplicitGrant(bool option)
+        {
+            this->generate_state = true;
+            m_oauth2_config->set_implicit_grant(true);
+        }
+        inline void ImplicitGrant() { return m_oauth2_config->implicit_grant(); }
+
+        inline void setConfidential(bool option)
+        {
+            this->confidential = option;
+        }
+        inline bool Confidential() {
+            return this->confidential;
         }
 
         inline void GetToken()
@@ -118,6 +126,14 @@ namespace Scarlett
                         HttpClient cl("https://www.reddit.com"_u, m_http_config);
                         auto response = cl.request(req).get();
 
+                        if (response.status_code() != 200)
+                        {
+
+                        }
+                        else {
+
+                        }
+
 
                     }
                     else {
@@ -146,23 +162,6 @@ namespace Scarlett
             }
         }
 
-        inline void setUserCredentials(const WideString& username, const WideString& password)
-        {
-            this->Username = username;
-            this->Password = password;
-        }
-
-        inline void setImplicitGrant(bool option)
-        {
-            this->generate_state = true;
-            m_oauth2_config->set_implicit_grant(true);
-        }
-
-        inline void setConfidential(bool option)
-        {
-            this->confidential = option;
-        }
-
     protected:
         inline pplx::task<bool> Authorize()
         {
@@ -182,6 +181,27 @@ namespace Scarlett
     private:
         WideString Username, Password;
         bool generate_state, implicitgrant, confidential;
+
+        inline void init(const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent)
+        {
+            if constexpr (std::is_same<T, _Password>::value)
+            {
+                m_oauth2_config = std::make_unique<oauth2_config>(
+                    client_key,
+                    secret,
+                    ""_u,
+                    ""_u,
+                    redirect_uri
+                    );
+
+                m_oauth2_config->set_bearer_auth(true);
+                m_oauth2_config->set_user_agent(useragent);
+            }
+            else {
+                m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, *m_oauth2_config);
+                m_oauth2_config = std::make_unique<oauth2_config>(client_key, client_secret, auth_endpoint, token_endpoint, redirect_uri);
+            }
+        }
 
         inline bool is_enabled() const
         {
