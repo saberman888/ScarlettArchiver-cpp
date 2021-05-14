@@ -95,6 +95,8 @@ namespace Scarlett
             return this->confidential;
         }
 
+
+    protected:
         inline void GetToken()
         {
             if (is_enabled())
@@ -162,7 +164,6 @@ namespace Scarlett
             }
         }
 
-    protected:
         inline pplx::task<bool> Authorize()
         {
             open_browser_auth();
