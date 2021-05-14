@@ -47,7 +47,7 @@ namespace Scarlett
 #endif
     }
 
-    class Code;
+    class Authorization;
     class _Password;
 
 
@@ -220,4 +220,7 @@ namespace Scarlett
         utility::string_t m_name;
         std::unique_ptr<oauth2_code_listener> m_listener;
     };
+
+    using SimpleClient = OAuth2Helper<_Password>;
+    using AuthClient = OAuth2Helper<Authorization>;
 }
