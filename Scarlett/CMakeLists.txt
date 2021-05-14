@@ -26,7 +26,7 @@ if(GCC)
 	set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 elseif(MSVC)
 	set(CMAKE_CXX_FLAGS "/EHa /MP")
-	set(CMAKE_CXX_FLAGS_DEBUG "/Zi /Zf /JM /JMC /Od")
+	set(CMAKE_CXX_FLAGS_DEBUG "/Zi /Zf /JMC /Od")
 	if(ASAN)
 		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /fsanitize=address")
 	endif()
@@ -44,11 +44,11 @@ endif()
 
 
 
-set(Internal Internal/exceptions.cpp Internal/Helpers.cpp "Client/IntervalTracker.cpp" Internal/Logger.cpp)
-set(Client Client/PushShift.cpp)
+set(Internal Internal/exceptions.cpp Internal/Helpers.cpp Internal/Logger.cpp)
+set(Client Client/PushShift.cpp "Client/IntervalTracker.cpp")
 set(Reddit Reddit/BaseTypes/Postable.cpp Reddit/BaseTypes/Linkable.cpp Reddit/BaseTypes/Link.cpp Reddit/BaseTypes/TextPost.cpp Reddit/Comment.cpp Reddit/Galleries.cpp Reddit/SelfPost.cpp Reddit/Video.cpp Reddit/SubredditMetadata.cpp Reddit/Subreddit.cpp)
 set(Media Media/Content.cpp Media/Imgur.cpp)
 set(Libraries spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest  tinyxml2::tinyxml2 ${Boost_LIBRARIES})
 
-add_library(Scarlett STATIC ${Internal} ${Media} ${Client} ${Reddit} )
+add_library(Scarlett STATIC ${Internal} ${Media} ${Client} ${Reddit})
 target_link_libraries(Scarlett LINK_PUBLIC  ${Libraries})
