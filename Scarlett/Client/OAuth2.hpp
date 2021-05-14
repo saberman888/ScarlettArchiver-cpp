@@ -47,9 +47,7 @@ namespace Scarlett
 #endif
     }
 
-    class ImplicitGrant;
     class Code;
-    class AOA; // Application Only OAuth
     class _Password;
 
 
@@ -62,15 +60,14 @@ namespace Scarlett
             init(client_key, secret, redirect_uri, useragent);
         }
 
-        OAuth2Helper(const WideString Username, const WideString Password, const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent)
+        OAuth2Helper(const WideString username, const WideString password, const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent)
         {
-            setUserCredentials(Username, Password);
+            setUserCredentials(username, password);
             init(client_key, secret, redirect_uri, useragent);
         }
 
         inline void init(const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent)
         {
-            //m_name = Name;
             if constexpr (std::is_same<T, _Password>::value)
             {
                 auto tokenEndpoint = "/api/v1/access_token" + GenerateParamData(StringMap{
@@ -81,7 +78,7 @@ namespace Scarlett
                 m_oauth2_config = std::make_unique<oauth2_config>(
                     client_key,
                     secret,
-                    L"",
+                    ""_u,
                     utility::conversions::to_string_t(tokenEndpoint),
                     redirect_uri
                     );
@@ -91,12 +88,6 @@ namespace Scarlett
             else {
                 m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, *m_oauth2_config);
                 m_oauth2_config = std::make_unique<oauth2_config>(client_key, client_secret, auth_endpoint, token_endpoint, redirect_uri);
-                if constexpr (std::is_same<T, ImplicitGrant>::value)
-                {
-                    m_oauth2_config->set_implicit_grant(true);
-                    generate_state = true;
-
-                }
             }
         }
 
@@ -109,15 +100,22 @@ namespace Scarlett
                     if constexpr (std::is_same_v<T, _Password>)
                     {
                         m_http_config.set_oauth2(*m_oauth2_config);
-                        m_oauth2_config->token_from_refresh();
+                        //m_oauth2_config->token_from_refresh();
+
+                        http_request req(HttpMethod::POST);
+                        req.set_request_uri("https://www.reddit.com/api/v1/access_token"_u);
+
+                        HttpClient cl("https://www.reddit.com"_u, m_http_config);
+                        cl.request(req);
+
                     }
                     else {
                         if (Authorize().get())
                         {
                             m_http_config.set_oauth2(*m_oauth2_config);
-                            if constexpr (std::is_same<T, AOA>::value)
+                            if (confidential)
                             {
-                                // TODO: Implement AOA specific token retrieval
+                                // TODO: Implement AOA/confidential specific token retrieval
                             }
                             else {
                                 ucout << m_oauth2_config->token().access_token();
@@ -137,12 +135,22 @@ namespace Scarlett
             }
         }
 
-        inline void setUserCredentials(const WideString& Username, const WideString& Password)
+        inline void setUserCredentials(const WideString& username, const WideString& password)
         {
-            this->Username = Username;
-            this->Password = Password;
+            this->Username = username;
+            this->Password = password;
         }
 
+        inline void setImplicitGrant(bool option)
+        {
+            this->generate_state = true;
+            m_oauth2_config->set_implicit_grant(true);
+        }
+
+        inline void setConfidential(bool option)
+        {
+            this->confidential = option;
+        }
 
     protected:
         inline pplx::task<bool> Authorize()
@@ -162,12 +170,12 @@ namespace Scarlett
 
     private:
         WideString Username, Password;
-        bool generate_state;
+        bool generate_state, implicitgrant, confidential;
 
         inline bool is_enabled() const
         {
             {
-                if constexpr (std::is_same<T, ImplicitGrant>::value)
+                if(implicitgrant)
                 {
                     return !m_oauth2_config->client_key().empty();
                 }
