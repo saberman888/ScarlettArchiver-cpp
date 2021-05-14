@@ -70,20 +70,16 @@ namespace Scarlett
         {
             if constexpr (std::is_same<T, _Password>::value)
             {
-                auto tokenEndpoint = "/api/v1/access_token" + GenerateParamData(StringMap{
-                    {"grant_type", "password"},
-                    {"username", u8(Username)},
-                    {"password", u8(Password) }});
-
                 m_oauth2_config = std::make_unique<oauth2_config>(
                     client_key,
                     secret,
                     ""_u,
-                    utility::conversions::to_string_t(tokenEndpoint),
+                    ""_u,
                     redirect_uri
                     );
 
                 m_oauth2_config->set_bearer_auth(true);
+                m_oauth2_config->set_user_agent(useragent);
             }
             else {
                 m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, *m_oauth2_config);
@@ -100,13 +96,28 @@ namespace Scarlett
                     if constexpr (std::is_same_v<T, _Password>)
                     {
                         m_http_config.set_oauth2(*m_oauth2_config);
-                        //m_oauth2_config->token_from_refresh();
+                        m_http_config.set_credentials(
+                            web::credentials(
+                                m_oauth2_config->client_key(),
+                                m_oauth2_config->client_secret()
+                            )
+                        );
 
                         http_request req(HttpMethod::POST);
-                        req.set_request_uri("https://www.reddit.com/api/v1/access_token"_u);
+
+                        web::uri_builder ub;
+                        ub.set_scheme("https"_u);
+                        ub.set_host("reddit.com"_u);
+                        ub.set_path("/api/v1/access_token"_u);
+                        ub.append_query("grant_type=password"_u);
+                        ub.append_query("username="_u + Username);
+                        ub.append_query("password="_u + Password);
+
+                        req.set_request_uri(ub.to_uri());
 
                         HttpClient cl("https://www.reddit.com"_u, m_http_config);
-                        cl.request(req);
+                        auto response = cl.request(req).get();
+
 
                     }
                     else {
