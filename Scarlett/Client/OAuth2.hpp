@@ -138,7 +138,7 @@ namespace Scarlett
 
                         }
                         else {
-
+                            readToken(response.extract_json().get());
                         }
 
 
@@ -208,6 +208,23 @@ namespace Scarlett
 
             m_oauth2_config->set_bearer_auth(true);
             m_oauth2_config->set_user_agent(useragent);
+        }
+
+        inline void readToken(const JSON::value data)
+        {
+            if (data.has_field("invalid_grant"))
+            {
+                // TODO: Implement invalid grant handling
+            }
+            else {
+                web::http::oauth2::experimental::oauth2_token t;
+
+                t.set_access_token(data.at("access_token"_u).as_string());
+                t.set_access_token(data.at("expires_in"_u).as_integer());
+                t.set_token_type(data.at("token_type"_u).as_string());
+                t.set_scope(data.at("scope"_u).as_string());
+                m_oauth2_config->set_token(t);
+            }
         }
 
         inline bool is_enabled() const
