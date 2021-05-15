@@ -103,8 +103,6 @@ namespace Scarlett
             return permanentToken;
         }
 
-
-    protected:
         inline void GetToken()
         {
             if (is_enabled())
@@ -124,7 +122,8 @@ namespace Scarlett
                         http_request req(HttpMethod::POST);
 
                         web::uri_builder ub;
-                        ub.append("https://www.reddit.com/api/v1/access_token");
+                        ub.append("https://www.reddit.com/api/v1/access_token"_u);
+                        ub.append_query("grant_type=password"_u);
                         ub.append_query("username="_u + Username);
                         ub.append_query("password="_u + Password);
 
@@ -169,6 +168,9 @@ namespace Scarlett
             }
         }
 
+    protected:
+        
+
         inline pplx::task<bool> Authorize()
         {
             open_browser_auth();
@@ -194,7 +196,7 @@ namespace Scarlett
             {
                 m_oauth2_config = std::make_unique<oauth2_config>(
                     client_key,
-                    secret,
+                    client_secret,
                     ""_u,
                     "https://www.reddit.com/api/v1/access_token"_u,
                     redirect_uri
@@ -212,7 +214,7 @@ namespace Scarlett
 
         inline void readToken(const JSON::value data)
         {
-            if (data.has_field("invalid_grant"))
+            if (data.has_field("error"_u))
             {
                 // TODO: Implement invalid grant handling
             }
@@ -220,7 +222,7 @@ namespace Scarlett
                 web::http::oauth2::experimental::oauth2_token t;
 
                 t.set_access_token(data.at("access_token"_u).as_string());
-                t.set_access_token(data.at("expires_in"_u).as_integer());
+                t.set_expires_in(data.at("expires_in"_u).as_integer());
                 t.set_token_type(data.at("token_type"_u).as_string());
                 t.set_scope(data.at("scope"_u).as_string());
                 m_oauth2_config->set_token(t);
