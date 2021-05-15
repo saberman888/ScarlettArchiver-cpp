@@ -168,15 +168,18 @@ namespace Scarlett
             }
         }
 
-    protected:
-        
-
         inline pplx::task<bool> Authorize()
         {
             open_browser_auth();
             return m_listener->listen_for_code();
         }
 
+        inline const http_client_config getSettings()
+        {
+            return m_http_config;
+        }
+
+    private:
         inline void open_browser_auth()
         {
             auto auth_uri(m_oauth2_config->build_authorization_uri(generate_state));
@@ -186,7 +189,6 @@ namespace Scarlett
         http_client_config m_http_config;
         std::unique_ptr<oauth2_config> m_oauth2_config;
 
-    private:
         WideString Username, Password;
         bool generate_state, implicitgrant, confidential, permanentToken;
 
@@ -245,7 +247,4 @@ namespace Scarlett
         utility::string_t m_name;
         std::unique_ptr<oauth2_code_listener> m_listener;
     };
-
-    using SimpleClient = OAuth2Helper<_Password>;
-    using AuthClient = OAuth2Helper<Authorization>;
 }
