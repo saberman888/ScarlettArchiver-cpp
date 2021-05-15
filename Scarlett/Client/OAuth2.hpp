@@ -95,6 +95,14 @@ namespace Scarlett
             return this->confidential;
         }
 
+        inline void enablePermanence(bool option = true)
+        {
+            permanentToken = true;
+        }
+        inline bool Permanent() {
+            return permanentToken;
+        }
+
 
     protected:
         inline void GetToken()
@@ -116,10 +124,7 @@ namespace Scarlett
                         http_request req(HttpMethod::POST);
 
                         web::uri_builder ub;
-                        ub.set_scheme("https"_u);
-                        ub.set_host("reddit.com"_u);
-                        ub.set_path("/api/v1/access_token"_u);
-                        ub.append_query("grant_type=password"_u);
+                        ub.append("https://www.reddit.com/api/v1/access_token");
                         ub.append_query("username="_u + Username);
                         ub.append_query("password="_u + Password);
 
@@ -181,9 +186,9 @@ namespace Scarlett
 
     private:
         WideString Username, Password;
-        bool generate_state, implicitgrant, confidential;
+        bool generate_state, implicitgrant, confidential, permanentToken;
 
-        inline void init(const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent)
+        inline void init(const WideString client_key, const WideString client_secret, const WideString redirect_uri, const WideString useragent)
         {
             if constexpr (std::is_same<T, _Password>::value)
             {
@@ -191,17 +196,18 @@ namespace Scarlett
                     client_key,
                     secret,
                     ""_u,
-                    ""_u,
+                    "https://www.reddit.com/api/v1/access_token"_u,
                     redirect_uri
                     );
-
-                m_oauth2_config->set_bearer_auth(true);
-                m_oauth2_config->set_user_agent(useragent);
             }
             else {
+                authorizationEndpoint = URI("https://www.reddit.com/api/v1/authorize"_u);
                 m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, *m_oauth2_config);
-                m_oauth2_config = std::make_unique<oauth2_config>(client_key, client_secret, auth_endpoint, token_endpoint, redirect_uri);
+                m_oauth2_config = std::make_unique<oauth2_config>(client_key, client_secret, "https://www.reddit.com/api/v1/authorize"_u, "https://www.reddit.com/api/v1/access_token"_u, redirect_uri);
             }
+
+            m_oauth2_config->set_bearer_auth(true);
+            m_oauth2_config->set_user_agent(useragent);
         }
 
         inline bool is_enabled() const
