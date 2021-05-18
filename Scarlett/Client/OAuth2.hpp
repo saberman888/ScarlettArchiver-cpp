@@ -7,6 +7,7 @@
 #include <utility>
 #include <memory>
 #include <mutex>
+#include "../Internal/exceptions.hpp"
 
 
 namespace Scarlett
@@ -122,13 +123,11 @@ namespace Scarlett
 
                         if (response.status_code() != 200)
                         {
-
+                            scarlettThrow("Failed to get access token, code " + response.status_code() + ", " + response.reason_phrase());
                         }
                         else {
                             readToken(response.extract_json().get());
                         }
-
-
                     }
                     else {
                         if (Authorize().get())
@@ -138,15 +137,14 @@ namespace Scarlett
                         }
                         else
                         {
-                            ucout << "Authorization failed for " << m_name.c_str() << "." << std::endl;
+                            scarlettThrow("Authorization failed!");
                         }
                     }
                 }
             }
             else
             {
-                ucout << "Skipped " << m_name.c_str()
-                    << " session sample because app key or secret is empty. Please see instructions." << std::endl;
+                scarlettThrow("Invalid parameters: Username, Password, Client Key or Secret are not present.");
             }
         }
 
