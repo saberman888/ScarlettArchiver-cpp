@@ -55,6 +55,7 @@ namespace Scarlett
     class OAuth2Helper
     {
     public:
+
         OAuth2Helper(const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent)
         {
             init(client_key, secret, redirect_uri, useragent);
@@ -80,28 +81,15 @@ namespace Scarlett
         inline void setClientSecret(const WideString client_secret) { m_oauth2_config->set_client_secret(client_secret); }
         inline WideString getClientSecret() { m_oauth2_config->client_secret(); }
 
+        inline void setUserAgent(const WideString useragent) { m_oauth2_config->set_user_agent(useragent); }
+        inline const WideString getUserAgent() { return m_oauth2_config->user_agent(); }
+
         inline void setImplicitGrant(bool option)
         {
             this->generate_state = true;
             m_oauth2_config->set_implicit_grant(true);
         }
         inline void ImplicitGrant() { return m_oauth2_config->implicit_grant(); }
-
-        inline void setConfidential(bool option)
-        {
-            this->confidential = option;
-        }
-        inline bool Confidential() {
-            return this->confidential;
-        }
-
-        inline void enablePermanence(bool option = true)
-        {
-            permanentToken = true;
-        }
-        inline bool Permanent() {
-            return permanentToken;
-        }
 
         inline void GetToken()
         {
@@ -190,7 +178,7 @@ namespace Scarlett
         std::unique_ptr<oauth2_config> m_oauth2_config;
 
         WideString Username, Password;
-        bool generate_state, implicitgrant, confidential, permanentToken;
+        bool generate_state, implicitgrant;
 
         inline void init(const WideString client_key, const WideString client_secret, const WideString redirect_uri, const WideString useragent)
         {
@@ -203,6 +191,7 @@ namespace Scarlett
                     "https://www.reddit.com/api/v1/access_token"_u,
                     redirect_uri
                     );
+                m_oauth2_config->set_http_basic_auth(true);
             }
             else {
                 authorizationEndpoint = URI("https://www.reddit.com/api/v1/authorize"_u);
