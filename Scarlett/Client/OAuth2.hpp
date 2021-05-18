@@ -111,9 +111,9 @@ namespace Scarlett
 
                         web::uri_builder ub;
                         ub.append("https://www.reddit.com/api/v1/access_token"_u);
-                        ub.append_query("grant_type=password"_u);
-                        ub.append_query("username="_u + Username);
-                        ub.append_query("password="_u + Password);
+                        ub.append_query("grant_type"_u, "password"_u);
+                        ub.append_query("username"_u, Username);
+                        ub.append_query("password"_u, Password);
 
                         req.set_request_uri(ub.to_uri());
 
@@ -134,13 +134,7 @@ namespace Scarlett
                         if (Authorize().get())
                         {
                             m_http_config.set_oauth2(*m_oauth2_config);
-                            if (confidential)
-                            {
-                                // TODO: Implement AOA/confidential specific token retrieval
-                            }
-                            else {
-                                ucout << m_oauth2_config->token().access_token();
-                            }
+                            ucout << m_oauth2_config->token().access_token();
                         }
                         else
                         {
@@ -222,6 +216,7 @@ namespace Scarlett
 
         inline bool is_enabled() const
         {
+            if constexpr (std::is_same_v<T, Authorization>)
             {
                 if(implicitgrant)
                 {
@@ -231,9 +226,11 @@ namespace Scarlett
                     return !m_oauth2_config->client_key().empty() && !m_oauth2_config->client_secret().empty();
                 }
             }
+            else {
+                return !m_oauth2_config->client_key().empty() && !m_oauth2_config->client_secret().empty() && !Username.empty() && !Password.empty();
+            }
 
         }
-        utility::string_t m_name;
         std::unique_ptr<oauth2_code_listener> m_listener;
     };
 }
