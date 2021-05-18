@@ -60,4 +60,8 @@ namespace Scarlett
 		return Download(conv::to_string_t(std::forward<std::string>(source)));
 	}
 
+	inline WideString u16(const std::string source){
+		return conv::to_string_t(source);
+	}
+
 }
