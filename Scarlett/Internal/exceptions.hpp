@@ -5,6 +5,7 @@
 #include <iosfwd>
 #include "Logger.hpp"
 #include <utility>
+#include "Helpers.hpp"
 
 #if defined(__FUNCTION__)
 #define __func__ __FUNCTION__
@@ -17,6 +18,7 @@ namespace Scarlett
 	public:
 		ScarlettException(const std::string& message, unsigned int line, const std::string& func);
 		ScarlettException(const std::string&& message, unsigned int line, const std::string& func);
+		ScarlettException(const HttpResponse response, unsigned int line, const std::string& func);
 
 		const char* what()
 		{
