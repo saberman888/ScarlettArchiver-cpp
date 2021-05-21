@@ -33,7 +33,7 @@ namespace Scarlett
 	public:
 		ScarlettHTTPException(const HttpResponse response, unsigned int line, const std::string& func);
 
-		inline const HttpResponse& Response()
+		inline const HttpResponse Response()
 		{
 			return response;
 		}
