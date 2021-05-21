@@ -18,7 +18,6 @@ namespace Scarlett
 	public:
 		ScarlettException(const std::string& message, unsigned int line, const std::string& func);
 		ScarlettException(const std::string&& message, unsigned int line, const std::string& func);
-		ScarlettException(const HttpResponse response, unsigned int line, const std::string& func);
 
 		const char* what()
 		{
@@ -26,6 +25,20 @@ namespace Scarlett
 		}
 	private:
 		std::string message;
+	};
+
+
+	class ScarlettHTTPException : public ScarlettException
+	{
+	public:
+		ScarlettHTTPException(const HttpResponse response, unsigned int line, const std::string& func);
+
+		inline const HttpResponse& Response()
+		{
+			return response;
+		}
+	private:
+		HttpResponse response;
 	};
 
 

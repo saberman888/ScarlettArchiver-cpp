@@ -12,11 +12,6 @@ namespace Scarlett
 	ScarlettException::ScarlettException(const std::string&& message, unsigned int line, const std::string& func) : std::runtime_error("[" + std::string(func) + ":" + std::to_string(line) + "]: " + message){
         this->message = "[" + std::string(func) + ":" + std::to_string(line) + "]: " + message;
     }
-
-	ScarlettException::ScarlettException(const HttpResponse response, unsigned int line, const std::string& func)
-	{
-	}
-	
 	
 	void printException(const std::exception& e, int level)
 	{
@@ -54,6 +49,13 @@ namespace Scarlett
 		}
 		catch (...) {
 		}
+	}
+
+	ScarlettHTTPException::ScarlettHTTPException(const HttpResponse response, unsigned int line, const std::string& func)
+	{
+		this->response = response;
+		auto message = response.status_code() + ": " + conv::to_utf8string(response.reason_phrase());
+		ScarlettException::ScarlettException(message.c_str(), line, func);
 	}
 
 };
