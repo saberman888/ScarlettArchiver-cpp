@@ -20,12 +20,24 @@ namespace Scarlett
 		ScarlettException(const std::string& message, unsigned int line, const std::string& func);
 		ScarlettException(const std::string&& message, unsigned int line, const std::string& func);
 
-		const char* what()
+		inline const char* what()
 		{
 			return message.c_str();
 		}
+
+		inline const int line()
+		{
+			return loc;
+		}
+
+		inline const std::string func()
+		{
+			return _func;
+		}
+
 	private:
-		std::string message;
+		int loc;
+		std::string _func, message;
 	};
 
 
@@ -33,7 +45,7 @@ namespace Scarlett
 	{
 	public:
 		ScarlettHTTPException() = default;
-		ScarlettHTTPException(const HttpResponse response, unsigned int line, const std::string& func);
+		ScarlettHTTPException(const HttpResponse& response, unsigned int line, const std::string& func);
 
 		inline const HttpResponse Response()
 		{
@@ -48,7 +60,7 @@ namespace Scarlett
 	void printException(ScarlettException& se, int level = 0);
 
 #define scarlettThrow(msg) throw ScarlettException(msg, __LINE__, __func__);
-#define scarlettHTTPThrow(response) throw ScarlettHTTPException(response, __LINE__, __func__);
 #define scarlettNestedThrow(msg) std::throw_with_nested(ScarlettException(msg, __LINE__, __func__));
-
+#define scarlettHTTPThrow(response) throw ScarlettHTTPException(response, __LINE__, __func__);
+#define scarlettHTTPNestedThrow(response) std::throw_with_nested(ScarlettHTTPException(response, __LINE__, __func__));
 }
