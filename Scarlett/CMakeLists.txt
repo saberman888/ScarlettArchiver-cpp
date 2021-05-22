@@ -53,9 +53,9 @@ target_include_directories(
 
 target_sources(
 	Scarlett PRIVATE 
+	src/Internal/Logger.cpp
 	src/Internal/Exceptions.cpp
 	src/Internal/Helpers.cpp
-	src/Internal/Logger.cpp
 	src/Media/Content.cpp
 	src/Media/Imgur.cpp
 	src/Reddit/BaseTypes/Postable.cpp
@@ -77,7 +77,6 @@ target_link_libraries(
 	Scarlett 
 	INTERFACE  
 	spdlog::spdlog
-	spdlog::spdlog_header_only
 	cpprestsdk::cpprest
 	tinyxml2::tinyxml2
 	${Boost_LIBRARIES})
