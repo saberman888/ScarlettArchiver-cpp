@@ -14,14 +14,14 @@ namespace Scarlett::Reddit::BaseTypes
 	std::string Link::GetContent() {
 		using namespace Scarlett::Media;
 
-		log->info(Id + ": Getting Image");
+		log->info(Id, ": Getting Image");
 		if (ImgurClientId) {
-			log->info(Id + ": Resolving the URL through the Imgur API");
+			log->info(Id, ": Resolving the URL through the Imgur API");
 			return ImgurAccess::GetImage(URL.GetURLString(),
 				ImgurClientId.value());
 		}
 		else {
-			log->info(Id + ": Image returned");
+			log->info(Id, ": Image returned");
 			return URL.GetURLString();
 		}
 	}

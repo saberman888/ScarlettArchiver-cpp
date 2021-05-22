@@ -32,11 +32,11 @@ namespace Scarlett
 	void printException(const std::exception& e, int level)
 	{
 		std::cerr << std::string(level, '\t') << "[exception]: " << e.what() << '\n';		
-		auto log = GetGlobalLogger();
-		log->error(std::string(level, '\t') + "[exception]: " + e.what());
+		auto log = spdlog::get("Scarlett Archiver Log");
+		log->error("{}[exception]: {}", std::string(level, ' '), e.what());
+
 		try {
 			std::rethrow_if_nested(e);
-			
 		}
 		catch (const ScarlettException& e) {
 			printException(e, level + 1);
@@ -51,9 +51,9 @@ namespace Scarlett
 
 	void printException(ScarlettException& se, int level)
 	{
-		std::cerr << std::string(level, ' ') << "[scarlett exception]: " << se.what() << std::endl; 
-		auto log = GetGlobalLogger();
-		log->error(std::string(level, ' ') + "[exception]: " + se.what());
+		std::cerr << std::string(level, '\t') << "[scarlett exception]: " << se.what() << std::endl; 
+		auto log = spdlog::get("Scarlett Archiver Log");
+		log->error("{}[scarlett exception]: {}", std::string(level, ' '), se.what());
 		try {
 			std::rethrow_if_nested(se);
 		}
