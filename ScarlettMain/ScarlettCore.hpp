@@ -2,7 +2,7 @@
 
 #include <iosfwd>
 #include "ParseOptions.hpp"
-#include "Scarlett.hpp"
+#include "Scarlett/Scarlett.hpp"
 namespace Scarlett
 {
 	class ScarlettCore
