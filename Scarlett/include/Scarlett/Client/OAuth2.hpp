@@ -123,7 +123,7 @@ namespace Scarlett
 
                         if (response.status_code() != 200)
                         {
-                            scarlettThrow("Failed to get access token, code " + std::string(response.status_code()) + ", " + u8(response.reason_phrase()));
+                            scarlettHTTPThrow(response);
                         }
                         else {
                             readToken(response.extract_json().get());

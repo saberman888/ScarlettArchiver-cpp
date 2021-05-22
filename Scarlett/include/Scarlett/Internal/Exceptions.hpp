@@ -48,6 +48,7 @@ namespace Scarlett
 	void printException(ScarlettException& se, int level = 0);
 
 #define scarlettThrow(msg) throw ScarlettException(msg, __LINE__, __func__);
+#define scarlettHTTPThrow(response) throw ScarlettHTTPException(response, __LINE__, __func__);
 #define scarlettNestedThrow(msg) std::throw_with_nested(ScarlettException(msg, __LINE__, __func__));
 
 }
