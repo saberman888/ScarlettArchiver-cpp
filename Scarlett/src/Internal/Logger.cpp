@@ -17,6 +17,11 @@ namespace Scarlett
 		}
 	}
 
+	std::shared_ptr<spdlog::logger> GetGlobalLogger()
+	{
+		return spdlog::get("Scarlett Archiver Log");
+	}
+
 	Logger::Logger()
 	{
 		log = spdlog::get("Scarlett Archiver Log");

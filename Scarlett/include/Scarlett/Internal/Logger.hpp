@@ -13,10 +13,7 @@ namespace Scarlett
 {
 	void InitLogs();
 
-	inline std::shared_ptr<spdlog::logger> GetGlobalLogger()
-	{
-		return spdlog::get("Scarlett Archiver Log");
-	}
+	std::shared_ptr<spdlog::logger> GetGlobalLogger();
 
 	struct Logger
 	{
