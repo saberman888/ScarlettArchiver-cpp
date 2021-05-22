@@ -1,7 +1,5 @@
 #pragma once
 
-#define SPDLOG_FMT_EXTERNAL 1
-
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/fmt/bin_to_hex.h"
@@ -13,7 +11,7 @@ namespace Scarlett
 {
 	void InitLogs();
 
-	std::shared_ptr<spdlog::logger> GetGlobalLogger();
+	const std::shared_ptr<spdlog::logger> GetGlobalLogger();
 
 	struct Logger
 	{

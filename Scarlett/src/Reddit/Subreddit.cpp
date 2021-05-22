@@ -6,10 +6,11 @@ namespace Scarlett::Reddit {
 	Subreddit::Subreddit(const std::string Subreddit, const std::string Start, const std::string End)
 	{
 		sub = std::make_unique<SubredditMetadata>(Subreddit, Start, End);
-		log->info(sub->Subreddit + " has been instantiated.");
+		log->info("{} has been instantiated.", sub->Subreddit);
 
 		SubStorePath = std::filesystem::current_path() / "subreddits" / sub->Subreddit;
-		log->info("Storing at " + SubStorePath.string());
+		auto k = SubStorePath.string();
+		log->info("Storing at {}", SubStorePath.string());
 	}
 	Subreddit::Subreddit(const std::filesystem::path source) : SubStorePath(source)
 	{
@@ -22,7 +23,6 @@ namespace Scarlett::Reddit {
 	{
 		using namespace std::chrono_literals;
 
-		log->info("Fetching subreddit posts...");
 		// Retrieve the next batch of posts by plugging StartDate into after and StartDate incremented by 24 hours into before.
 		// I want to be more specific when I have SearchSubmissions call for these twenty four hours instead of plugging in EndDate into before because,
 		// I think It might retrieve more data
@@ -37,13 +37,11 @@ namespace Scarlett::Reddit {
 
 		if (result.status_code() != 200)
 		{
-			scarlettThrow("Failed to fetch data from PushShift: " + u8(result.reason_phrase()) + " " + std::to_string(result.status_code()));
+			scarlettHTTPThrow(result);
 		}
 
 		// Increment CurrentPointedDate by 24 hours so we can ready for the next call.
 		sub->DatePointer += 86400;
-		log->info("Incrementing by 24 hours for next fetch");
-
 		return result.extract_json().get();
 	}
 
@@ -62,28 +60,20 @@ namespace Scarlett::Reddit {
 	void Subreddit::Read(const JSON::value& source) {
 		for (auto element : source.at("data"_u).as_array())
 		{
-			log->info("Reading Point: " + u8(element.at("id"_u).as_string()));
-			std::cout << "Reading Point: " << u8(element.at("id"_u).as_string()) << std::endl;
-
-			log->info("Reading element...");
 			if (Gallery::IsGallery(element))
 			{
-				log->info("Found a Gallery");
 				auto potentialPost = boost::make_shared<Gallery>(element);
 				Add(potentialPost);
 			}
 			else if (Reddit::Video::IsVideo(element)) {
-				log->info("Found a Video");
 				auto potentialPost = boost::make_shared<Video>(element);
 				Add(potentialPost);
 			}
 			else if (Reddit::SelfPost::IsSelfPost(element)) {
-				log->info("Found a Self Post");
 				auto potentialPost = boost::make_shared<SelfPost>(element);
 				Add(potentialPost);
 			}
 			else {
-				log->info("Found a Link");
 				auto potentialPost = boost::make_shared<BaseTypes::Link>(element);
 				Add(potentialPost);
 			}
