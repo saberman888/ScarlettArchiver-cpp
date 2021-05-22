@@ -4,7 +4,7 @@
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/shared_ptr.hpp>
-#include "exceptions.hpp"
+#include "Exceptions.hpp"
 
 namespace Scarlett::Internal
 {

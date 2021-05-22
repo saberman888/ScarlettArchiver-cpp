@@ -14,7 +14,7 @@
 #include <string>
 #include <regex>
 #include <utility>
-#include "../Internal/exceptions.hpp"
+#include "../Internal/Exceptions.hpp"
 #include "../Internal/Helpers.hpp"
 
 namespace Scarlett {

@@ -2,7 +2,7 @@
 
 #include <ctime>
 #include <algorithm>
-#include "../../Internal/exceptions.hpp"
+#include "../../Internal/Exceptions.hpp"
 #include "../../Internal/Helpers.hpp"
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
