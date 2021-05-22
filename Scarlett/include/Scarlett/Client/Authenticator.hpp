@@ -28,7 +28,7 @@ public:
         : m_listener(new http_listener(listen_uri)), m_config(config)
     {
         m_listener->support([this](http_request request) -> void {
-            if (request.request_uri().path() == conv::to_string_t("/"))
+            if (request.request_uri().path() == utility::conversions::to_string_t("/"))
             {
                 m_resplock.lock();
 
@@ -46,13 +46,13 @@ public:
                     }
                         });
 
-                request.reply(status_codes::OK, conv::to_string_t("Ok."));
+                request.reply(status_codes::OK, utility::conversions::to_string_t("Ok."));
 
                 m_resplock.unlock();
             }
             else
             {
-                request.reply(status_codes::NotFound, conv::to_string_t("Not found."));
+                request.reply(status_codes::NotFound, utility::conversions::to_string_t("Not found."));
             }
             });
 
