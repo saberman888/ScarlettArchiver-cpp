@@ -1,4 +1,4 @@
-#include "Galleries.hpp"
+#include "Scarlett/Reddit/Galleries.hpp"
 BOOST_CLASS_EXPORT(Scarlett::Reddit::Gallery);
 BOOST_SERIALIZATION_SHARED_PTR(ScarletT::Reddit::Gallery);
 

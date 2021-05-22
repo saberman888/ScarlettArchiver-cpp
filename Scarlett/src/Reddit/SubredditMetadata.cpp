@@ -1,4 +1,4 @@
-#include "SubredditMetadata.hpp"
+#include "Scarlett/Reddit/SubredditMetadata.hpp"
 #include <iostream>
 BOOST_CLASS_EXPORT_KEY2(Scarlett::Reddit::SubredditMetadata, "metadata");
 

@@ -1,4 +1,4 @@
-#include "Linkable.hpp"
+#include "Scarlett/Reddit/BaseTypes/Linkable.hpp"
 BOOST_SERIALIZATION_ASSUME_ABSTRACT(Scarlett::Reddit::BaseTypes::Linkable);
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::BaseTypes:::Linkable);
 

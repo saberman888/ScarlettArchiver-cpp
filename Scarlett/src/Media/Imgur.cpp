@@ -1,4 +1,4 @@
-#include "Imgur.hpp"
+#include "Scarlett/Media/Imgur.hpp"
 
 namespace Scarlett::Media::ImgurAccess
 {

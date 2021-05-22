@@ -1,4 +1,4 @@
-#include "Reddit.hpp"
+#include "Scarlett/Client/Reddit.hpp"
 
 namespace Scarlett::Client
 {

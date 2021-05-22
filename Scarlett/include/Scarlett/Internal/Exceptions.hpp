@@ -16,6 +16,7 @@ namespace Scarlett
 	class ScarlettException : public std::runtime_error
 	{
 	public:
+		ScarlettException() = default;
 		ScarlettException(const std::string& message, unsigned int line, const std::string& func);
 		ScarlettException(const std::string&& message, unsigned int line, const std::string& func);
 
@@ -31,6 +32,7 @@ namespace Scarlett
 	class ScarlettHTTPException : public ScarlettException
 	{
 	public:
+		ScarlettHTTPException() = default;
 		ScarlettHTTPException(const HttpResponse response, unsigned int line, const std::string& func);
 
 		inline const HttpResponse Response()

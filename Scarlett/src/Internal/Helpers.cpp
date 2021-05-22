@@ -1,4 +1,4 @@
-#include "Helpers.hpp"
+#include "Scarlett/Internal/Helpers.hpp"
 
 namespace Scarlett
 {

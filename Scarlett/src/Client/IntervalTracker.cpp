@@ -1,4 +1,4 @@
-#include "IntervalTracker.hpp"
+#include "Scarlett/Client/IntervalTracker.hpp"
 
 namespace Scarlett::Client
 {

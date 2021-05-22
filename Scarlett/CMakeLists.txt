@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(Scarlett)
+project(Scarlett CXX)
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(cpprestsdk CONFIG REQUIRED)
@@ -42,13 +42,42 @@ if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
+add_library(Scarlett STATIC)
 
 
-set(Internal Internal/exceptions.cpp Internal/Helpers.cpp Internal/Logger.cpp)
-set(Client Client/PushShift.cpp "Client/IntervalTracker.cpp")
-set(Reddit Reddit/BaseTypes/Postable.cpp Reddit/BaseTypes/Linkable.cpp Reddit/BaseTypes/Link.cpp Reddit/BaseTypes/TextPost.cpp Reddit/Comment.cpp Reddit/Galleries.cpp Reddit/SelfPost.cpp Reddit/Video.cpp Reddit/SubredditMetadata.cpp Reddit/Subreddit.cpp)
-set(Media Media/Content.cpp Media/Imgur.cpp)
-set(Libraries spdlog::spdlog spdlog::spdlog_header_only cpprestsdk::cpprest  tinyxml2::tinyxml2 ${Boost_LIBRARIES})
+target_include_directories(
+	Scarlett
+	PUBLIC
+	${PROJECT_SOURCE_DIR}/include
+)
 
-add_library(Scarlett STATIC ${Internal} ${Media} ${Client} ${Reddit})
-target_link_libraries(Scarlett LINK_PUBLIC  ${Libraries})
+target_sources(
+	Scarlett PRIVATE 
+	src/Internal/Exceptions.cpp
+	src/Internal/Helpers.cpp
+	src/Internal/Logger.cpp
+	src/Media/Content.cpp
+	src/Media/Imgur.cpp
+	src/Reddit/BaseTypes/Postable.cpp
+	src/Reddit/BaseTypes/Linkable.cpp
+	src/Reddit/BaseTypes/Link.cpp
+	src/Reddit/BaseTypes/TextPost.cpp
+	src/Reddit/Comment.cpp
+	src/Reddit/Galleries.cpp
+	src/Reddit/SelfPost.cpp
+	src/Reddit/Video.cpp
+	src/Reddit/SubredditMetadata.cpp
+	src/Reddit/Subreddit.cpp
+	src/Client/IntervalTracker.cpp
+	src/Client/PushShift.cpp
+	src/Client/Reddit.cpp
+)
+
+target_link_libraries(
+	Scarlett 
+	INTERFACE  
+	spdlog::spdlog
+	spdlog::spdlog_header_only
+	cpprestsdk::cpprest
+	tinyxml2::tinyxml2
+	${Boost_LIBRARIES})
