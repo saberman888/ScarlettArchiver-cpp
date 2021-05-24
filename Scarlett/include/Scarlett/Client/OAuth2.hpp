@@ -7,7 +7,7 @@
 #include <utility>
 #include <memory>
 #include <mutex>
-#include "../Internal/exceptions.hpp"
+#include "../Internal/Exceptions.hpp"
 
 
 namespace Scarlett
@@ -39,11 +39,11 @@ namespace Scarlett
 #elif defined(__APPLE__)
         // NOTE: OS X only.
         // NOTE: OS X only.
-        string_t browser_cmd(U("open \"") + auth_uri + U("\""));
+        string_t browser_cmd(utility::conversions::to_string_t("open \"") + auth_uri + utility::conversions::to_string_t("\""));
         (void)system(browser_cmd.c_str());
 #else
         // NOTE: Linux/X11 only.
-        string_t browser_cmd(U("xdg-open \"") + auth_uri + U("\""));
+        utility::string_t browser_cmd(utility::conversions::to_string_t("xdg-open \"") + auth_uri + utility::conversions::to_string_t("\""));
         (void)system(browser_cmd.c_str());
 #endif
     }
@@ -80,7 +80,7 @@ namespace Scarlett
         inline WideString getClientKey() { return m_oauth2_config->client_key(); }
         
         inline void setClientSecret(const WideString client_secret) { m_oauth2_config->set_client_secret(client_secret); }
-        inline WideString getClientSecret() { m_oauth2_config->client_secret(); }
+        inline WideString getClientSecret() { return m_oauth2_config->client_secret(); }
 
         inline void setUserAgent(const WideString useragent) { m_oauth2_config->set_user_agent(useragent); }
         inline const WideString getUserAgent() { return m_oauth2_config->user_agent(); }
@@ -88,9 +88,9 @@ namespace Scarlett
         inline void setImplicitGrant(bool option)
         {
             this->generate_state = true;
-            m_oauth2_config->set_implicit_grant(true);
+            m_oauth2_config->set_implicit_grant(option);
         }
-        inline void ImplicitGrant() { return m_oauth2_config->implicit_grant(); }
+        inline bool ImplicitGrant() { return m_oauth2_config->implicit_grant(); }
 
         inline void GetToken()
         {
@@ -186,7 +186,7 @@ namespace Scarlett
                 m_oauth2_config->set_http_basic_auth(true);
             }
             else {
-                authorizationEndpoint = URI("https://www.reddit.com/api/v1/authorize"_u);
+                auto authorizationEndpoint = URI("https://www.reddit.com/api/v1/authorize"_u);
                 m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, *m_oauth2_config);
                 m_oauth2_config = std::make_unique<oauth2_config>(client_key, client_secret, "https://www.reddit.com/api/v1/authorize"_u, "https://www.reddit.com/api/v1/access_token"_u, redirect_uri);
             }

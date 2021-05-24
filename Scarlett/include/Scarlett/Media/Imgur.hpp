@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Internal/Helpers.hpp"
-#include "../Internal/exceptions.hpp"
+#include "../Internal/Exceptions.hpp"
 #include "../Client/IntervalTracker.hpp"
 #include <cpprest/http_client.h>
 #include <cpprest/json.h>

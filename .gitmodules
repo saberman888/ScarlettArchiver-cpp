@@ -1,0 +1,6 @@
+[submodule "Scarlett/cpprestsdk"]
+	path = Scarlett/cpprestsdk
+	url = https://github.com/saberman888/cpprestsdk.git
+[submodule "Scarlett/submodule/cpprestsdk"]
+	path = Scarlett/submodule/cpprestsdk
+	url = https://github.com/saberman888/cpprestsdk.git
