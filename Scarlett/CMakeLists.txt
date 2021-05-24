@@ -2,15 +2,9 @@ cmake_minimum_required(VERSION 3.16)
 project(Scarlett CXX)
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(cpprestsdk CONFIG REQUIRED)
 find_package(Boost REQUIRED COMPONENTS program_options serialization)
 find_package(spdlog REQUIRED)
 find_package(tinyxml2 REQUIRED)
-
-add_compile_options(-D_TURN_OFF_PLATFORM_STRING=1)
-if(MSVC)
-	add_compile_options(-D_CRT_SECURE_NO_WARNINGS)
-endif()
 
 if(CMAKE_BUILD_TARGET|"Release")
 	add_compile_options(-DNDEBUG=1)
@@ -41,6 +35,17 @@ if(Boost_FOUND)
 	endif()
 	include_directories(${Boost_INCLUDE_DIRS})
 endif()
+
+set(CPPREST_EXCLUDE_WEBSOCKETS ON)
+set(CPPREST_EXCLUDE_COMPRESSION ON)
+set(CPPREST_EXCLUDE_BROTLI ON)
+set(BUILD_SHARED_LIBS OFF)
+set(BUILD_TESTS OFF)
+set(BUILD_SAMPLES OFF)
+set(CPPREST_INSTALL_HEADERS OFF)
+set(CPPREST_INSTALL OFF)
+
+add_subdirectory("submodule/cpprestsdk")
 
 add_library(Scarlett STATIC)
 
@@ -73,10 +78,18 @@ target_sources(
 	src/Client/Reddit.cpp
 )
 
+target_compile_definitions(
+        Scarlett
+        PRIVATE
+        SPDLOG_FMT_EXTERNAL=ON
+        CRT_SECURE_NO_WARNINGS
+        _TURN_OFF_PLATFORM_STRING
+)
+
 target_link_libraries(
 	Scarlett 
 	INTERFACE  
 	spdlog::spdlog
-	cpprestsdk::cpprest
+	cpprest
 	tinyxml2::tinyxml2
 	${Boost_LIBRARIES})
