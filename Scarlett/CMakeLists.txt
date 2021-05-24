@@ -36,6 +36,13 @@ if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
+message(STATUS "Cloning submodule: cpprestsdk")
+
+set(git_cmd "git")
+set(git_arg "submodule update --init")
+
+execute_process(COMMAND ${git_cmd} ${git_arg})
+
 set(CPPREST_EXCLUDE_WEBSOCKETS CACHE BOOL ON)
 set(CPPREST_EXCLUDE_COMPRESSION CACHE BOOL ON)
 set(CPPREST_EXCLUDE_BROTLI CACHE BOOL ON)
