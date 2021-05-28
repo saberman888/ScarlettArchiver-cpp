@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.20)
 project(Scarlett_Testing)
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(tinyxml2 REQUIRED)
+
 include_directories(${Scarlett_SOURCE_DIR})
 
 
@@ -28,5 +30,6 @@ target_include_directories(
 target_link_libraries(
 	oauth2_tests
 	PRIVATE
+	tinyxml2::tinyxml2
 	Scarlett_tests
 )
