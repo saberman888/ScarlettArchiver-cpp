@@ -1,2 +1,26 @@
 cmake_minimum_required(VERSION 3.20)
+project(Scarlett_Testing)
+set(CMAKE_CXX_STANDARD 17)
 
+include_directories(${Scarlett_SOURCE_DIR})
+
+
+add_executable(oauth2_tests)
+
+target_sources( 
+	oauth2_tests
+	PRIVATE 
+	oauth2_tests/main.cpp
+)
+
+target_include_directories(
+	oauth2_tests
+	PRIVATE
+	${Scarlett_SOURCE_DIR} 
+)
+
+target_link_libraries(
+	oauth2_tests
+	PRIVATE
+	Scarlett_tests
+)
