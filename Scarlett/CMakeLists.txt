@@ -147,5 +147,10 @@ if(SCARLETT_TESTS)
 	)
 
 	add_subdirectory("tests")
+
+	enable_testing()
+
+	add_test(NAME oauth2_tests COMMAND ${CMAKE_CTEST_COMMAND} --build-and-test "${Scarlett_SOURCE_DIR}/tests/oauth2_tests" "${CMAKE_CURRENT_BINARY_DIR}/oauth2_tests" --build-generator "${CMAKE_GENERATOR}" --test-command "${CMAKE_CTEST_COMMAND}")
+
 endif()
 
