@@ -9,8 +9,14 @@ add_executable(oauth2_tests)
 
 target_sources( 
 	oauth2_tests
-	PRIVATE 
+	PRIVATE
 	oauth2_tests/main.cpp
+)
+
+target_precompile_headers(
+	oauth2_tests
+	PRIVATE
+	scarlett_pch.hpp
 )
 
 target_include_directories(
