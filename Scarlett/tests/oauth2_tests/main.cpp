@@ -4,8 +4,19 @@
 
 namespace Scarlett::Tests
 {
-	TEST_F(OAUTH2Tests, Password)
+	TEST_F(TestAccessData, PasswordGrant)
 	{
+		using namespace Scarlett;
+		OAuth2Helper<_Password> a2h(
+			u16(acd.username),
+			u16(acd.password),
+			u16(acd.client_key),
+			u16(acd.client_secret),
+			u16(acd.redirect_uri),
+			u16(acd.useragent)
+		);
+
+		ASSERT_NO_THROW(a2h.GetToken());
 
 	}
 };
