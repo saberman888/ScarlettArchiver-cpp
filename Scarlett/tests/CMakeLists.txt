@@ -21,6 +21,12 @@ target_precompile_headers(
 	scarlett_pch.hpp
 )
 
+target_compile_definitions(
+	oauth2_tests
+	PRIVATE
+	_TURN_OFF_PLATFORM_STRING
+)
+
 target_include_directories(
 	oauth2_tests
 	PRIVATE
