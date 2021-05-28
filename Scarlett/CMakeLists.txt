@@ -145,5 +145,7 @@ if(SCARLETT_TESTS)
 		GTest::gtest_main
 		${SCARLETT_LINK_LIBRARIES}
 	)
+
+	add_subdirectory("tests")
 endif()
 
