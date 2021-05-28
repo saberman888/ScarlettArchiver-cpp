@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(Boost REQUIRED COMPONENTS program_options serialization)
 find_package(spdlog REQUIRED)
 find_package(tinyxml2 REQUIRED)
+find_package(Gtest CONFIG REQUIRED)
 
 if(CMAKE_BUILD_TARGET|"Release")
 	add_compile_options(-DNDEBUG=1)
@@ -36,7 +37,7 @@ if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
-message(STATUS "Cloning submodule: cpprestsdk")
+message(NOTICE "Cloning submodule: cpprestsdk")
 
 set(git_cmd "git")
 set(git_arg "submodule update --init")
@@ -52,19 +53,15 @@ set(BUILD_SAMPLES CACHE BOOL OFF)
 set(CPPREST_INSTALL_HEADERS CACHE BOOL OFF)
 set(CPPREST_INSTALL CACHE BOOL OFF)
 
-add_subdirectory("submodule/cpprestsdk")
 
-add_library(Scarlett STATIC)
+set(SCARLETT_TESTS CACHE BOOL ON)
 
+set(SCARLETT_COMPILE_DEFINITIONS
+	SPDLOG_FMT_EXTERNAL
+	CRT_SECURE_NO_WARNINGS
+	_TURN_OFF_STRING_PLATFORM)
 
-target_include_directories(
-	Scarlett
-	PUBLIC
-	${PROJECT_SOURCE_DIR}/include
-)
-
-target_sources(
-	Scarlett PRIVATE 
+set(SCARLETT_SOURCES
 	src/Internal/Logger.cpp
 	src/Internal/Exceptions.cpp
 	src/Internal/Helpers.cpp
@@ -82,21 +79,71 @@ target_sources(
 	src/Reddit/Subreddit.cpp
 	src/Client/IntervalTracker.cpp
 	src/Client/PushShift.cpp
-	src/Client/Reddit.cpp
+	src/Client/Reddit.cpp)
+
+set(SCARLETT_LINK_LIBRARIES
+	spdlog::spdlog
+	cpprest
+	tinyxml2::tinyxml2
+	${Boost_LIBRARIES}
+)
+
+add_subdirectory("submodule/cpprestsdk")
+
+add_library(Scarlett STATIC)
+
+
+target_include_directories(
+	Scarlett
+	PUBLIC
+	${PROJECT_SOURCE_DIR}/include
+)
+
+target_sources(
+	Scarlett PRIVATE 
+	${SCARLETT_SOURCES}
 )
 
 target_compile_definitions(
         Scarlett
         PRIVATE
-        SPDLOG_FMT_EXTERNAL=ON
-        CRT_SECURE_NO_WARNINGS
-        _TURN_OFF_PLATFORM_STRING
+		${SCARLETT_COMPILE_DEFINITIONS}
 )
 
 target_link_libraries(
 	Scarlett 
 	INTERFACE  
-	spdlog::spdlog
-	cpprest
-	tinyxml2::tinyxml2
-	${Boost_LIBRARIES})
+	${SCARLETT_LINK_LIBRARIES})
+
+if(SCARLETT_TESTS)
+	add_library(Scarlett_tests STATIC)
+
+	target_sources(
+		Scarlett_tests
+		PRIVATE
+		${SCARLETT_SOURCES}
+	)
+
+	target_include_directories(
+		Scarlett_tests
+		PUBLIC
+		${PROJECT_SOURCE_DIR}/include 
+	)
+
+	target_compile_definitions(
+		Scarlett_tests
+		PRIVATE
+		${SCARLETT_COMPILE_DEFINITIONS}
+	)
+
+	target_link_libraries(
+		Scarlett_tests
+		INTERFACE
+		GTest::gmock
+		GTest::gtest
+		GTest::gmock_main
+		GTest::gtest_main
+		${SCARLETT_LINK_LIBRARIES}
+	)
+endif()
+
