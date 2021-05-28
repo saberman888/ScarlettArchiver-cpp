@@ -6,13 +6,14 @@
 #include <filesystem>
 #include <string>
 #include <exception>
+#include <iosfwd>
 
 namespace Scarlett::Tests
 {
 	class TestAccessData : public ::testing::Test
 	{
 	protected:
-		std::string ClientId, Secret, RedirectUri, UserAgent, Username, Password;
+		Scarlett::Client::AccessData acd;
 
 		TestAccessData()
 		{
@@ -20,14 +21,14 @@ namespace Scarlett::Tests
 			{
 				tinyxml2::XMLDocument d("accessdata.xml");
 
-				tinyxml2::XMLElement* root = doc.FirstChildElement("accessdata");
+				tinyxml2::XMLElement* root = d.FirstChildElement("accessdata");
 
-				ClientId = root->GetFirstChildElement("ClientId")->GetText();
-				Secret = root->GetFirstChildElement("Secret")->GetText();
-				RedirectUri = root->GetFirstChildElement("RedirectUri")->GetText();
-				UserAgent = root->GetFirstChildElement("UserAgent")->GetText();
-				Username = root->GetFirstChildElement("Username")->GetText();
-				Password = root->GetFirstChildElement("Password")->GetText();
+				acd.client_key = root->FirstChildElement("client_key")->GetText();
+				acd.client_secret = root->FirstChildElement("client_secret")->GetText();
+				acd.redirect_uri = root->FirstChildElement("redirect_uri")->GetText();
+				acd.useragent = root->FirstChildElement("useragent")->GetText();
+				acd.username = root->FirstChildElement("username")->GetText();
+				acd.password = root->FirstChildElement("password")->GetText();
 			}
 			else {
 				throw std::runtime_error("Fatal Error: accessdata.xml is not present!");
