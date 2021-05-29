@@ -45,17 +45,15 @@ namespace Scarlett::Client
 
 
 	template<typename T>
-	class RedditClient : private OAuth2Helper<T>
+	class RedditClient
 	{
 	public:
-		RedditClient(struct AccessData& acd) : OAuth2Helper<T>(""_u,""_u,""_u,""_u)
+		RedditClient(struct AccessData& acd)
 		{
+
 			if constexpr (std::is_same<T, _Password>::value)
-			{
-				this->setUserCredentials(u16(acd.username), u16(acd.password));
-				this->setClientSecret(u16(acd.client_key));
-				this->setClientSecret(u16(acd.client_secret));
-				this->setUserAgent(u16(acd.useragent));
+			{	
+				oauth2handle = std::make_shared< OAuth2Helper<T> >(acd.username, acd.password, acd.client_key, acd.client_secret, acd.redirect_uri, acd.useragent);
 			}
 		}
 
@@ -68,6 +66,8 @@ namespace Scarlett::Client
 				scarlettNestedThrow(e.what());
 			}
 		}
+	private:
+		std::shared_ptr< OAuth2Helper<T> > oauth2handle;
 	};
 
 	using SimpleClient = RedditClient<_Password>;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Authenticator.hpp"
+#include "IntervalTracker.hpp"
 #include "cpprest/http_client.h"
 #include "cpprest/http_listener.h"
 #include <type_traits>
@@ -53,19 +54,21 @@ namespace Scarlett
 
 
     template<typename T>
-    class OAuth2Helper
+    class OAuth2Helper : public RateLimiter
     {
     public:
 
-        OAuth2Helper(const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent)
+        OAuth2Helper(const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent) : RateLimiter(60)
         {
             init(client_key, secret, redirect_uri, useragent);
+	    RateLimiter::SetMaxTries(600);
         }
 
         OAuth2Helper(const WideString username, const WideString password, const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent)
         {
             setUserCredentials(username, password);
             init(client_key, secret, redirect_uri, useragent);
+	    RateLimiter::SetMaxTries(600);
         }
 
         inline void setUserCredentials(const WideString& username, const WideString& password)
