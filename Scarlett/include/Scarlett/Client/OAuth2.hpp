@@ -61,7 +61,7 @@ namespace Scarlett::Client
         OAuth2Helper(const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent) : RateTracker(60)
         {
             init(client_key, secret, redirect_uri, useragent);
-	        RateLimiter::SetMaxTries(600);
+	        RateTracker::SetMaxTries(600);
         }
 
         OAuth2Helper(const WideString username, const WideString password, const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent) : RateTracker(60)
