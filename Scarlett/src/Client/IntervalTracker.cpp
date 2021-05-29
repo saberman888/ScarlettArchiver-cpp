@@ -34,6 +34,8 @@ namespace Scarlett::Client
 		web::http::client::http_client cl{ srcUri.authority().to_string() };
 		HttpResponse hr;
 
+		if()
+
 		bool complete = false;
 		int tries = 0;
 		while (!complete && tries < MaxTries)
