@@ -3,7 +3,7 @@
 
 namespace Scarlett
 {
-	ScarlettException::ScarlettException(const std::string& message, unsigned int line, const std::string& func) 
+	ScarlettException::ScarlettException(const std::string& message, unsigned int line, const std::string& func)
 		: 
 		std::runtime_error(message),
 		loc(line),
@@ -12,7 +12,7 @@ namespace Scarlett
 	{}
 
 
-	ScarlettException::ScarlettException(const std::string&& message, unsigned int line, const std::string& func) 
+	ScarlettException::ScarlettException(const std::string&& message, unsigned int line, const std::string&& func)
 		: 
 		std::runtime_error(message),
 		loc(line),
@@ -23,7 +23,7 @@ namespace Scarlett
 	ScarlettHTTPException::ScarlettHTTPException(const HttpResponse& response, unsigned int line, const std::string& func)
 		:
 		ScarlettException(
-			response.status_code() + ": " + conv::to_utf8string(response.reason_phrase()),
+			std::to_string(response.status_code()) + ": " + conv::to_utf8string(response.reason_phrase()),
 			line,
 			func
 		),
