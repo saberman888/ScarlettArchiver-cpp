@@ -19,7 +19,7 @@ namespace Scarlett::Media::ImgurAccess
 
 	inline bool IsImgurLink(std::string URL)
 	{
-		return std::regex_match(URL, std::regex("https?://(i.)?imgur.com/(a/)?[A-Za-z0-9]+"));
+		return std::regex_match(URL, std::regex("https?://(i.)?imgur.com(/|/a/)?[A-Za-z0-9]+"));
 	}
 
 	inline static std::string GetHash(std::string URL)
