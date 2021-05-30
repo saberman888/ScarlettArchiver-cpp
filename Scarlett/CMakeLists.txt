@@ -5,10 +5,11 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(Boost REQUIRED COMPONENTS program_options serialization)
 find_package(spdlog REQUIRED)
 find_package(tinyxml2 REQUIRED)
-find_package(gtest)
+find_package(GTest)
 
 
-if(NOT gtest_FOUND)
+if(GTest_FOUND MATCHES FALSE)
+	message(NOTIFY "Google Test could not be found! So I'm going to download it into the current directory'")
 	include(ExternalProject)
 	ExternalProject_Add(
 		googletest
@@ -52,13 +53,6 @@ if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
-message(NOTICE "Cloning submodule: cpprestsdk")
-
-set(git_cmd "git")
-set(git_arg "submodule update --init")
-
-execute_process(COMMAND ${git_cmd} ${git_arg})
-
 set(CPPREST_EXCLUDE_WEBSOCKETS CACHE BOOL ON)
 set(CPPREST_EXCLUDE_COMPRESSION CACHE BOOL ON)
 set(CPPREST_EXCLUDE_BROTLI CACHE BOOL ON)
@@ -67,6 +61,12 @@ set(BUILD_TESTS CACHE BOOL OFF)
 set(BUILD_SAMPLES CACHE BOOL OFF)
 set(CPPREST_INSTALL_HEADERS CACHE BOOL OFF)
 set(CPPREST_INSTALL CACHE BOOL OFF)
+
+message(NOTICE "Cloning submodule: cpprestsdk")
+set(git_cmd git submodule update --init --recursive)
+execute_process(COMMAND ${git_cmd})
+add_subdirectory("submodule/cpprestsdk")
+
 
 include_directories("${Scarlett_SOURCE_DIR}/include")
 set(SCARLETT_TESTS CACHE BOOL OFF)
@@ -103,7 +103,6 @@ set(SCARLETT_LINK_LIBRARIES
 	${Boost_LIBRARIES}
 )
 
-add_subdirectory("submodule/cpprestsdk")
 
 add_library(Scarlett STATIC)
 
