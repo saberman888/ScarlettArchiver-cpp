@@ -6,7 +6,7 @@ namespace Scarlett::Tests
 {
 	TEST_F(TestAccessData, PasswordGrant)
 	{
-		using namespace Scarlett;
+		using namespace Scarlett::Client;
 		OAuth2Helper<_Password> a2h(
 			u16(acd.username),
 			u16(acd.password),
@@ -22,7 +22,7 @@ namespace Scarlett::Tests
 
 	TEST_F(TestAccessData, ImplicitGrant)
 	{
-		using namespace Scarlett;
+		using namespace Scarlett::Client;
 		OAuth2Helper<Authorization> a2h(
 			u16(acd.username),
 			u16(acd.password),
