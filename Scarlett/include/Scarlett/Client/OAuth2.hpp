@@ -103,33 +103,11 @@ namespace Scarlett::Client
                 {
                     if constexpr (std::is_same_v<T, _Password>)
                     {
-                        m_http_config.set_oauth2(*m_oauth2_config);
-                        m_http_config.set_credentials(
-                            web::credentials(
-                                m_oauth2_config->client_key(),
-                                m_oauth2_config->client_secret()
-                            )
-                        );
-
-                        http_request req(HttpMethod::POST);
-
-                        web::uri_builder ub;
-                        ub.append("https://www.reddit.com/api/v1/access_token"_u);
-                        ub.append_query("grant_type"_u, "password"_u);
-                        ub.append_query("username"_u, Username);
-                        ub.append_query("password"_u, Password);
-
-                        req.set_request_uri(ub.to_uri());
-
-                        HttpClient cl("https://www.reddit.com"_u, m_http_config);
-                        auto response = cl.request(req).get();
-
-                        if (response.status_code() != 200)
-                        {
-                            scarlettHTTPThrow(response);
+                        try {
+                            m_oauth2_config->token_from_password(this->Username, this->Password);
                         }
-                        else {
-                            readToken(response.extract_json().get());
+                        catch (std::exception& e) {
+                            scarlettNestedThrow(e.what());
                         }
                     }
                     else {
