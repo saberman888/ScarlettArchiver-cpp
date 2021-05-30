@@ -6,7 +6,7 @@ namespace Scarlett::Client
 	{
 		if(!StartTime)
 		{
-			if(StartTime >= (StartTime + std::chrono::hour(1)))
+			if(StartTime.value() >= (StartTime.value() + std::chrono::hours(1)))
 			{
 				return true;
 			}
