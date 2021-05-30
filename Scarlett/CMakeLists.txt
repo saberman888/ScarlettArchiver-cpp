@@ -5,7 +5,22 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(Boost REQUIRED COMPONENTS program_options serialization)
 find_package(spdlog REQUIRED)
 find_package(tinyxml2 REQUIRED)
-find_package(Gtest CONFIG REQUIRED)
+find_package(gtest)
+
+
+if(NOT gtest_FOUND)
+	include(ExternalProject)
+	ExternalProject_Add(
+		googletest
+		GIT_REPOSITORY https://github.com/google/googletest
+		BINARY_DIR ${Scarlett_SOURCE_DIR}/gtest-build
+		PREFIX ${Scarlett_SOURCE_DIR}/gtest-build
+	)	
+	if(WIN32)
+		set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+	endif()
+endif()
+
 
 if(CMAKE_BUILD_TARGET|"Release")
 	add_compile_options(-DNDEBUG=1)
@@ -53,7 +68,7 @@ set(BUILD_SAMPLES CACHE BOOL OFF)
 set(CPPREST_INSTALL_HEADERS CACHE BOOL OFF)
 set(CPPREST_INSTALL CACHE BOOL OFF)
 
-
+include_directories("${Scarlett_SOURCE_DIR}/include")
 set(SCARLETT_TESTS CACHE BOOL OFF)
 
 set(SCARLETT_COMPILE_DEFINITIONS
