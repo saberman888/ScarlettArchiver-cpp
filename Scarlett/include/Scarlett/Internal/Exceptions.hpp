@@ -18,7 +18,7 @@ namespace Scarlett
 	public:
 		ScarlettException() = default;
 		ScarlettException(const std::string& message, unsigned int line, const std::string& func);
-		ScarlettException(const std::string&& message, unsigned int line, const std::string& func);
+		ScarlettException(const std::string&& message, unsigned int line, const std::string&& func);
 
 		inline const char* what()
 		{
@@ -55,6 +55,13 @@ namespace Scarlett
 		HttpResponse response;
 	};
 
+	class ScarlettOutOfTimeException : public ScarlettException
+	{
+		public:
+			ScarlettOutOfTimeException() = default;
+			ScarlettOutOfTimeException(const std::string&& message, int line, std::string&& func) : ScarlettException(message, line, func){}
+	};
+
 
 	void printException(const std::exception& e, int level = 0);
 	void printException(ScarlettException& se, int level = 0);
@@ -63,4 +70,5 @@ namespace Scarlett
 #define scarlettNestedThrow(msg) std::throw_with_nested(ScarlettException(msg, __LINE__, __func__));
 #define scarlettHTTPThrow(response) throw ScarlettHTTPException(response, __LINE__, __func__);
 #define scarlettHTTPNestedThrow(response) std::throw_with_nested(ScarlettHTTPException(response, __LINE__, __func__));
+#define scarlettOOTThrow(msg) throw ScarlettOutOfTimeException(msg, __LINE__, __func__);
 }
