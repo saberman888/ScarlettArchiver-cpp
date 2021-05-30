@@ -25,7 +25,7 @@ namespace Scarlett::Client
 		* This constructor takes the max amound of acceptable requests per minute, and it divides it by 
 		* 60,000 to get the time difference between each requests in milliseconds
 		*/
-		RateTracker(int max_rate_minute_limit);
+		RateTracker(const int max_rate_minute_limit, std::optional<int> max_time);
 
 		/*
 		* This sends the request and makes sure it doesn't exceed any limits. And if the request fails with a code 429,
@@ -36,9 +36,21 @@ namespace Scarlett::Client
 		/*
 		* Set the maxumum ammount of tries to retry after a request fails
 		*/
-		constexpr inline void SetMaxTries(int n)
+		inline void SetMaxTries(int n)
 		{
 			MaxTries = n;
+		}
+
+		inline const int GetMaxTries(int n)
+		{
+			return MaxTries;
+		}
+		
+		// Start tracking time 
+		inline void Track()
+		{
+			if(MaxTime)
+				StartTime.emplace(std::chrono::system_clock::now());
 		}
 
 	private:
@@ -46,6 +58,12 @@ namespace Scarlett::Client
 		std::deque<Millisecond> Cache;
 		Millisecond minimum_time_interval{ 0 };
 		int MaxTries{ 5 };
+		int Tries{ 0 };
+
+		std::optional<int> MaxTime{ std::nullopt };
+		std::optional<TimePoint> StartTime{ std::nullopt };
+
+		bool TimeUp();
 
 		inline Millisecond Now() {
 			return std::chrono::duration_cast<Millisecond>(std::chrono::system_clock::now().time_since_epoch());

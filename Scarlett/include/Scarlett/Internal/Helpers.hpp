@@ -23,6 +23,7 @@ namespace Scarlett
 	using URI = web::uri;
 	using StatusCode = web::http::status_code;
 	using Size = utility::size64_t;
+	using TimePoint = std::chrono::time_point<std::chrono::system_clock>;
 
 	/**
 	* just like the normal strptime on Linux. I just needed an independent implementation because, MSVC doesn't have one

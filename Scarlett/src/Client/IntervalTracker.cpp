@@ -2,6 +2,17 @@
 
 namespace Scarlett::Client
 {
+	bool RateTracker::TimeUp()
+	{
+		if(!StartTime)
+		{
+			if(StartTime >= (StartTime + std::chrono::hour(1)))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 	void RateTracker::UpdateCache()
 	{
 		while (Delta() > minimum_time_interval)
@@ -11,9 +22,9 @@ namespace Scarlett::Client
 	}
 
 	void RateTracker::waitifnecessary(int n)
-	{
+	{	
 		// Get an interval if there's any
-        Millisecond interval = GetLatestInterval();
+        	Millisecond interval = GetLatestInterval();
 		
 		// Multiply the number of tries by 200ms and make sure it's under 1 hour
 		Millisecond waitTimes = Millisecond(200 * n);
@@ -24,8 +35,9 @@ namespace Scarlett::Client
 
 	}
 
-	RateTracker::RateTracker(int max_rate_minute_limit)
+	RateTracker::RateTracker(int max_rate_minute_limit, std::optional<int> max_time)
 	{
+
 		this->minimum_time_interval = Millisecond(60000 / max_rate_minute_limit);
 	}
 
@@ -34,16 +46,24 @@ namespace Scarlett::Client
 		web::http::client::http_client cl{ srcUri.authority().to_string() };
 		HttpResponse hr;
 
-		if()
+		if(TimeUp())
+		{
+			scarlettOOTThrow("Error: Token's time has expired");
+		}
+
+		if(MaxTries >= Tries)
+		{
+			scarlettThrow("Error: Max number of requests reached");
+		}
 
 		bool complete = false;
 		int tries = 0;
 		while (!complete && tries < MaxTries)
 		{
-            // Depending on how many retries and how long the last attempt was wait if neccessary
+            		// Depending on how many retries and how long the last attempt was wait if neccessary
 			waitifnecessary(tries);
 
-            // Next, initiate a request, time it, and push it into cache
+            		// Next, initiate a request, time it, and push it into cache
 			auto beginTime = Now();
 			hr = cl.request(req).get();
 			Millisecond enddiff = Now() - beginTime;
@@ -54,6 +74,7 @@ namespace Scarlett::Client
 			if (hr.status_code() != 429 || hr.status_code() == 200)
 			{
 				complete = true;
+				break;
 			}
 		}
 
