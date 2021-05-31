@@ -8,21 +8,6 @@ find_package(tinyxml2 REQUIRED)
 find_package(GTest)
 
 
-if(GTest_FOUND MATCHES FALSE)
-	message(NOTIFY "Google Test could not be found! So I'm going to download it into the current directory'")
-	include(ExternalProject)
-	ExternalProject_Add(
-		googletest
-		GIT_REPOSITORY https://github.com/google/googletest
-		BINARY_DIR ${Scarlett_SOURCE_DIR}/gtest-build
-		PREFIX ${Scarlett_SOURCE_DIR}/gtest-build
-	)	
-	if(WIN32)
-		set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-	endif()
-endif()
-
-
 if(CMAKE_BUILD_TARGET|"Release")
 	add_compile_options(-DNDEBUG=1)
 	set(RELEASE ON)
@@ -63,10 +48,9 @@ set(CPPREST_INSTALL_HEADERS CACHE BOOL OFF)
 set(CPPREST_INSTALL CACHE BOOL OFF)
 
 message(NOTICE "Cloning submodule: cpprestsdk")
-set(git_cmd git submodule update --init --recursive)
+set(git_cmd git submodule update --init)
 execute_process(COMMAND ${git_cmd})
-add_subdirectory("submodule/cpprestsdk")
-
+add_subdirectory(${Scarlett_SOURCE_DIR}/submodule/cpprestsdk)
 
 include_directories("${Scarlett_SOURCE_DIR}/include")
 set(SCARLETT_TESTS CACHE BOOL OFF)
@@ -103,7 +87,6 @@ set(SCARLETT_LINK_LIBRARIES
 	${Boost_LIBRARIES}
 )
 
-
 add_library(Scarlett STATIC)
 
 
@@ -111,6 +94,7 @@ target_include_directories(
 	Scarlett
 	PUBLIC
 	${PROJECT_SOURCE_DIR}/include
+	${PROJECT_SOURCE_DIR}/submodule/cpprestsdk/Release/include
 )
 
 target_sources(
