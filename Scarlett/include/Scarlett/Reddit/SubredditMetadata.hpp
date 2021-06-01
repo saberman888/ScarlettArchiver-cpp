@@ -73,7 +73,7 @@ namespace Scarlett::Reddit
 		void serialize(Archive& ar, const unsigned int version)
 		{
 			using namespace boost::serialization;
-			ar& make_nvp("TargetSubreddit", Subreddit);
+			ar& make_nvp("TargetSubreddit", _Subreddit);
 			ar& make_nvp("StartDate", StartDate);
 			ar& make_nvp("EndDate", EndDate);
 			ar& make_nvp("DatePointer", DatePointer);
