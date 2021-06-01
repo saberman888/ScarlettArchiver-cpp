@@ -11,50 +11,6 @@
 namespace Scarlett::Reddit
 {
 
-	struct RedditStatistics
-	{
-		int Videos{ 0 }, Links{ 0 }, SelfPosts{ 0 }, Galleries{ 0 };
-
-		template<class T>
-		void Append();
-		void Update(const RedditStatistics& rs);
-
-		inline int Sum()
-		{
-			return Videos + Links + SelfPosts + Galleries;
-		}
-
-
-		friend class boost::serialization::access;
-		template<class Archive>
-		void serialize(Archive& ar, const unsigned int version)
-		{
-			using namespace boost::serialization;
-			ar& make_nvp("Videos", Videos);
-			ar& make_nvp("Links", Links);
-			ar& make_nvp("SelfPosts", SelfPosts);
-			ar& make_nvp("Galleries", Galleries);
-		}
-	};
-
-	template<class T>
-	void RedditStatistics::Append()
-	{
-		if constexpr (std::is_same<Gallery, T>::value)
-		{
-			Galleries += 1;
-		}
-		else if constexpr (std::is_same<SelfPost, T>::value) {
-			SelfPosts += 1;
-		}
-		else if constexpr (std::is_same<Video, T>::value) {
-			Videos += 1;
-		}
-		else {
-			Links += 1;
-		}
-	};
-
 	/*
 		SubredditMetadata holds information regarding the date, position, statistics and functions manipulating around a Subreddit
 	*/
@@ -70,8 +26,6 @@ namespace Scarlett::Reddit
 
 		std::string Subreddit;
 		time_t StartDate { 0 }, EndDate{ 0 }, DatePointer{ 0 };
-
-		struct RedditStatistics stats;
 
 		/*
 			Checks if there is any posts we could possibly retrieve within our set dates by, comparing the difference between the dates
