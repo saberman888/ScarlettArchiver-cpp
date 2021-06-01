@@ -11,36 +11,26 @@ namespace Scarlett::Reddit {
 
 	void Subreddit::Next()
 	{
-		using namespace std::chrono_literals;
+		try {
+			log->info("Fetching posts from {} between {} and {}.", sub->Subreddit(), sub->Position(), sub->Position() + 86400);
+			auto currentposition = sub->Position();
+			this->NextItems(StringMap{
+			  {"after", std::to_string(currentposition)},
+			  {"before", std::to_string(currentposition += 86400)},
+			  {"metadata", "true"},
+			  {"size", "500"},
+			  {"subreddit", sub->Subreddit()}
+				});
 
-		log->info("Fetching posts from {} between {} and {}.", sub->Subreddit(), sub->Position(), sub->Position() + 86400);
-		auto currentposition = sub->Position();
-		// Retrieve the next batch of posts by plugging StartDate into after and StartDate incremented by 24 hours into before.
-		// I want to be more specific when I have SearchSubmissions call for these twenty four hours instead of plugging in EndDate into before because,
-		// I think It might retrieve more data
-		auto result = Client::PushShift::SearchSubmissions(StringMap{
-		  {"after", std::to_string(currentposition)},
-		  {"before", std::to_string(currentposition += 86400)},
-		  {"metadata", "true"},
-		  {"size", "500"},
-		  {"subreddit", sub->Position()}
-			});
+			// Increment CurrentPointedDate by 24 hours so we can ready for the next call.
+			sub->setPosition(currentposition += 86400);
+			log->info("Incrementing by 24 hours for the next fetch.");
 
-		if (result.status_code() != 200)
-		{
 			log->error("Error: Failed to retrieve {} posts between {} and {}", sub->Subreddit(), sub->Position(), sub->Position() + 86400);
-			scarlettHTTPThrow(result);
 		}
-		else {
-			log->info("Retrieval successful.");
+		catch (ScarlettHTTPException& e) {
+			scarlettNestedThrow(e.what());
 		}
-
-		// Increment CurrentPointedDate by 24 hours so we can ready for the next call.
-		sub->setPosition(currentposition += 86400);
-		log->info("Incrementing by 24 hours for the next fetch.");
-		
-		Read(result.extract_json().get());
-
 	}
 
 	void Subreddit::Save(const std::filesystem::path location, bool clear)
