@@ -28,13 +28,14 @@ namespace Scarlett::Reddit {
 		void Next() override;
 
 		/*
-		*	Calls directly to SubredditMetadata's HasNext
-		*
-		*	@see SubredditMetadata::HasNext()
+		*	HasNext checks if there are any potential posts we could fetch.
+		*	It does this by getting the differrence of the end date and current position in time
 		*/
 		inline bool HasNext() override
 		{
-			return sub->HasNext();
+			return !(
+				(sub->End() - sub->Position()) <= 0
+				);
 		}
 
 		void Save(const std::filesystem::path location, bool clear = true);
@@ -50,35 +51,7 @@ namespace Scarlett::Reddit {
 		std::unique_ptr<SubredditMetadata> sub;
 		void Read(const JSON::value& source);
 
-		template<class T>
-		void Add(boost::shared_ptr<T> Post)
-		{
-			static_assert(
-				std::is_base_of<BaseTypes::Linkable, T>::value &&
-				std::is_base_of<BaseTypes::Postable, T>::value
-				);
-
-			sub->stats.Append<T>();
-
-			if (posts.size() > 0)
-			{
-				for (decltype(posts)::const_iterator it = posts.begin(); it != posts.end(); it++)
-				{
-					// internal creation date
-					auto icd = boost::dynamic_pointer_cast<BaseTypes::Postable>(*it);
-
-					if (Post->CreatedUTC > icd->CreatedUTC)
-					{
-						posts.emplace(it, Post);
-						return;
-					}
-				}
-				posts.push_back(Post);
-			}
-			else {
-				posts.push_back(Post);
-			}
-		}
+		
 
 
 		template<class T>
