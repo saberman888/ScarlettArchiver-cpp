@@ -34,7 +34,7 @@ namespace Scarlett::Reddit::BaseTypes
 		{
 			if constexpr (std::is_same_v<U, Client::PushShift>)
 			{
-				if constexpr (std::is_base_of_v<Linkable, T>)
+				if constexpr (std::is_same_v<T, Linkable>)
 				{
 					// If T is a non-comment
 					auto response = Client::PushShift::SearchSubmissions(uri_query);
@@ -49,7 +49,7 @@ namespace Scarlett::Reddit::BaseTypes
 					}
 
 				}
-				else {
+				else if constexpr(std::is_same_v<T, Comment>){
 					// if T is a non-post or comment
 				}
 			}
