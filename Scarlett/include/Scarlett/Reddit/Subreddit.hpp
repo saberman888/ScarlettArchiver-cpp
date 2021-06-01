@@ -22,9 +22,6 @@ namespace Scarlett::Reddit {
 	public:
 		Subreddit(const std::string Subreddit, const std::string Start, const std::string End);
 
-		// Where we're going to keep our subreddit metadata
-
-
 		/*
 			Retrieves the posts from the next 24 hours, and increments StartDate by 24 hours for another iteration.
 		*/
@@ -40,13 +37,18 @@ namespace Scarlett::Reddit {
 			return sub->HasNext();
 		}
 
+		void Save(const std::filesystem::path location, bool clear = true);
+		void Load(const std::filesystem::path location);
+
+		inline const auto Posts()
+		{
+			return posts;
+		}
+
   private:
 		std::vector< boost::shared_ptr<BaseTypes::Linkable> > posts;
-		std::filesystem::path SubStorePath;
 		std::unique_ptr<SubredditMetadata> sub;
 		void Read(const JSON::value& source);
-		void Load();
-		void WriteAll(bool clear = true);
 
 		template<class T>
 		void Add(boost::shared_ptr<T> Post)
@@ -80,11 +82,11 @@ namespace Scarlett::Reddit {
 
 
 		template<class T>
-		void WriteMedia(const boost::shared_ptr<T> post)
+		void WriteMedia(const boost::shared_ptr<T> post, const std::filesystem::path location)
 		{
 			using namespace std::filesystem;
 
-			const auto mediaPath = SubStorePath / "media";
+			const auto mediaPath = location / "media";
 			create_directories(mediaPath);
 			
 
@@ -127,23 +129,18 @@ namespace Scarlett::Reddit {
 
 
 		template<class T>
-		void WritePost(boost::shared_ptr<T> post, const std::string tag)
+		void WritePost(boost::shared_ptr<T> post, const std::string tag, const std::filesystem::path location)
 		{
 			using namespace std::filesystem;
 
 			auto tempTime = *std::gmtime(&post->CreatedUTC);
 
-			auto destination = SubStorePath /  path(formatTime(tempTime, "%Y")) / path(formatTime(tempTime, "%m")) / formatTime(tempTime, "%d");
+			auto destination = location /  path(formatTime(tempTime, "%Y")) / path(formatTime(tempTime, "%m")) / formatTime(tempTime, "%d");
 			auto filename = post->Id + ".xml";
 			std::filesystem::create_directories(destination);
 			std::cout << "Writing " << post->Id << " to " << destination.string() << std::endl;
 			Internal::Serialize<boost::shared_ptr<T>>(destination / filename, post, "obj");
 
 		}
-
 	};
-
-
-  std::ifstream& operator>>(std::ifstream& in, Subreddit& sub);
-  std::ofstream& operator>>(std::ofstream& out, Subrddit& sub);
 }

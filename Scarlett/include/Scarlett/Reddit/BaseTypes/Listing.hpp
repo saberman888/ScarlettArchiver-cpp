@@ -13,10 +13,10 @@ namespace Scarlett::Reddit::BaseTypes
     public:
       Listing() = default;
 
-      virtual void Next();
-      virtual bool HasNext();
+      virtual void Next() {};
+      virtual bool HasNext() { return false; };
     protected:
       
-      virtual void Read(const JSON::value& source);  
+        virtual void Read(const JSON::value& source) {};
   };
 };
