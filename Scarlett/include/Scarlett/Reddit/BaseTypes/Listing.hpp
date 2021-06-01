@@ -30,7 +30,7 @@ namespace Scarlett::Reddit::BaseTypes
 		}
 
 	protected:
-		JSON::value NextItems(const StringMap& uri_query)
+		void NextItems(const StringMap& uri_query)
 		{
 			if constexpr (std::is_same_v<U, Client::PushShift>)
 			{
@@ -55,14 +55,14 @@ namespace Scarlett::Reddit::BaseTypes
 			}
 		}
 
-		JSON::value NextItems(const std::string& endpoint, const StringMap& uri_query);
+		void NextItems(const std::string& endpoint, const StringMap& uri_query) {};
 
 		void Add(boost::shared_ptr<T> Post)
 		{
 			statistics.Append<T>();
 			if (items.size() > 0)
 			{
-				for (decltype(posts)::const_iterator it = items.begin(); it != items.end(); it++)
+				for (decltype(items)::const_iterator it = items.cbegin(); it != items.cend(); it++)
 				{
 					// internal creation date
 					auto icd = boost::dynamic_pointer_cast<BaseTypes::Postable>(*it);
