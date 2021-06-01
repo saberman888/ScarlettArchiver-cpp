@@ -43,12 +43,6 @@ namespace Scarlett::Reddit {
 
 	}
 
-	void Subreddit::Read(const JSON::value& source) {
-
-		log->info("Reading data from fetch...");
-
-	}
-
 	void Subreddit::Save(const std::filesystem::path location, bool clear)
 	{
 		using namespace std::filesystem;
