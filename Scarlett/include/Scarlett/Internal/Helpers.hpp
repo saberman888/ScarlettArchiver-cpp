@@ -58,7 +58,7 @@ namespace Scarlett
 
 	inline HttpResponse Download(std::string&& source)
 	{
-		return Download(conv::to_string_t(std::forward<std::string>(source)));
+		return Download(conv::to_string_t(source));
 	}
 
 	inline WideString u16(const std::string source){
