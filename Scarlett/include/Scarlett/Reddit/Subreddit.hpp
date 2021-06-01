@@ -7,37 +7,46 @@
 #include "SubredditMetadata.hpp"
 #include "../Media/Content.hpp"
 #include "../Internal/Serializable.hpp"
+#include "BaseTypes/Listing.hpp"
 #include <map>
 #include <utility>
 #include <cstring>
 #include <chrono>
 #include <thread>
 #include <algorithm>
+#include <fstream>
 
 namespace Scarlett::Reddit {
-	class Subreddit : protected Logger
+	class Subreddit : public BaseTypes::Listing<BaseTypes::Postable>, protected Logger
 	{
 	public:
 		Subreddit(const std::string Subreddit, const std::string Start, const std::string End);
-		Subreddit(const std::filesystem::path source);
 
 		// Where we're going to keep our subreddit metadata
-		std::unique_ptr<SubredditMetadata> sub;
+
 
 		/*
 			Retrieves the posts from the next 24 hours, and increments StartDate by 24 hours for another iteration.
 		*/
-		JSON::value Next();
+		void Next() override;
 
 		/*
 		*	Calls directly to SubredditMetadata's HasNext
 		*
 		*	@see SubredditMetadata::HasNext()
 		*/
-		inline bool HasNext()
+		inline bool HasNext() override
 		{
 			return sub->HasNext();
 		}
+
+  private:
+		std::vector< boost::shared_ptr<BaseTypes::Linkable> > posts;
+		std::filesystem::path SubStorePath;
+		std::unique_ptr<SubredditMetadata> sub;
+		void Read(const JSON::value& source);
+		void Load();
+		void WriteAll(bool clear = true);
 
 		template<class T>
 		void Add(boost::shared_ptr<T> Post)
@@ -69,8 +78,6 @@ namespace Scarlett::Reddit {
 			}
 		}
 
-		void Read(const JSON::value& source);
-		void WriteAll(bool clear = true);
 
 		template<class T>
 		void WriteMedia(const boost::shared_ptr<T> post)
@@ -118,6 +125,7 @@ namespace Scarlett::Reddit {
 			}
 		}
 
+
 		template<class T>
 		void WritePost(boost::shared_ptr<T> post, const std::string tag)
 		{
@@ -133,11 +141,9 @@ namespace Scarlett::Reddit {
 
 		}
 
-		void Load();
-
-		std::vector< boost::shared_ptr<BaseTypes::Linkable> > posts;
-
-		// Where we're going to store sub paths
-		std::filesystem::path SubStorePath;
 	};
+
+
+  std::ifstream& operator>>(std::ifstream& in, Subreddit& sub);
+  std::ofstream& operator>>(std::ofstream& out, Subrddit& sub);
 }

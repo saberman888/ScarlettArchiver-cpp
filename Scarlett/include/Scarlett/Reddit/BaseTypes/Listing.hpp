@@ -7,17 +7,16 @@
 
 namespace Scarlett::Reddit::BaseTypes
 {
-  template<typename T typename U = void>
+  template<typename T>
   class Listing
   {
     public:
+      Listing() = default;
+
       virtual void Next();
       virtual bool HasNext();
     protected:
-      Listing(const std::shared_ptr< OAuth2Helper<U> > m_oauth2_handle) : m_oauth2_helper(m_oauth2_handle){}
-      virtual void Read(const JSON::value& source);
-      std::enable_if_t< std::conditional_t<std::is_void_v<U>,  std::shared_ptr<OAuth2Helper<U>>> m_oauth2_handle{nullptr};
-    private:
-      Listing() = default;
+      
+      virtual void Read(const JSON::value& source);  
   };
 };

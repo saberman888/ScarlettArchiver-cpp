@@ -42,7 +42,7 @@ namespace Scarlett::Client
 			MaxTries = n;
 		}
 
-		inline const int GetMaxTries(int n)
+		inline const int GetMaxTries()
 		{
 			return MaxTries;
 		}

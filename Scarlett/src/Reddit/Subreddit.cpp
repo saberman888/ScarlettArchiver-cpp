@@ -12,14 +12,8 @@ namespace Scarlett::Reddit {
 		auto k = SubStorePath.string();
 		log->info("Storing at {}", SubStorePath.string());
 	}
-	Subreddit::Subreddit(const std::filesystem::path source) : SubStorePath(source)
-	{
-		sub = std::make_unique<SubredditMetadata>();
-		Load();
-	}
 
-
-	JSON::value Subreddit::Next()
+	void Subreddit::Next()
 	{
 		using namespace std::chrono_literals;
 
@@ -42,7 +36,9 @@ namespace Scarlett::Reddit {
 
 		// Increment CurrentPointedDate by 24 hours so we can ready for the next call.
 		sub->DatePointer += 86400;
-		return result.extract_json().get();
+		
+    Read(result.extract_json.get());
+
 	}
 
 	void Subreddit::Load()
