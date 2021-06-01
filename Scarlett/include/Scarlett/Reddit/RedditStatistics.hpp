@@ -1,7 +1,7 @@
 #pragma once
 
 #include <boost/archive/xml_oarchive.hpp>
-#include <boost/serialization/nvp.hpp
+#include <boost/serialization/nvp.hpp>
 #include "Video.hpp"
 #include "SelfPost.hpp"
 #include "Galleries.hpp"
@@ -14,7 +14,6 @@ namespace Scarlett::Reddit
 
 		template<class T>
 		void Append();
-		void Update(const RedditStatistics& rs);
 
 		inline int Sum()
 		{

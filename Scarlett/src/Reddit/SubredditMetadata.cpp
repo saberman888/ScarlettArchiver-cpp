@@ -78,12 +78,4 @@ namespace Scarlett::Reddit
 		}
 		this->DatePointer = this->StartDate;
 	}
-
-	void RedditStatistics::Update(const RedditStatistics& rs)
-	{
-		Videos += rs.Videos;
-		Links += rs.Links;
-		SelfPosts += rs.SelfPosts;
-		Videos += rs.Videos;
-	}
 }
