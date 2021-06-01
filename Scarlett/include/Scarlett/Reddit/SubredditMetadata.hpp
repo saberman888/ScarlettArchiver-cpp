@@ -24,19 +24,50 @@ namespace Scarlett::Reddit
 		SubredditMetadata(const std::string Subreddit, const std::string StartTime, const std::string EndTime);
 		SubredditMetadata() = default;
 
-		std::string Subreddit;
-		time_t StartDate { 0 }, EndDate{ 0 }, DatePointer{ 0 };
 
-		/*
-			Checks if there is any posts we could possibly retrieve within our set dates by, comparing the difference between the dates
-		*/
-		inline bool HasNext()
+		inline void setSubreddit(const std::string& name)
 		{
-			return !((EndDate - DatePointer) <= 0);
+			_Subreddit = name;
+		}
+
+		inline const std::string Subreddit()
+		{
+			return _Subreddit;
+		}
+
+		inline void setStart(const time_t date)
+		{
+			StartDate = date;
+		}
+
+		inline const time_t Start()
+		{
+			return StartDate;
+		}
+
+		inline void setEnd(const time_t date)
+		{
+			EndDate = date;
+		}
+
+		inline const time_t End()
+		{
+			return EndDate;
+		}
+
+		inline const time_t Position()
+		{
+			return DatePointer;
+		}
+
+		inline void setPosition(const time_t date)
+		{
+			DatePointer = date;
 		}
 
 	private:
-
+		std::string _Subreddit;
+		time_t StartDate{ 0 }, EndDate{ 0 }, DatePointer{ 0 };
 		friend boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)
@@ -46,7 +77,6 @@ namespace Scarlett::Reddit
 			ar& make_nvp("StartDate", StartDate);
 			ar& make_nvp("EndDate", EndDate);
 			ar& make_nvp("DatePointer", DatePointer);
-			ar& make_nvp("Reddit-Statistics", stats);
 		}
 
 		/**

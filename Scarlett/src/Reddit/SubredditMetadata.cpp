@@ -8,7 +8,7 @@ namespace Scarlett::Reddit
 	SubredditMetadata::SubredditMetadata(const std::string Subreddit, const std::string StartTime, const std::string EndTime)
 	{
 		InitializeDates(StartTime, EndTime);
-		this->Subreddit = Subreddit;
+		this->_Subreddit = Subreddit;
 	}
 
 	void SubredditMetadata::InitializeDates(std::optional<std::string> Start, std::optional<std::string> End)
