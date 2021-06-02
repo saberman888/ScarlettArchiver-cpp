@@ -45,7 +45,7 @@ namespace Scarlett::Reddit {
 		log->info("Serialized metadata.");
 
 		log->info("Writing media...");
-		for (std::vector<boost::shared_ptr<BaseTypes::Linkable>>::const_iterator it = Posts().cbegin(); it != Posts().cend(); it++)
+		for (auto it = Posts().cbegin(); it != Posts().cend(); it++)
 		{
 			try {
 				if (boost::dynamic_pointer_cast<BaseTypes::Link>(*it)) {
@@ -80,11 +80,6 @@ namespace Scarlett::Reddit {
 			catch (std::exception& e) {
 				printException(e);
 			}
-		}
-		if (clear) {
-			log->info("Deleted all previous posts");
-			posts.clear();
-			posts.shrink_to_fit();
 		}
 	}
 
