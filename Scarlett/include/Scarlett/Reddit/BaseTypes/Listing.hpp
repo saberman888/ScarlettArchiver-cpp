@@ -19,15 +19,26 @@ namespace Scarlett::Reddit::BaseTypes
 		virtual void Next() {};
 		virtual bool HasNext() { return false; };
 
-		inline const auto Posts()
+		inline const auto Posts() const noexcept
 		{
 			return items;
 		}
 
-		inline const auto Statistics()
+		inline const auto Statistics() const noexcept
 		{
 			return statistics;
 		}
+
+    inline void Clear()
+    {
+      items.clear();
+      items.shrink_to_fit();
+    }
+
+    inline const Size size() const noexcept
+    {
+      return items.size();
+    }
 
 	protected:
 		void NextItems(const StringMap& uri_query)
