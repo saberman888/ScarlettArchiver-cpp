@@ -41,11 +41,6 @@ namespace Scarlett::Reddit {
 		void Save(const std::filesystem::path location, bool clear = true);
 		void Load(const std::filesystem::path location);
 
-		inline auto Posts()
-		{
-			return this->Posts();
-		}
-
   private:
 		std::unique_ptr<SubredditMetadata> sub;
 
