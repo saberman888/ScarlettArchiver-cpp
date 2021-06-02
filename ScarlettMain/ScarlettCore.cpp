@@ -15,12 +15,11 @@ namespace Scarlett
 	{
 		do {
 			try {
-				auto NextIteration = sub->Next();
-				sub->Read(NextIteration);
+				sub->Next();
 
-				if (sub->posts.size() >= 275|| !sub->HasNext()) {
+				if (sub->size() >= 275|| !sub->HasNext()) {
 					log->info("275 posts reached. Writing them all");
-					sub->WriteAll();
+					//sub->WriteAll();
 				}
 
 			}
