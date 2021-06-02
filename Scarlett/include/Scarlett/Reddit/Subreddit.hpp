@@ -47,12 +47,7 @@ namespace Scarlett::Reddit {
 		}
 
   private:
-		std::vector< boost::shared_ptr<BaseTypes::Linkable> > posts;
 		std::unique_ptr<SubredditMetadata> sub;
-		void Read(const JSON::value& source);
-
-		
-
 
 		template<class T>
 		void WriteMedia(const boost::shared_ptr<T> post, const std::filesystem::path location)
