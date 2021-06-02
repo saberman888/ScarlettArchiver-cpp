@@ -14,6 +14,8 @@
 #include <string>
 #include <regex>
 #include <utility>
+#include <filesystem>
+#include <fstream>
 #include "../Internal/Exceptions.hpp"
 #include "../Internal/Helpers.hpp"
 
@@ -31,6 +33,12 @@ namespace Scarlett {
 			{
 				this->URL = URL;
 			}
+
+      Content(const URI& uri, const std::filesystem::path destination)
+      {
+        this->URL = uri;
+        this->location = destination;
+      }
 
 			inline const auto GetContent()
 			{
@@ -52,10 +60,33 @@ namespace Scarlett {
 				return u8(URL.to_string());
 			}
 
+      inline void SetURL(const URI uri)
+      {
+        URL = uri;
+      }
+
 			inline const URI GetURL()
 			{
 				return URL;
 			}
+
+      inline const std::filesystem::path GetPath()
+      {
+        return location;
+      }
+
+      inline void SetPath(const std::filesystem::path destination)
+      {
+        location = destination;
+      }
+
+      inline void Write(const std::string& filename)
+      {
+        auto full_path = location / filename;
+			  std::ofstream out(full_path.string(), std::ios::binary | std::ios::out);
+        for(auto& data : GetContent())
+				  out << data;
+      }
 
 
 			StatusCode FetchContent(std::optional<URI> URL = std::nullopt);
@@ -83,6 +114,7 @@ namespace Scarlett {
 			std::vector<std::string> _ContentType;
 			boost::optional<Size> _ContentSize{ 0 };
 			URI URL;
+      std::filesystem::path location;
 		};
 	}
 }
