@@ -45,7 +45,7 @@ namespace Scarlett::Reddit {
 		log->info("Serialized metadata.");
 
 		log->info("Writing media...");
-		for (std::vector<boost::shared_ptr<BaseTypes::Linkable>>::iterator it = posts.begin(); it != posts.end(); it++)
+		for (std::vector<boost::shared_ptr<BaseTypes::Linkable>>::const_iterator it = Posts().cbegin(); it != Posts().cend(); it++)
 		{
 			try {
 				if (boost::dynamic_pointer_cast<BaseTypes::Link>(*it)) {
