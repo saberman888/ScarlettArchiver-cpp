@@ -62,7 +62,7 @@ namespace Scarlett::Reddit::BaseTypes
 			statistics.Append<T>();
 			if (items.size() > 0)
 			{
-				for (decltype(items)::const_iterator it = items.cbegin(); it != items.cend(); it++)
+				for (auto it = items.cbegin(); it != items.cend(); it++)
 				{
 					// internal creation date
 					auto icd = boost::dynamic_pointer_cast<BaseTypes::Postable>(*it);
