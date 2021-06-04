@@ -45,7 +45,8 @@ namespace Scarlett::Reddit {
 		log->info("Serialized metadata.");
 
 		log->info("Writing media...");
-		for (auto it = Posts().cbegin(); it != Posts().cend(); it++)
+		auto posts = Posts();
+		for (auto it = posts.cbegin(); it != posts.cend(); it++)
 		{
 			try {
 				if (boost::dynamic_pointer_cast<BaseTypes::Link>(*it)) {
