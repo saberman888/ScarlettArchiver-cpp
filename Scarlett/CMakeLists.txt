@@ -29,23 +29,14 @@ elseif(MSVC)
 	set(CMAKE_CXX_FLAGS_RELEASE "/O2 /Oi")
 endif()
 
-if(Boost_FOUND)
-	if(DEBUG) 
-		include_directories(${Boost_LIBRARY_DIR_DEBUG})
-	else() 
-		include_directories(${Boost_LIBRARY_DIR_RELEASE}) 
-	endif()
-	include_directories(${Boost_INCLUDE_DIRS})
-endif()
-
-set(CPPREST_EXCLUDE_WEBSOCKETS CACHE BOOL ON)
-set(CPPREST_EXCLUDE_COMPRESSION CACHE BOOL ON)
-set(CPPREST_EXCLUDE_BROTLI CACHE BOOL ON)
-set(BUILD_SHARED_LIBS CACHE BOOL OFF)
-set(BUILD_TESTS CACHE BOOL OFF)
-set(BUILD_SAMPLES CACHE BOOL OFF)
-set(CPPREST_INSTALL_HEADERS CACHE BOOL OFF)
-set(CPPREST_INSTALL CACHE BOOL OFF)
+set(CPPREST_EXCLUDE_WEBSOCKETS INTERNAL CACHE BOOL ON )
+set(CPPREST_EXCLUDE_COMPRESSION INTERNAL CACHE BOOL ON)
+set(CPPREST_EXCLUDE_BROTLI INTERNAL CACHE BOOL ON)
+set(BUILD_SHARED_LIBS INTERNAL CACHE BOOL OFF)
+set(BUILD_TESTS INTERNAL CACHE BOOL OFF)
+set(BUILD_SAMPLES INTERNAL CACHE BOOL OFF)
+set(CPPREST_INSTALL_HEADERS INTERNAL CACHE BOOL OFF)
+set(CPPREST_INSTALL INTERNAL CACHE BOOL OFF)
 
 message(NOTICE "Cloning submodule: cpprestsdk")
 set(git_cmd git submodule update --init)
@@ -82,10 +73,25 @@ set(SCARLETT_SOURCES
 
 set(SCARLETT_LINK_LIBRARIES
 	spdlog::spdlog
+	spdlog::spdlog_header_only
 	cpprest
 	tinyxml2::tinyxml2
 	${Boost_LIBRARIES}
 )
+
+set(SCARLETT_INCLUDES
+	${Scarlett_SOURCE_DIR}/include
+	${Scarlett_SOURCE_DIR}/submodule/cpprestsdk/Release/include
+	)
+
+if(Boost_FOUND)
+	if(DEBUG) 
+		set(SCARLETT_INCLUDES ${SCARLETT_INCLUDES} ${Boost_LIBRARY_DIR_DEBUG})
+	else() 
+		set(SCARLETT_INCLUDES ${SCARLETT_INCLUDES} ${Boost_LIBRARY_DIR_RELEASE}) 
+	endif()
+	set(SCARLETT_INCLUDES ${SCARLETT_INCLUDES} ${Boost_INCLUDE_DIRS})
+endif()
 
 add_library(Scarlett STATIC)
 
@@ -93,8 +99,7 @@ add_library(Scarlett STATIC)
 target_include_directories(
 	Scarlett
 	PUBLIC
-	${PROJECT_SOURCE_DIR}/include
-	${PROJECT_SOURCE_DIR}/submodule/cpprestsdk/Release/include
+	${SCARLETT_INCLUDES}
 )
 
 target_sources(
@@ -125,8 +130,7 @@ if(SCARLETT_TESTS)
 	target_include_directories(
 		Scarlett_tests
 		PUBLIC
-		${PROJECT_SOURCE_DIR}/include 
-		${PROJECT_SOURCE_DIR}/submodule/cpprestsdk/Release/include
+		${SCARLETT_INCLUDES}
 	)
 
 	target_compile_definitions(
@@ -140,8 +144,6 @@ if(SCARLETT_TESTS)
 		INTERFACE
 		GTest::gmock
 		GTest::gtest
-		GTest::gmock_main
-		GTest::gtest_main
 		${SCARLETT_LINK_LIBRARIES}
 	)
 
