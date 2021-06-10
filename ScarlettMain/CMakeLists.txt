@@ -1,27 +1,26 @@
 ﻿cmake_minimum_required (VERSION 3.16)
 project (ScarlettMain CXX)
 set(CMAKE_CXX_STANDARD 17)
+find_package(Boost REQUIRED COMPONENTS system program_options)
 
-option(NDEBUG ON)
 
-find_package(Boost REQUIRED COMPONENTS system program_options serialization)
-find_package(spdlog REQUIRED)
-
-if(CMAKE_BUILD_TARGET|"Release")
-	add_compile_options(-DNDEBUG=1)
-	set(RELEASE ON)
-elseif(CMAKE_BUILD_TARGET|"Debug")
-	set(DEBUG ON)
-	set(ASAN OFF)
-endif()
+set(SCARLETT_USE_ASAN CACHE BOOL OFF "Debug with MSVC's address sanitizer. For this to be effective, this must be built with MSVC")
+set(SCARLETT_MAIN_COMPILE_DEFINITIONS "")
 
 if(Boost_FOUND)
 	if(DEBUG) 
-		include_directories(${Boost_LIBRARY_DIR_DEBUG})
+		set(SCARLETT_MAIN_INCLUDES ${SCARLETT_MAIN_INCLUDES} ${Boost_LIBRARY_DIR_DEBUG})
 	else() 
-		include_directories(${Boost_LIBRARY_DIR_RELEASE}) 
+		set(SCARLETT_MAIN_INCLUDES ${SCARLETT_MAIN_INCLUDES} ${Boost_LIBRARY_DIR_RELEASE}) 
 	endif()
-	include_directories(${Boost_INCLUDE_DIRS})
+	set(SCARLETT_MAIN_LINK_LIBRARIES ${SCARLETT_MAIN_LINK_LIBRARIES} ${Boost_LIBRARIES})
+	set(SCARLETT_MAIN_INCLUDES ${Boost_INCLUDE_DIR})
+endif()
+
+if(CMAKE_BUILD_TARGET|"Release")
+	set(SCARLETT_MAIN_COMPILE_DEFINITIONS NDEBUG)
+	set(RELEASE ON)
+	set(SCARLETT_USE_ASAN CACHE BOOL OFF)
 endif()
 
 
@@ -32,8 +31,8 @@ if(GCC)
 elseif(MSVC)
 	set(CMAKE_CXX_FLAGS "/EHa /MP")
 	set(CMAKE_CXX_FLAGS_DEBUG "/Zi /Zf /JMC /Od /Od")
-	if(ASAN)
-		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CSS_FLAGS_DEBUG} /fsanitize=address")
+	if(SCARLETT_USE_ASAN)
+		set(CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG} "/fsanitize=address")
 	endif()
 	set(CMAKE_CXX_FLAGS_RELEASE "/O2 /Oi")
 endif()
@@ -45,17 +44,22 @@ add_executable(
 	ScarlettCore.cpp
 )
 
+target_compile_definitions(
+	ScarlettArchiver
+	PRIVATE
+	${SCARLETT_MAIN_COMPILE_DEFINITIONS}
+)
+
 target_include_directories(
 	ScarlettArchiver
 	PRIVATE
 	${Scarlett_SOURCE_DIR}/include
+	${Boost_INCLUDE_DIR}
 )
 
 target_link_libraries(
 	ScarlettArchiver 
 	PRIVATE 
-	Scarlett 
-	spdlog::spdlog 
-	spdlog::spdlog_header_only 
+	Scarlett
 	${Boost_LIBRARIES}
 )
