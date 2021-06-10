@@ -4,9 +4,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(tinyxml2 REQUIRED)
 
-include_directories(${Scarlett_SOURCE_DIR})
-
-
 add_executable(oauth2_tests)
 
 target_sources( 
@@ -30,7 +27,7 @@ target_compile_definitions(
 target_include_directories(
 	oauth2_tests
 	PRIVATE
-	${Scarlett_SOURCE_DIR} 
+	${SCARLETT_INCLUDES}
 )
 
 target_link_libraries(
@@ -38,4 +35,7 @@ target_link_libraries(
 	PRIVATE
 	tinyxml2::tinyxml2
 	Scarlett_tests
+	cpprest
+	GTest::gmock_main
+	GTest::gtest_main
 )
