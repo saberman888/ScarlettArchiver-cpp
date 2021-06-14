@@ -104,7 +104,7 @@ namespace Scarlett::Client
             {
                 if (!m_oauth2_config->token().is_valid_access_token())
                 {
-                    if constexpr (std::is_same_v<T, _Password>)
+                    if constexpr (std::is_same_v<T, PasswordGrant>)
                     {
                         try {
                             m_oauth2_config->token_from_password(this->Username, this->Password);
