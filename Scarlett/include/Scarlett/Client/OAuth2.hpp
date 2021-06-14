@@ -95,6 +95,9 @@ namespace Scarlett::Client
         }
         inline bool ImplicitGrant() { return m_oauth2_config->implicit_grant(); }
 
+        inline void setScope(const WideString scope) { m_oauth2_config->set_scope(scope); }
+        inline const WideString getScope() { return m_oauth2_config->scope(); }
+
         inline void GetToken()
         {
             if (is_enabled())

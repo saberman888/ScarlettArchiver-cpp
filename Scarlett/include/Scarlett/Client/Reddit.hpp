@@ -15,26 +15,15 @@ namespace conv = utility::conversions;
 
 namespace Scarlett::Client
 {
-	enum RedditScope
+	using reddit_scope = WideString;
+	class reddit_scopes
 	{
-		identity = 0,
-		edit,
-		flair,
-		history,
-		modconfig,
-		modlog,
-		modposts,
-		modwiki,
-		mysubreddits,
-		privatemessages,
-		read,
-		report,
-		save,
-		submit,
-		subscribe,
-		vote,
-		wikiedit,
-		wikiread
+	public:
+#define _REDDITSCOPE
+#define DAT(_a, _b) static const reddit_scope a_;
+#include "../Internal/ScarlettConstants.h"
+#undef _REDDITSCOPE
+#undef DAT
 	};
 
 	struct AccessData
@@ -67,9 +56,20 @@ namespace Scarlett::Client
 				scarlettNestedThrow(e.what());
 			}
 		}
+
+
 	private:
+		friend RedditClient<T>& operator<<(RedditClient<T>& r, const reddit_scope& scope);
+		std::vector<reddit_scope> scopes;
 		std::shared_ptr< OAuth2Helper<T> > oauth2handle;
 	};
+
+	template<typename T>
+	RedditClient<T>& operator<<(RedditClient<T>& r, const reddit_scope& scope)
+	{
+		r.scopes.push_bakc(scope);
+		return r;
+	}
 
 	using SimpleClient = RedditClient<PasswordGrant>;
 	using AuthClient = RedditClient<Authorization>;
