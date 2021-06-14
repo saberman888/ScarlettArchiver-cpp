@@ -61,7 +61,7 @@ namespace Scarlett::Client
 		void AuthorizeWithReddit()
 		{
 			try {
-				this->GetToken();
+				oauth2handle->GetToken();
 			}
 			catch (std::exception& e) {
 				scarlettNestedThrow(e.what());
