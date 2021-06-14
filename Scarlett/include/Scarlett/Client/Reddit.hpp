@@ -54,6 +54,7 @@ namespace Scarlett::Client
 			if constexpr (std::is_same<T, _Password>::value)
 			{	
 				oauth2handle = std::make_shared< OAuth2Helper<T> >(acd.username, acd.password, acd.client_key, acd.client_secret, acd.redirect_uri, acd.useragent);
+				oauth2handle->SetMaxTime(3600);
 			}
 		}
 

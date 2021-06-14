@@ -46,6 +46,11 @@ namespace Scarlett::Client
 		{
 			return MaxTries;
 		}
+
+		inline void SetMaxTime(std::chrono::seconds time)
+		{
+			this->MaxTime.emplace(time);
+		}
 		
 		// Start tracking time 
 		inline void Track()
@@ -61,7 +66,7 @@ namespace Scarlett::Client
 		int MaxTries{ 5 };
 		int Tries{ 0 };
 
-		std::optional<int> MaxTime{ std::nullopt };
+		std::optional<std::chrono::seconds> MaxTime{ std::nullopt };
 		std::optional<TimePoint> StartTime{ std::nullopt };
 
 		bool TimeUp();
