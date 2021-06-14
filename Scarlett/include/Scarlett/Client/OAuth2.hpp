@@ -50,7 +50,7 @@ namespace Scarlett::Client
     }
 
     class Authorization;
-    class _Password;
+    class PasswordGrant;
 
 
     template<typename T>
@@ -155,7 +155,7 @@ namespace Scarlett::Client
 
         inline void init(const WideString client_key, const WideString client_secret, const WideString redirect_uri, const WideString useragent)
         {
-            if constexpr (std::is_same<T, _Password>::value)
+            if constexpr (std::is_same<T, PasswordGrant>::value)
             {
                 m_oauth2_config = std::make_unique<oauth2_config>(
                     client_key,

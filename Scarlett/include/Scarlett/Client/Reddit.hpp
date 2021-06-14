@@ -51,7 +51,7 @@ namespace Scarlett::Client
 		RedditClient(struct AccessData& acd)
 		{
 
-			if constexpr (std::is_same<T, _Password>::value)
+			if constexpr (std::is_same<T, PasswordGrant>::value)
 			{	
 				oauth2handle = std::make_shared< OAuth2Helper<T> >(acd.username, acd.password, acd.client_key, acd.client_secret, acd.redirect_uri, acd.useragent);
 				oauth2handle->SetMaxTime(3600);
@@ -71,7 +71,7 @@ namespace Scarlett::Client
 		std::shared_ptr< OAuth2Helper<T> > oauth2handle;
 	};
 
-	using SimpleClient = RedditClient<_Password>;
+	using SimpleClient = RedditClient<PasswordGrant>;
 	using AuthClient = RedditClient<Authorization>;
 
 };
