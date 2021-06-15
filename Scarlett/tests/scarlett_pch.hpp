@@ -44,7 +44,7 @@ namespace Scarlett::Tests
 				{
 					if(client_secret->GetText())
 					{
-						acd.client_secret->GetText();
+						acd.client_secret = client_secret->GetText();
 					}
 				}
 

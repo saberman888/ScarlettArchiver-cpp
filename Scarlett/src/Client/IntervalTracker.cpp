@@ -22,10 +22,10 @@ namespace Scarlett::Client
 	}
 
 	void RateTracker::waitifnecessary(int n)
-	{	
+	{
 		// Get an interval if there's any
         	Millisecond interval = GetLatestInterval();
-		
+
 		// Multiply the number of tries by 200ms and make sure it's under 1 hour
 		Millisecond waitTimes = Millisecond(200 * n);
 		waitTimes = waitTimes.count() < 3600 * 1000 ? waitTimes : Millisecond(3600 * 100);
@@ -51,7 +51,7 @@ namespace Scarlett::Client
 			scarlettOOTThrow("Error: Token's time has expired");
 		}
 
-		if(MaxTries >= Tries)
+		if(Tries >= MaxTries)
 		{
 			scarlettThrow("Error: Max number of requests reached");
 		}
