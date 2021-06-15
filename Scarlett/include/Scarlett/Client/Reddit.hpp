@@ -43,8 +43,17 @@ namespace Scarlett::Client
 			if constexpr (std::is_same<T, PasswordGrant>::value)
 			{
 				oauth2handle = std::make_shared< OAuth2Helper<T> >(acd.username, acd.password, acd.client_key, acd.client_secret, acd.redirect_uri, acd.useragent);
-				oauth2handle->SetMaxTime(3600);
+				oauth2handle->SetMaxTime(
+					std::chrono::seconds(3600)
+				);
 			}
+		}
+
+		void Me()
+		{
+			auto request = HttpRequest(web::http::methods::GET);
+			auto i = oauth2handle->Send("https://api.reddit.com/api/v1/me", request);
+			auto v = i.extract_string().get();
 		}
 
 		void AuthorizeWithReddit()
