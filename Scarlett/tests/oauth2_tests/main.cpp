@@ -7,16 +7,10 @@ namespace Scarlett::Tests
 	TEST_F(TestAccessData, PasswordGrant)
 	{
 		using namespace Scarlett::Client;
-		OAuth2Helper<PasswordGrant> a2h(
-			u16(acd.username),
-			u16(acd.password),
-			u16(acd.client_key),
-			u16(acd.client_secret),
-			u16(acd.redirect_uri),
-			u16(acd.useragent)
-		);
+		RedditClient<PasswordGrant> pswg(acd);
 
-		ASSERT_NO_THROW(a2h.GetToken());
+		ASSERT_NO_THROW(pswg.AuthorizeWithReddit());
+		ASSERT_NO_THROW(pswg.Me());
 
 	}
 
