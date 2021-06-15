@@ -50,12 +50,16 @@ namespace Scarlett::Client
 		void AuthorizeWithReddit()
 		{
 			try {
+				GenerateScopes();
 				oauth2handle->GetToken();
+				oauth2handle->Track();
 			}
 			catch (std::exception& e) {
 				scarlettNestedThrow(e.what());
 			}
-		}2
+		}
+
+
 
 		RedditClient<T>& operator<<(const reddit_scope& scope)
 		{
@@ -66,6 +70,16 @@ namespace Scarlett::Client
 
 	private:
 		std::vector<reddit_scope> scopes;
+		void GenerateScopes()
+		{
+			std::string scope_string;
+			for(auto& scope : scopes)
+			{
+				scope_string += scope;
+			}
+			oauth2handle->setScope(scope_string);
+		}
+
 		std::shared_ptr< OAuth2Helper<T> > oauth2handle;
 	};
 
