@@ -41,7 +41,7 @@ namespace Scarlett::Client
 		{
 
 			if constexpr (std::is_same<T, PasswordGrant>::value)
-			{	
+			{
 				oauth2handle = std::make_shared< OAuth2Helper<T> >(acd.username, acd.password, acd.client_key, acd.client_secret, acd.redirect_uri, acd.useragent);
 				oauth2handle->SetMaxTime(3600);
 			}
@@ -55,21 +55,19 @@ namespace Scarlett::Client
 			catch (std::exception& e) {
 				scarlettNestedThrow(e.what());
 			}
+		}2
+
+		RedditClient<T>& operator<<(const reddit_scope& scope)
+		{
+			scopes.push_back(scope);
+			return this;
 		}
 
 
 	private:
-		friend RedditClient<T>& operator<<(RedditClient<T>& r, const reddit_scope& scope);
 		std::vector<reddit_scope> scopes;
 		std::shared_ptr< OAuth2Helper<T> > oauth2handle;
 	};
-
-	template<typename T>
-	RedditClient<T>& operator<<(RedditClient<T>& r, const reddit_scope& scope)
-	{
-		r.scopes.push_bakc(scope);
-		return r;
-	}
 
 	using SimpleClient = RedditClient<PasswordGrant>;
 	using AuthClient = RedditClient<Authorization>;
