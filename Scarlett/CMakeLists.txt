@@ -70,7 +70,8 @@ set(SCARLETT_SOURCES
 	src/Reddit/SubredditMetadata.cpp
 	src/Reddit/Subreddit.cpp
 	src/Client/IntervalTracker.cpp
-	src/Client/PushShift.cpp)
+	src/Client/PushShift.cpp
+	src/Client/Reddit.cpp)
 
 set(SCARLETT_LINK_LIBRARIES
 	spdlog::spdlog_header_only
