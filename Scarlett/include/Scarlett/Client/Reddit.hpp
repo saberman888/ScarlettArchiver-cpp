@@ -73,7 +73,7 @@ namespace Scarlett::Client
 		RedditClient<T>& operator<<(const reddit_scope& scope)
 		{
 			scopes.push_back(scope);
-			return this;
+			return *this;
 		}
 
 
@@ -91,8 +91,6 @@ namespace Scarlett::Client
 
 		std::shared_ptr< OAuth2Helper<T> > oauth2handle;
 	};
-
-	using SimpleClient = RedditClient<PasswordGrant>;
 	using AuthClient = RedditClient<Authorization>;
 
 };
