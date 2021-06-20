@@ -136,11 +136,6 @@ namespace Scarlett::Client
             return m_http_config;
         }
 
-	inline const bool ig()
-	{
-		return m_oauth2_config->implicit_grant();
-	}
-
     private:
         inline void open_browser_auth()
         {
