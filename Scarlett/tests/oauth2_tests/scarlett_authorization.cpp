@@ -8,12 +8,12 @@ namespace Scarlett::Tests
 	{
 		using namespace Scarlett::Client;
 		OAuth2Helper<Authorization> a2h(
-			u16(acd.username),
-			u16(acd.password),
-			u16(acd.client_key),
-			u16(acd.client_secret),
-			u16(acd.redirect_uri),
-			u16(acd.useragent));
+				acd.client_key,
+				acd.client_secret,
+				acd.redirect_uri,
+				acd.useragent
+				);
+		a2h.setScope("*");
 		ASSERT_TRUE(a2h.Authorize().get());
 	}
 }
