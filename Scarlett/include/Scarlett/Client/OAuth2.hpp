@@ -162,9 +162,8 @@ namespace Scarlett::Client
                 m_oauth2_config->set_http_basic_auth(true);
             }
             else {
-                m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, m_oauth2_config);
                 m_oauth2_config = std::make_shared<oauth2_config>(client_key, client_secret, "https://www.reddit.com/api/v1/authorize"_u, "https://www.reddit.com/api/v1/access_token"_u, redirect_uri);
-		m_oauth2_config->set_implicit_grant(false);
+		m_listener = std::make_unique<oauth2_code_listener>(m_oauth2_config->redirect_uri(), m_oauth2_config);
             }
 
             m_oauth2_config->set_bearer_auth(true);
