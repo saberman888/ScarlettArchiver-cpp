@@ -88,13 +88,6 @@ namespace Scarlett::Client
         inline void setUserAgent(const WideString useragent) { m_oauth2_config->set_user_agent(useragent); }
         inline const WideString getUserAgent() { return m_oauth2_config->user_agent(); }
 
-        inline void setImplicitGrant(bool option)
-        {
-            this->generate_state = true;
-            m_oauth2_config->set_implicit_grant(option);
-        }
-        inline bool ImplicitGrant() { return m_oauth2_config->implicit_grant(); }
-
         inline void setScope(const WideString scope) { m_oauth2_config->set_scope(scope); }
         inline const WideString getScope() { return m_oauth2_config->scope(); }
 
@@ -114,7 +107,7 @@ namespace Scarlett::Client
                         }
                     }
                     else {
-                        if (Authorize().get())
+                        if (Authorize())
                         {
                             m_http_config.set_oauth2(*m_oauth2_config);
                             ucout << m_oauth2_config->token().access_token();
@@ -143,24 +136,28 @@ namespace Scarlett::Client
             return m_http_config;
         }
 
+	inline const bool ig()
+	{
+		return m_oauth2_config->implicit_grant();
+	}
+
     private:
         inline void open_browser_auth()
         {
-            auto auth_uri(m_oauth2_config->build_authorization_uri(generate_state));
+            auto auth_uri(m_oauth2_config->build_authorization_uri(true));
             open_browser(auth_uri);
         }
 
         http_client_config m_http_config;
-        std::unique_ptr<oauth2_config> m_oauth2_config;
+        std::shared_ptr<oauth2_config> m_oauth2_config;
 
         WideString Username, Password;
-        bool generate_state, implicitgrant;
 
         inline void init(const WideString client_key, const WideString client_secret, const WideString redirect_uri, const WideString useragent)
         {
             if constexpr (std::is_same<T, PasswordGrant>::value)
             {
-                m_oauth2_config = std::make_unique<oauth2_config>(
+                m_oauth2_config = std::make_shared<oauth2_config>(
                     client_key,
                     client_secret,
                     ""_u,
@@ -170,43 +167,21 @@ namespace Scarlett::Client
                 m_oauth2_config->set_http_basic_auth(true);
             }
             else {
-                auto authorizationEndpoint = URI("https://www.reddit.com/api/v1/authorize"_u);
-                m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, *m_oauth2_config);
-                m_oauth2_config = std::make_unique<oauth2_config>(client_key, client_secret, "https://www.reddit.com/api/v1/authorize"_u, "https://www.reddit.com/api/v1/access_token"_u, redirect_uri);
+                m_listener = std::make_unique<oauth2_code_listener>(redirect_uri, m_oauth2_config);
+                m_oauth2_config = std::make_shared<oauth2_config>(client_key, client_secret, "https://www.reddit.com/api/v1/authorize"_u, "https://www.reddit.com/api/v1/access_token"_u, redirect_uri);
+		m_oauth2_config->set_implicit_grant(false);
             }
 
             m_oauth2_config->set_bearer_auth(true);
             m_oauth2_config->set_user_agent(useragent);
         }
 
-        inline void readToken(const JSON::value data)
-        {
-            if (data.has_field("error"_u))
-            {
-                // TODO: Implement invalid grant handling
-            }
-            else {
-                web::http::oauth2::experimental::oauth2_token t;
-
-                t.set_access_token(data.at("access_token"_u).as_string());
-                t.set_expires_in(data.at("expires_in"_u).as_integer());
-                t.set_token_type(data.at("token_type"_u).as_string());
-                t.set_scope(data.at("scope"_u).as_string());
-                m_oauth2_config->set_token(t);
-            }
-        }
 
         inline bool is_enabled() const
         {
             if constexpr (std::is_same_v<T, Authorization>)
             {
-                if(implicitgrant)
-                {
-                    return !m_oauth2_config->client_key().empty();
-                }
-                else {
-                    return !m_oauth2_config->client_key().empty() && !m_oauth2_config->client_secret().empty();
-                }
+                return !m_oauth2_config->client_key().empty(); 
             }
             else {
                 return !m_oauth2_config->client_key().empty() && !m_oauth2_config->client_secret().empty() && !Username.empty() && !Password.empty();

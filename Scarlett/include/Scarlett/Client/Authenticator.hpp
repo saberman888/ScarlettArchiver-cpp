@@ -21,15 +21,17 @@ namespace Scarlett::Client
         using status_codes = web::http::status_codes;
 
 
-        oauth2_code_listener(URI listen_uri, oauth2_config& config)
+        oauth2_code_listener(URI listen_uri, std::shared_ptr<oauth2_config>& config)
             : m_listener(new http_listener(listen_uri)), m_config(config)
         {
+		if(!config)
+			throw std::invalid_argument("Fatal Error: config has no value");
             m_listener->support([this](http_request request) -> void {
-                if (request.request_uri().path() == utility::conversions::to_string_t("/"))
+                if (request.request_uri().path() == m_listener->uri().path())
                 {
                     m_resplock.lock();
 
-                    m_config.token_from_redirected_uri(request.request_uri())
+                    m_config->token_from_redirected_uri(request.request_uri())
                         .then([this, request](pplx::task<void> token_task) -> void {
                         try
                         {
@@ -51,6 +53,7 @@ namespace Scarlett::Client
                 else
                 {
                     request.reply(status_codes::NotFound, utility::conversions::to_string_t("Not found."));
+		    return;
                 }
                 });
 
@@ -64,7 +67,7 @@ namespace Scarlett::Client
     private:
         std::unique_ptr<http_listener> m_listener;
         pplx::task_completion_event<bool> m_tce;
-        oauth2_config& m_config;
+	std::shared_ptr<oauth2_config>& m_config;
         std::mutex m_resplock;
     };
 }
