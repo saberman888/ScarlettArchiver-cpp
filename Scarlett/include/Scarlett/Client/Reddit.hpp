@@ -8,6 +8,7 @@
 #include <cpprest/json.h>
 #include <string_view>
 #include "OAuth2.hpp"
+#include <fstream>
 
 namespace HttpClient = web::http::client;
 namespace OAuth2 = web::http::oauth2::experimental;
@@ -48,9 +49,8 @@ namespace Scarlett::Client
 
 		void Me()
 		{
-			auto request = HttpRequest(web::http::methods::GET);
-			auto i = oauth2handle->Send("https://api.reddit.com/api/v1/me", request);
-			auto v = i.extract_string().get();
+			auto v = RedditGet("/api/v1/me", StringMap{});
+			auto r = v.extract_string().get();
 		}
 
 		void AuthorizeWithReddit()
@@ -85,6 +85,7 @@ namespace Scarlett::Client
 				for(auto& scope : scopes)
 				{
 					scope_string += scope;
+					scope_string += " ";
 				}
 			} else {
 				scope_string = "*";
@@ -92,8 +93,23 @@ namespace Scarlett::Client
 			oauth2handle->setScope(scope_string);
 		}
 
+		auto RedditGet(const std::string& endpoint, const std::optional<StringMap> query_parameters)
+		{
+			web::uri_builder ub;
+			ub.set_scheme("https"_u);
+			ub.set_host("api.reddit.com"_u);
+			ub.set_path(u16(endpoint));
+			if(query_parameters){
+				ub.append_query(u16(GenerateParamData(query_parameters.value())));
+			}
+			auto r = HttpRequest(web::http::methods::GET);
+			r.set_request_uri(ub.to_uri());
+			return oauth2handle->Send(ub.to_uri(), r);
+		}
+
 		std::shared_ptr< OAuth2Helper<T> > oauth2handle;
 	};
 	using AuthClient = RedditClient<Authorization>;
+	using SimpleClient = RedditClient<PasswordGrant>;
 
 };
