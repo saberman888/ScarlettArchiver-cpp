@@ -4,16 +4,11 @@
 
 namespace Scarlett::Tests
 {
-	TEST_F(TestAccessData, ImplicitGrant)
+	TEST_F(TestAccessData, Authorization)
 	{
 		using namespace Scarlett::Client;
-		OAuth2Helper<Authorization> a2h(
-				acd.client_key,
-				acd.client_secret,
-				acd.redirect_uri,
-				acd.useragent
-				);
-		a2h.setScope("*");
-		ASSERT_TRUE(a2h.Authorize().get());
+		auto acd = TestAccessData::load_configuration("accessdata.xml"); 
+		RedditClient<Authorization> authGrant(acd);
+		ASSERT_NO_THROW(authGrant.AuthorizeWithReddit());
 	}
 }
