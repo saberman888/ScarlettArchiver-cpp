@@ -107,7 +107,7 @@ namespace Scarlett::Client
                         }
                     }
                     else {
-                        if (Authorize())
+                        if (Authorize().get())
                         {
                             m_http_config.set_oauth2(*m_oauth2_config);
                             ucout << m_oauth2_config->token().access_token();
