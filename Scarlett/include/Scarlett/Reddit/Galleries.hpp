@@ -12,7 +12,7 @@ namespace Scarlett::Reddit
 	class Gallery : public BaseTypes::Link	{
 	public:
 		// Reads the provided json into Gallery, and if the gallery/album is an Imgur album, it retrieves the images.
-		Gallery(const JSON::value& json, const std::optional<std::string> ImgurClientId = std::nullopt);
+		Gallery(const JSON::value& json, const std::optional<String> ImgurClientId = std::nullopt);
 		/**
 		 This simply returns a vector full of Image URLs.
 		*/
