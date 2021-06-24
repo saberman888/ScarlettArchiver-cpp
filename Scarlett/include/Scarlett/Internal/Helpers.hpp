@@ -13,8 +13,6 @@ namespace Scarlett
 {	
 	namespace conv = utility::conversions;
 	namespace JSON = web::json;
-	
-
 	/**
 	* just like the normal strptime on Linux. I just needed an independent implementation because, MSVC doesn't have one
 	* @author Sai Vazquez
@@ -31,8 +29,6 @@ namespace Scarlett
 	{
 		return (lhs.rfind(rhs) != std::string::npos);
 	}
-	std::vector<std::string> splitString(std::string data, char delimeter);
-	std::string SearchAndReplace(std::string Input, const std::string ToBeReplaced, const std::string Replacement);
 
 	String operator ""_u(const char* source, size_t csize);
 

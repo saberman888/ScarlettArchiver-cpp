@@ -1,6 +1,10 @@
 #pragma once
 
 #include <cpprest/http_client.h>
+#include <iomanip>
+#include <fstream>
+#include <stringstream>
+#include <string>
 
 #ifdef _WIN32
 #define __SCARLETT_USE_WIDE_STRINGS
@@ -24,9 +28,15 @@ namespace Scarlett
 	using TimePoint = std::chrono::time_point<std::chrono::system_clock>;
 	using Millisecond = std::chrono::milliseconds;
 
-	// String related stuff
+	// String related stuff without the utility namespace
 	using StringMap = std::map<std::string, std::string>;
 	using String = utility::string_t;
+	using Char = utility::char_t;
+	using ofstream = utility::ofstream_t;
+	using ifstream = utility::ifstream_t;
+	using istringstream = utility::istringstream_t;
+	using ostringstream = utility::ostringstream_t;
+	using stringstream = utility::stringstream_t;
 
 	inline String toScarlettString(const std::string source) {
 #ifdef __SCARLETT_USE_WIDE_STRINGS
@@ -49,6 +59,34 @@ namespace Scarlett
 #else
 #define WIDEN(x) x
 #endif
+	template<class CharT, 
+			 class Traits = std::char_traits<CharT>, 
+			 class Allocator = std::allocator<CharT>>
+	std::vector<std::basic_string<CharT, Traits, Allocator>> splitString(std::basic_string<CharT, Traits, Allocator> data, CharT delimeter)
+	{
+		decltype(data) temp;
+		std::vector<decltype(data)> returnList;
+		std::basic_stringstream<CharT, Traits, Allocator> ss(data);
+
+		while (std::getline(ss, temp, delimeter))
+		{
+			returnList.push_back(temp);
+		}
+		return returnList;
+	}
+
+	template<class CharT, 
+			 class Traits = std::char_traits<CharT>, 
+			 class Allocator = std::allocator<CharT>>
+	std::basic_string<CharT, Traits, Allocator> SearchAndReplace(std::basic_string<CharT, Traits, Allocator> Input, const std::basic_string<CharT, Traits, Allocator> ToBeReplaced, const std::basic_string<CharT, Traits, Allocator> Replacement)
+	{
+		if (Input.find(ToBeReplaced) != std::std::basic_string<CharT, Traits, Allocator>::npos)
+		{
+			Input.replace(Input.find(ToBeReplaced), ToBeReplaced.size(), Replacement);
+		}
+		return Input;
+	}
+
 	// Other
 	using Size = utility::size64_t;
 };
