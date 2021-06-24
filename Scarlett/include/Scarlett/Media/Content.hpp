@@ -27,18 +27,18 @@ namespace Scarlett {
 		class Content
 		{
 		public:
-			Content(){}
+			Content() {}
 			Content(const std::string& URL);
 			Content(const URI URL)
 			{
 				this->URL = URL;
 			}
 
-      Content(const URI& uri, const std::filesystem::path destination)
-      {
-        this->URL = uri;
-        this->location = destination;
-      }
+			Content(const URI& uri, const std::filesystem::path destination)
+			{
+				this->URL = uri;
+				this->location = destination;
+			}
 
 			inline const auto GetContent()
 			{
@@ -57,36 +57,36 @@ namespace Scarlett {
 
 			inline const std::string GetURLString()
 			{
-				return u8(URL.to_string());
+				return toString(URL.to_string());
 			}
 
-      inline void SetURL(const URI uri)
-      {
-        URL = uri;
-      }
+			inline void SetURL(const URI uri)
+			{
+				URL = uri;
+			}
 
 			inline const URI GetURL()
 			{
 				return URL;
 			}
 
-      inline const std::filesystem::path GetPath()
-      {
-        return location;
-      }
+			inline const std::filesystem::path GetPath()
+			{
+				return location;
+			}
 
-      inline void SetPath(const std::filesystem::path destination)
-      {
-        location = destination;
-      }
+			inline void SetPath(const std::filesystem::path destination)
+			{
+				location = destination;
+			}
 
-      inline void Write(const std::string& filename)
-      {
-        auto full_path = location / filename;
-			  std::ofstream out(full_path.string(), std::ios::binary | std::ios::out);
-        for(auto& data : GetContent())
-				  out << data;
-      }
+			inline void Write(const std::string& filename)
+			{
+				auto full_path = location / filename;
+				std::ofstream out(full_path.string(), std::ios::binary | std::ios::out);
+				for (auto& data : GetContent())
+					out << data;
+			}
 
 
 			StatusCode FetchContent(std::optional<URI> URL = std::nullopt);
@@ -105,7 +105,7 @@ namespace Scarlett {
 				using namespace boost::serialization;
 				ar& make_nvp("ContentInfo", _ContentType);
 				ar& make_nvp("ContentSize", _ContentSize);
-				auto url = u8(URL.to_string());
+				auto url = toString(URL.to_string());
 				ar& make_nvp("URL", url);
 			}
 
@@ -114,7 +114,7 @@ namespace Scarlett {
 			std::vector<std::string> _ContentType;
 			boost::optional<Size> _ContentSize{ 0 };
 			URI URL;
-      std::filesystem::path location;
+			std::filesystem::path location;
 		};
 	}
 }

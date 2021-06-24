@@ -32,7 +32,7 @@ namespace Scarlett
 #ifdef __SCARLETT_USE_WIDE_STRINGS
 		return conv::to_string_t(source);
 #else
-		return source
+		return source;
 #endif
 	}
 
