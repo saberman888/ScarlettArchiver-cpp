@@ -58,38 +58,38 @@ namespace Scarlett::Client
     {
     public:
 
-        OAuth2Helper(const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent) : RateTracker(60)
+        OAuth2Helper(const String client_key, const String secret, const String redirect_uri, const String useragent) : RateTracker(60)
         {
             init(client_key, secret, redirect_uri, useragent);
 	        RateTracker::SetMaxTries(600);
         }
 
-        OAuth2Helper(const WideString username, const WideString password, const WideString client_key, const WideString secret, const WideString redirect_uri, const WideString useragent) : RateTracker(60)
+        OAuth2Helper(const String username, const String password, const String client_key, const String secret, const String redirect_uri, const String useragent) : RateTracker(60)
         {
             setUserCredentials(username, password);
             init(client_key, secret, redirect_uri, useragent);
 	        RateTracker::SetMaxTries(600);
         }
 
-        inline void setUserCredentials(const WideString& username, const WideString& password)
+        inline void setUserCredentials(const String& username, const String& password)
         {
             this->Username = username;
             this->Password = password;
         }
-        inline WideString getUsername() { return Username; }
-        inline WideString getPassword() { return Password; }
+        inline String getUsername() { return Username; }
+        inline String getPassword() { return Password; }
 
-        inline void setClientKey(const WideString client_key) { m_oauth2_config->set_client_key(client_key); }
-        inline WideString getClientKey() { return m_oauth2_config->client_key(); }
+        inline void setClientKey(const String client_key) { m_oauth2_config->set_client_key(client_key); }
+        inline String getClientKey() { return m_oauth2_config->client_key(); }
         
-        inline void setClientSecret(const WideString client_secret) { m_oauth2_config->set_client_secret(client_secret); }
-        inline WideString getClientSecret() { return m_oauth2_config->client_secret(); }
+        inline void setClientSecret(const String client_secret) { m_oauth2_config->set_client_secret(client_secret); }
+        inline String getClientSecret() { return m_oauth2_config->client_secret(); }
 
-        inline void setUserAgent(const WideString useragent) { m_oauth2_config->set_user_agent(useragent); }
-        inline const WideString getUserAgent() { return m_oauth2_config->user_agent(); }
+        inline void setUserAgent(const String useragent) { m_oauth2_config->set_user_agent(useragent); }
+        inline const String getUserAgent() { return m_oauth2_config->user_agent(); }
 
-        inline void setScope(const WideString scope) { m_oauth2_config->set_scope(scope); }
-        inline const WideString getScope() { return m_oauth2_config->scope(); }
+        inline void setScope(const String scope) { m_oauth2_config->set_scope(scope); }
+        inline const String getScope() { return m_oauth2_config->scope(); }
 
         inline void GetToken()
         {
@@ -146,9 +146,9 @@ namespace Scarlett::Client
         http_client_config m_http_config;
         std::shared_ptr<oauth2_config> m_oauth2_config;
 
-        WideString Username, Password;
+        String Username, Password;
 
-        inline void init(const WideString client_key, const WideString client_secret, const WideString redirect_uri, const WideString useragent)
+        inline void init(const String client_key, const String client_secret, const String redirect_uri, const String useragent)
         {
             if constexpr (std::is_same<T, PasswordGrant>::value)
             {
@@ -163,7 +163,7 @@ namespace Scarlett::Client
             }
             else {
                 m_oauth2_config = std::make_shared<oauth2_config>(client_key, client_secret, "https://www.reddit.com/api/v1/authorize"_u, "https://www.reddit.com/api/v1/access_token"_u, redirect_uri);
-		m_listener = std::make_unique<oauth2_code_listener>(m_oauth2_config->redirect_uri(), m_oauth2_config);
+		        m_listener = std::make_unique<oauth2_code_listener>(m_oauth2_config->redirect_uri(), m_oauth2_config);
             }
 
             m_oauth2_config->set_bearer_auth(true);

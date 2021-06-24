@@ -9,14 +9,11 @@
 #include <string_view>
 #include "OAuth2.hpp"
 #include <fstream>
-
-namespace HttpClient = web::http::client;
-namespace OAuth2 = web::http::oauth2::experimental;
-namespace conv = utility::conversions;
+#include "../Internal/Types.hpp"
 
 namespace Scarlett::Client
 {
-	using reddit_scope = WideString;
+	using reddit_scope = String;
 	class reddit_scopes
 	{
 	public:
@@ -29,8 +26,8 @@ namespace Scarlett::Client
 
 	struct AccessData
 	{
-		std::string client_key, client_secret, useragent, redirect_uri;
-		std::string username, password;
+		Scarlett::String client_key, client_secret, useragent, redirect_uri;
+		Scarlett::String username, password;
 	};
 
 
@@ -85,7 +82,7 @@ namespace Scarlett::Client
 		std::vector<reddit_scope> scopes;
 		void GenerateScopes()
 		{
-			WideString scope_string;
+			String scope_string;
 			if(scopes.size() != 0)
 			{
 
@@ -105,9 +102,9 @@ namespace Scarlett::Client
 			web::uri_builder ub;
 			ub.set_scheme("https"_u);
 			ub.set_host("api.reddit.com"_u);
-			ub.set_path(u16(endpoint));
+			ub.set_path(toScarlettString(endpoint));
 			if(query_parameters){
-				ub.append_query(u16(GenerateParamData(query_parameters.value())));
+				ub.append_query(toScarlettString(GenerateParamData(query_parameters.value())));
 			}
 			auto r = HttpRequest(web::http::methods::GET);
 			r.set_request_uri(ub.to_uri());
