@@ -30,8 +30,6 @@ namespace Scarlett
 		return (lhs.rfind(rhs) != std::string::npos);
 	}
 
-	String operator ""_u(const char* source, size_t csize);
-
 	inline HttpResponse Download(URI source)
 	{
 		HttpClient cl(source);

@@ -80,11 +80,16 @@ namespace Scarlett
 			 class Allocator = std::allocator<CharT>>
 	std::basic_string<CharT, Traits, Allocator> SearchAndReplace(std::basic_string<CharT, Traits, Allocator> Input, const std::basic_string<CharT, Traits, Allocator> ToBeReplaced, const std::basic_string<CharT, Traits, Allocator> Replacement)
 	{
-		if (Input.find(ToBeReplaced) != std::std::basic_string<CharT, Traits, Allocator>::npos)
+		if (Input.find(ToBeReplaced) != std::basic_string<CharT, Traits, Allocator>::npos)
 		{
 			Input.replace(Input.find(ToBeReplaced), ToBeReplaced.size(), Replacement);
 		}
 		return Input;
+	}
+
+	String operator""_u(const char* source, size_t csize)
+	{
+		return utility::conversions::to_string_t(std::string(source, csize));
 	}
 
 	// Other
