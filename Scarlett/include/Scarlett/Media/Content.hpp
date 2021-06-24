@@ -45,9 +45,9 @@ namespace Scarlett {
 				return Response->extract_vector().get();
 			}
 
-			inline const std::string GetStringContent(bool ignore_content = true)
+			inline const String GetStringContent(bool ignore_content_type = true)
 			{
-				return Response->extract_utf8string(ignore_content).get();
+				return Response->extract_string(ignore_content_type).get();
 			}
 
 			inline const auto GetJSONContent()
@@ -55,12 +55,12 @@ namespace Scarlett {
 				return Response->extract_json().get();
 			}
 
-			inline const std::string GetURLString()
+			inline const String GetURLString()
 			{
-				return toString(URL.to_string());
+				return URL.to_string();
 			}
 
-			inline void SetURL(const URI uri)
+			inline void SetURL(const URI& uri)
 			{
 				URL = uri;
 			}
@@ -80,10 +80,10 @@ namespace Scarlett {
 				location = destination;
 			}
 
-			inline void Write(const std::string& filename)
+			inline void Write(const String& filename)
 			{
 				auto full_path = location / filename;
-				std::ofstream out(full_path.string(), std::ios::binary | std::ios::out);
+				Scarlett::ofstream out(full_path, std::ios::binary | std::ios::out);
 				for (auto& data : GetContent())
 					out << data;
 			}
@@ -91,11 +91,11 @@ namespace Scarlett {
 
 			StatusCode FetchContent(std::optional<URI> URL = std::nullopt);
 
-			std::string Extension();
+			String Extension();
 
-			inline std::string ContentType()
+			inline String ContentType()
 			{
-				return _ContentType.empty() ? std::string() : _ContentType[0];
+				return _ContentType.empty() ? String() : _ContentType[0];
 			}
 
 			inline Size ContentSize()
@@ -113,13 +113,13 @@ namespace Scarlett {
 				using namespace boost::serialization;
 				ar& make_nvp("ContentInfo", _ContentType);
 				ar& make_nvp("ContentSize", _ContentSize);
-				auto url = toString(URL.to_string());
+				auto url = URL.to_string();
 				ar& make_nvp("URL", url);
 			}
 
 
-			std::optional<web::http::http_response> Response{ std::nullopt };
-			std::vector<std::string> _ContentType;
+			std::optional<HttpResponse> Response{ std::nullopt };
+			std::vector<String> _ContentType;
 			boost::optional<Size> _ContentSize{ 0 };
 			URI URL;
 			std::filesystem::path location;
