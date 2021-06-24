@@ -41,7 +41,14 @@ namespace Scarlett::Client
 		RedditClient(struct AccessData& acd)
 		{
 
-			oauth2handle = std::make_shared< OAuth2Helper<T> >(acd.username, acd.password, acd.client_key, acd.client_secret, acd.redirect_uri, acd.useragent);
+			oauth2handle = std::make_shared< OAuth2Helper<T> >(
+				acd.username, 
+				acd.password, 
+				acd.client_key, 
+				acd.client_secret, 
+				acd.redirect_uri, 
+				acd.useragent);
+
 			oauth2handle->SetMaxTime(
 				std::chrono::seconds(3600)
 			);
@@ -78,17 +85,17 @@ namespace Scarlett::Client
 		std::vector<reddit_scope> scopes;
 		void GenerateScopes()
 		{
-			std::string scope_string;
+			WideString scope_string;
 			if(scopes.size() != 0)
 			{
 
 				for(auto& scope : scopes)
 				{
 					scope_string += scope;
-					scope_string += " ";
+					scope_string += " "_u;
 				}
 			} else {
-				scope_string = "*";
+				scope_string = "*"_u;
 			}
 			oauth2handle->setScope(scope_string);
 		}
