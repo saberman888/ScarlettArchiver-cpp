@@ -2,88 +2,91 @@
 
 namespace Scarlett::Media::ImgurAccess
 {
-	static HttpResponse ImgurGet(std::string endpoint, std::string ClientId)
+	const String GetHash(const URI& uri)
 	{
+		if (auto hash = uri.query(); hash[0] == WIDEN('/'))
+		{
+			return uri.query().substr(1);
+		}
+		else {
+			return uri.query();
+		}
+	}
 
-		HttpClient client(web::uri("https://api.imgur.com/"_u));
+	static HttpResponse ImgurGet(const String& endpoint, const String& ClientId)
+	{
+		auto FullUri = URI("https://api.imgur.com/"_u + endpoint);
+		HttpClient client(FullUri.authority());
 
 		HttpRequest req(HttpMethod::GET);
 		auto headers = req.headers();
 
-		std::string lefthandHeader = " CLIENT-ID " + ClientId;
-
-		headers.add("Authorization"_u, conv::to_string_t(lefthandHeader));
-		req.set_request_uri(conv::to_string_t(endpoint));
+		headers.add("Authorization"_u, " CLIENT-ID "_u + ClientId);
+		req.set_request_uri(FullUri.query());
 		return client.request(req).get();
 	}
 
-	static std::string ParseImage(JSON::value json)
+	static const String ParseImage(const JSON::value& json)
 	{
-		std::string link;
 		try {
 			if (json.has_field("data"_u))
 			{
-				link = u8(json.at("data"_u).at("link"_u).as_string());
+				return json.at("data"_u).at("link"_u).as_string();
 			}
 		}
 		catch (JSON::json_exception& e) {
-			auto msg = "Failed to parse JSON from Imgur Link, " + std::string(e.what());
-			scarlettNestedThrow(msg);
+			scarlettNestedThrow("Failed to parse JSON from Imgur Link, " + std::string(e.what()));
 		}
-		return link;
+		return String();
 	}
-	static std::vector<std::string> ParseAlbum(JSON::value json)
+
+	static const std::vector<String> ParseAlbum(const JSON::value& json)
 	{
-		std::vector<std::string> URLs;
+		std::vector<String> URLs;
 		try {
 			if (json.at("data"_u).at("images"_u).is_array())
 			{
 				JSON::array images = json.at("data"_u).at("images"_u).as_array();
 				for (auto& elem : images)
 				{
-					auto link = conv::to_utf8string(elem.as_string());
-					URLs.push_back(link);
+					URLs.push_back(elem.to_string());
 				}
 			}
 		}
 		catch (JSON::json_exception& e) {
-			auto msg = "Failed to parse JSON from Imgur Link, " + std::string(e.what());
-			scarlettNestedThrow(msg);
+			scarlettNestedThrow("Failed to parse JSON from Imgur Link, " + std::string(e.what()));
 		}
 		return URLs;
 	}
 
-	std::string GetImage(std::string ImageHash, std::string ClientId)
+	const String GetImage(const String& ImageHash, const String& ClientId)
 	{
-		std::string endpoint = "/3/image/" + GetHash(ImageHash);
+		String endpoint = "/3/image/"_u + GetHash(ImageHash);
 		auto result = ImgurGet(endpoint, ClientId);
 		if (result.status_code() == 200)
 		{
-			auto link = ParseImage(result.extract_json().get());
-			return link;
+			return ParseImage(result.extract_json().get());
 		}
 		else {
-			auto msg = "Failed to get Imgur image link from API: " + ImageHash;
-			scarlettThrow(msg);
+			scarlettThrow("Failed to get Imgur image link from API: " + toString(ImageHash));
 		}
-		return std::string();
+		return String();
 	}
 
-	std::vector<std::string> GetAlbum(std::string URL, std::string ClientId)
+	const std::vector<String> GetAlbum(const URI& uri, const String& ClientId)
 	{
 
-		if (IsAlbum(URL))
+		if (IsAlbum(uri))
 		{
-			auto result = ImgurGet("/3/album/" + GetHash(URL) + "/images", ClientId);
+			auto result = ImgurGet("/3/album/"_u + GetHash(uri) + "/images"_u, ClientId);
 			if (result.status_code() == 200)
 			{
 				return ParseAlbum(result.extract_json().get());
 			}
 			else {
-				std::string msg = "Failed to get Imgur album data from API: " + URL;
-				scarlettThrow(msg);
+				scarlettThrow("Failed to get Imgur album data from API: " + toString(uri.to_string()));
 			}
 		}
-		return std::vector<std::string>();
+		return std::vector<String>();
 	}
 }

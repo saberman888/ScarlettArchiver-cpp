@@ -12,27 +12,23 @@
 
 namespace Scarlett::Media::ImgurAccess
 {
-	inline bool IsAlbum(std::string URL)
+	inline bool IsAlbum(const URI& uri)
 	{
-		return std::regex_match(URL, std::regex("https?://imgur.com/a/[A-Za-z0-9]+"));
+		return std::regex_match(toString(uri.to_string()), std::regex("https?://imgur.com/a/[A-Za-z0-9]+"));
 	}
 
-	inline bool IsImgurLink(std::string URL)
+	inline bool IsImgurLink(const URI& uri)
 	{
-		return std::regex_match(URL, std::regex("https?://(i.)?imgur.com(/|/a/)?[A-Za-z0-9]+"));
+		return std::regex_match(toString(uri.to_string()), std::regex("https?://(i.)?imgur.com(/|/a/)?[A-Za-z0-9]+"));
 	}
 
-	inline static std::string GetHash(std::string URL)
+	inline bool IsDirect(const URI& uri)
 	{
-		return Scarlett::splitString(URL, '/').back();
+		return std::regex_match(toString(uri.to_string()), std::regex("https?://i.imgur.com/[A-Za-z0-9]+"));
 	}
 
-	inline bool IsDirect(std::string URL)
-	{
-		return std::regex_match(URL, std::regex("https?://i.imgur.com/[A-Za-z0-9]+"));
-	}
-
-	std::vector<std::string> GetAlbum(std::string URL, std::string ClientId);
-	std::string GetImage(std::string ImageHash, std::string ClientId);
+	static const String GetHash(const URI& uri);
+	const std::vector<String> GetAlbum(const URI& URL, const String& ClientId);
+	const String GetImage(const String& ImageHash, const String& ClientId);
 
 }
