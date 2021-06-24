@@ -28,11 +28,11 @@ Scarlett::StatusCode Scarlett::Media::Content::FetchContent(std::optional<URI> U
 	return Response->status_code();
 }
 
-std::string Scarlett::Media::Content::Extension()
+String Scarlett::Media::Content::Extension()
 {
 	if (!_ContentType.empty())
 	{
-		if (std::regex_match(_ContentType[1], std::regex(";.+=.+")))
+		if (std::regex_match(_ContentType[1], std::regex(";.+=.+"_u)))
 		{
 			return splitString(_ContentType[1], ';')[0];
 		}
@@ -40,5 +40,5 @@ std::string Scarlett::Media::Content::Extension()
 			return _ContentType[1];
 		}
 	}
-	return std::string();
+	return String();
 }
