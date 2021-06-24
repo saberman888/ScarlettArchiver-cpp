@@ -5,16 +5,16 @@ BOOST_CLASS_EXPORT_KEY2(Scarlett::Reddit::SubredditMetadata, "metadata");
 namespace Scarlett::Reddit
 { 
 	
-	SubredditMetadata::SubredditMetadata(const std::string Subreddit, const std::string StartTime, const std::string EndTime)
+	SubredditMetadata::SubredditMetadata(const String Subreddit, const String StartTime, const String EndTime)
 	{
 		InitializeDates(StartTime, EndTime);
 		this->_Subreddit = Subreddit;
 	}
 
-	void SubredditMetadata::InitializeDates(std::optional<std::string> Start, std::optional<std::string> End)
+	void SubredditMetadata::InitializeDates(std::optional<String> Start, std::optional<String> End)
 	{		
 
-		const auto match = [&Start, &End](const std::string pattern) -> bool { return (std::regex_match(*Start, std::regex(pattern)) && std::regex_match(*End, std::regex(pattern))); };
+		const auto match = [&Start, &End](const std::string pattern) -> bool { return (std::regex_match(toString(*Start), std::regex(pattern)) && std::regex_match(toString(*End), std::regex(pattern))); };
 
 		// Check if the Start date and End date are present
 		if (!Start)
@@ -67,12 +67,12 @@ namespace Scarlett::Reddit
 
 			if (Start) {
 				tm tempStart{ 0 };
-				Scarlett::strptime(Start->c_str(), format.c_str(), &tempStart);
+				Scarlett::strptime(toString(*Start).c_str(), format.c_str(), &tempStart);
 				StartDate = mktime(&tempStart);
 			}
 			if (End) {
 				tm tempEnd{ 0 };
-				Scarlett::strptime(End->c_str(), format.c_str(), &tempEnd);
+				Scarlett::strptime(toString(*End).c_str(), format.c_str(), &tempEnd);
 				EndDate = mktime(&tempEnd);
 			}
 		}

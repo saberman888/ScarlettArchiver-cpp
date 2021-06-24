@@ -21,16 +21,16 @@ namespace Scarlett::Reddit
 		/*
 			Pass Boost program options to the constructor
 		*/
-		SubredditMetadata(const std::string Subreddit, const std::string StartTime, const std::string EndTime);
+		SubredditMetadata(const String Subreddit, const String StartTime, const String EndTime);
 		SubredditMetadata() = default;
 
 
-		inline void setSubreddit(const std::string& name)
+		inline void setSubreddit(const String& name)
 		{
 			_Subreddit = name;
 		}
 
-		inline const std::string Subreddit()
+		inline const String Subreddit()
 		{
 			return _Subreddit;
 		}
@@ -66,7 +66,7 @@ namespace Scarlett::Reddit
 		}
 
 	private:
-		std::string _Subreddit;
+		String _Subreddit;
 		time_t StartDate{ 0 }, EndDate{ 0 }, DatePointer{ 0 };
 		friend boost::serialization::access;
 		template<class Archive>
@@ -85,6 +85,6 @@ namespace Scarlett::Reddit
 		
 		 @param Dates in string format with the provided date formats: YYYY:MM:DD, YYYY-MM-DD, YYYY.MM.DD, YYYY/MM/DD or YYYYMMDD
 		*/
-		void InitializeDates(std::optional<std::string> Start = std::nullopt, std::optional<std::string> End = std::nullopt);
+		void InitializeDates(std::optional<String> Start = std::nullopt, std::optional<String> End = std::nullopt);
 	};
 };

@@ -3,7 +3,7 @@
 
 namespace Scarlett::Reddit {
 
-	Subreddit::Subreddit(const std::string Subreddit, const std::string Start, const std::string End)
+	Subreddit::Subreddit(const String Subreddit, const String Start, const String End)
 	{
 		sub = std::make_unique<SubredditMetadata>(Subreddit, Start, End);
 		log->info("{} has been instantiated.", sub->Subreddit());
@@ -19,7 +19,7 @@ namespace Scarlett::Reddit {
 			  {"before", std::to_string(currentposition += 86400)},
 			  {"metadata", "true"},
 			  {"size", "500"},
-			  {"subreddit", sub->Subreddit()}
+			  {"subreddit", toString(sub->Subreddit())}
 				});
 
 			// Increment CurrentPointedDate by 24 hours so we can ready for the next call.
@@ -54,25 +54,25 @@ namespace Scarlett::Reddit {
 					if (boost::dynamic_pointer_cast<Gallery>(*it))
 					{
 						auto gal = boost::dynamic_pointer_cast<Gallery>(*it);
-						WritePost(gal, "Gallery", location);
+						WritePost(gal, "Gallery"_u, location);
 						WriteMedia(gal, location);
 					}
 					else if (boost::dynamic_pointer_cast<Video>(*it))
 					{
 						auto vid = boost::dynamic_pointer_cast<Video>(*it);
-						WritePost(vid, "Video", location);
+						WritePost(vid, "Video"_u, location);
 						WriteMedia(vid, location);
 					}
 					else {
 						auto link = boost::dynamic_pointer_cast<BaseTypes::Link>(*it);
-						WritePost(link, "Link", location);
+						WritePost(link, "Link"_u, location);
 						WriteMedia(link, location);
 					}
 
 				}
 				else if (boost::dynamic_pointer_cast<SelfPost>(*it)) {
 					auto selfpost = boost::dynamic_pointer_cast<SelfPost>(*it);
-					WritePost(selfpost, "SelfPost", location);
+					WritePost(selfpost, "SelfPost"_u, location);
 				}
 			}
 			catch (ScarlettException& e) {

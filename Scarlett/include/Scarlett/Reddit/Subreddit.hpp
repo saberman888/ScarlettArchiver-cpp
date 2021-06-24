@@ -20,7 +20,7 @@ namespace Scarlett::Reddit {
 	class Subreddit : public BaseTypes::Listing<BaseTypes::Postable>, protected Logger
 	{
 	public:
-		Subreddit(const std::string Subreddit, const std::string Start, const std::string End);
+		Subreddit(const String Subreddit, const String Start, const String End);
 
 		/*
 			Retrieves the posts from the next 24 hours, and increments StartDate by 24 hours for another iteration.
@@ -92,16 +92,16 @@ namespace Scarlett::Reddit {
 
 
 		template<class T>
-		void WritePost(boost::shared_ptr<T> post, const std::string tag, const std::filesystem::path location)
+		void WritePost(boost::shared_ptr<T> post, const String tag, const std::filesystem::path location)
 		{
 			using namespace std::filesystem;
 
 			auto tempTime = *std::gmtime(&post->CreatedUTC);
 
 			auto destination = location /  path(formatTime(tempTime, "%Y")) / path(formatTime(tempTime, "%m")) / formatTime(tempTime, "%d");
-			auto filename = post->Id + ".xml";
+			String filename = post->Id + ".xml"_u;
 			std::filesystem::create_directories(destination);
-			std::cout << "Writing " << post->Id << " to " << destination.string() << std::endl;
+			ucout << "Writing " << post->Id << " to " << destination.string() << std::endl;
 			Internal::Serialize<boost::shared_ptr<T>>(destination / filename, post, "obj");
 
 		}
