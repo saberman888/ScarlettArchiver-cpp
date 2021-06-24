@@ -15,14 +15,14 @@ namespace Scarlett::Reddit::BaseTypes
 	void Linkable::Read(const JSON::value& json)
 	{
 		try {
-			Domain = u8(json.at("domain"_u).as_string());
-			Title = u8(json.at("title"_u).as_string());
+			Domain = json.at("domain"_u).as_string();
+			Title = json.at("title"_u).as_string();
 			if (json.has_string_field("url"_u))
 			{
-				URL = u8(json.at("url"_u).as_string());
+				URL = json.at("url"_u).as_string();
 			}
 			else {
-				URL = u8(json.at("link_url"_u).as_string());
+				URL = json.at("link_url"_u).as_string();
 			}
 		}
 		catch (const JSON::json_exception& e) {

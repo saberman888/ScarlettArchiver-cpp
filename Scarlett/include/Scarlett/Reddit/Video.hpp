@@ -12,7 +12,7 @@ namespace Scarlett::Reddit
 	struct VideoInfo
 	{
 		int Height;
-		std::string BaseURL;
+		String BaseURL;
 
 		friend class boost::serialization::access;
 		template<class Archive>
@@ -58,7 +58,7 @@ namespace Scarlett::Reddit
 		/*
 		*	Returns a full URL of the video's audio, if it's there.
 		*/
-		const std::string GetAudioURL();
+		const String GetAudioURL();
 		inline const bool HasAudio()
 		{
 			return audio.has_value();
@@ -66,7 +66,7 @@ namespace Scarlett::Reddit
 
 		bool operator==(Video& other);
 		bool operator!=(Video& other);
-		std::string GetContent() = delete;
+		String GetContent() = delete;
 
 	private:
 		Video() {};
@@ -78,7 +78,7 @@ namespace Scarlett::Reddit
 		void Fetch();
 
 		// Occasionally, a video will not have any audio whatsoever; hence why it's optional
-		boost::optional<std::string> audio{ boost::none };
+		boost::optional<String> audio{ boost::none };
 		std::vector<VideoInfo> videos;
 
 		friend class boost::serialization::access;

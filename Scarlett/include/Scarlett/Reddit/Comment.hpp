@@ -13,8 +13,8 @@ namespace Scarlett::Reddit
 	class Comment : public BaseTypes::TextPost
 	{
 	public:
-		Comment(const std::string& ParentId);
-		Comment(const JSON::value& json, boost::optional<std::string> ParentId = boost::none);
+		Comment(const String& ParentId);
+		Comment(const JSON::value& json, boost::optional<String> ParentId = boost::none);
 		std::vector<std::unique_ptr<Comment>> replies; 
 		void GetRedditComments();
 
@@ -29,7 +29,7 @@ namespace Scarlett::Reddit
 			ar& make_nvp("ParentId", ParentId);
 		}
 
-		boost::optional<std::string> ParentId{ boost::none };
+		boost::optional<String> ParentId{ boost::none };
 		void Read(const JSON::value& json);
 	};	
 	using CommentTree = std::vector<std::unique_ptr<Comment>>;

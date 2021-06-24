@@ -5,17 +5,17 @@ BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::Comment)
 namespace Scarlett::Reddit
 {
 
-    Comment::Comment(const std::string& ParentId)
+    Comment::Comment(const String& ParentId)
     {
 		this->ParentId.emplace(ParentId);
     }
-	Comment::Comment(const JSON::value& json, boost::optional<std::string> ParentId)
+	Comment::Comment(const JSON::value& json, boost::optional<String> ParentId)
 	{
 		TextPost::Read(json);
 	}
     void Comment::GetRedditComments()
     {
-		auto data = Download("https://reddit.com/" + ParentId.value() + ".json");
+		auto data = Download("https://reddit.com/"_u + ParentId.value() + ".json"_u);
 		if (data.status_code() == 200)
 		{
 			try {
@@ -54,7 +54,7 @@ namespace Scarlett::Reddit
 				replies.push_back(std::move(tempComment));
 			}
 			catch (JSON::json_exception& e) {
-				scarlettNestedThrow("Failed to parse comment JSON from CommentListing, " + ParentId.value() + ", " + std::string(e.what()));
+				scarlettNestedThrow("Failed to parse comment JSON from CommentListing, " + toString(ParentId.value_or("???")) + ", " + std::string(e.what()));
 			}
 		}
 	}

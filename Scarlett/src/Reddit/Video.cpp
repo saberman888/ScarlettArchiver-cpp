@@ -14,7 +14,7 @@ namespace Scarlett::Reddit
 	void Video::Fetch()
 	{
 		audio.emplace();
-		auto dashData = Download(URL.GetURLString() + "/DASHPlaylist.mpd");
+		auto dashData = Download(URL.GetURLString() + "/DASHPlaylist.mpd"_u);
 		if (dashData.status_code() == 200)
 		{
 			// Extract the string from the response handle
@@ -54,7 +54,7 @@ namespace Scarlett::Reddit
 							);
 						struct VideoInfo vi {
 							std::stoi(Rep->Attribute("height")),
-							Rep->FirstChildElement("BaseURL")->GetText()
+							toScarlettString(Rep->FirstChildElement("BaseURL")->GetText())
 						};
 						AddVideo(vi);
 					}
@@ -72,16 +72,16 @@ namespace Scarlett::Reddit
 		return (json.has_boolean_field("is_video"_u) && json.at("is_video"_u).as_bool() && json.at("post_hint"_u).as_string() == "hosted:video"_u);
 	}
 
-	const std::string Video::GetAudioURL()
+	const String Video::GetAudioURL()
 	{
 		if (audio)
 		{
-			return URL.GetURLString() + "/" + audio.value();
+			return URL.GetURLString() + "/"_u + audio.value();
 		}
 		else {
 			scarlettThrow("This Video does not have audio!");
 		}
-		return std::string();
+		return String();
 	}
 
 	bool Video::operator==(Video& other)
@@ -112,18 +112,18 @@ namespace Scarlett::Reddit
 	void Video::Mux(std::filesystem::path source)
 	{
 		using namespace Scarlett;
-		std::string filename = Id + ".mkv";
-		std::string ffmpegCommand = "ffmpeg -y -i {video_source} {audio_source} -c copy {destination_video}";
+		String filename = Id + ".mkv"_u;
+		String ffmpegCommand = "ffmpeg -y -i {video_source} {audio_source} -c copy {destination_video}"_u;
 
-		std::filesystem::path video = source / (Id + "_video.mp4");
-		std::filesystem::path audio = source / (Id + "_audio.mp4");
+		std::filesystem::path video = source / (Id + "_video.mp4"_u);
+		std::filesystem::path audio = source / (Id + "_audio.mp4"_u);
 
-		ffmpegCommand = SearchAndReplace(ffmpegCommand, "{video_source}", video.string());
-		ffmpegCommand = SearchAndReplace(ffmpegCommand, "{audio_source}", audio.string());
-		ffmpegCommand = SearchAndReplace(ffmpegCommand, "{destination}", source.string());
+		ffmpegCommand = SearchAndReplace(ffmpegCommand, "{video_source}"_u, toScarlettString(video.string()));
+		ffmpegCommand = SearchAndReplace(ffmpegCommand, "{audio_source}"_u, toScarlettString(audio.string()));
+		ffmpegCommand = SearchAndReplace(ffmpegCommand, "{destination}"_u, toScarlettString(source.string()));
 
 
-		std::system(ffmpegCommand.c_str());
+		std::system(toString(ffmpegCommand).c_str());
 		std::filesystem::remove(video);
 		std::filesystem::remove(audio);
 

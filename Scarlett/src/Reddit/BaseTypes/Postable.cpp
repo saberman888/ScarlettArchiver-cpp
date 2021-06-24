@@ -17,9 +17,9 @@ namespace Scarlett::Reddit::BaseTypes
 	void Postable::Read(const JSON::value& json)
 	{
 		try {
-			Author = u8(json.at("author"_u).as_string());
-			Id = u8(json.at("id"_u).as_string());
-			Permalink = u8(json.at("permalink"_u).as_string());
+			Author = json.at("author"_u).as_string();
+			Id = json.at("id"_u).as_string();
+			Permalink = json.at("permalink"_u).as_string();
 			CreatedUTC = static_cast<time_t>(json.at("created_utc"_u).as_integer());
 		}
 		catch (const JSON::json_exception& e) {

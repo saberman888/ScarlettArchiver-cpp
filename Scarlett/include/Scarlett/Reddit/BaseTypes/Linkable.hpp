@@ -15,8 +15,8 @@ namespace Scarlett::Reddit::BaseTypes
 	{
 	public:
 		Linkable() {};
-		std::string Domain;
-		std::string Title;
+		String Domain;
+		String Title;
 		Media::Content URL;
 		virtual bool operator==(Linkable& other);
 		virtual bool operator!=(Linkable& other);

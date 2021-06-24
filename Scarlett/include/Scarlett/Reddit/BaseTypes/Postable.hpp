@@ -21,9 +21,9 @@ namespace Scarlett::Reddit::BaseTypes
 	public:
 		Postable() {};
 		time_t CreatedUTC{ 0L };
-		std::string Author;
-		std::string Id;
-		std::string Permalink;
+		String Author;
+		String Id;
+		String Permalink;
 		virtual bool operator==(Postable& other);
 		virtual bool operator!=(Postable& other);
 		inline struct tm GetUTCTime()

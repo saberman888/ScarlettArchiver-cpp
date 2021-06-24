@@ -17,7 +17,7 @@ namespace Scarlett::Reddit::BaseTypes
 		bool operator==(TextPost& other);
 		bool operator!=(TextPost& other);
 
-		std::string Text;	
+		String Text;	
 		void Read(const JSON::value& json);
 
 	private:
