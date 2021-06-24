@@ -2,12 +2,10 @@
 BOOST_CLASS_EXPORT_GUID(Scarlett::Media::Content, "ContentInfo");
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Media::Content);
 
-Scarlett::Media::Content::Content(const std::string& URL)
+Scarlett::Media::Content::Content(const String& URL)
 {
 	try {
-		this->URL = URI(
-			utility::conversions::to_string_t(URL)
-		);
+		this->URL = URI(URL);
 	}
 	catch (const std::exception&) {
 		throw;
@@ -23,7 +21,7 @@ Scarlett::StatusCode Scarlett::Media::Content::FetchContent(std::optional<URI> U
 	if (!Response->headers().empty()) {
 		_ContentSize = Response->headers().content_length();
 		_ContentType = splitString(
-			u8(Response->headers().content_type()),
+			toString(Response->headers().content_type()),
 			'/');
 	}
 
@@ -43,14 +41,4 @@ std::string Scarlett::Media::Content::Extension()
 		}
 	}
 	return std::string();
-}
-
-std::string Scarlett::Media::Content::ContentType()
-{
-	return _ContentType.empty() ? std::string() : _ContentType[0];
-}
-
-Scarlett::Size Scarlett::Media::Content::ContentSize()
-{
-	return _ContentSize.get_value_or(0);
 }

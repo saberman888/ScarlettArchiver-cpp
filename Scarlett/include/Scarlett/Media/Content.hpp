@@ -28,8 +28,8 @@ namespace Scarlett {
 		{
 		public:
 			Content() {}
-			Content(const std::string& URL);
-			Content(const URI URL)
+			Content(const String& URL);
+			Content(const URI& URL)
 			{
 				this->URL = URL;
 			}
@@ -92,8 +92,16 @@ namespace Scarlett {
 			StatusCode FetchContent(std::optional<URI> URL = std::nullopt);
 
 			std::string Extension();
-			std::string ContentType();
-			Size ContentSize();
+
+			inline std::string ContentType()
+			{
+				return _ContentType.empty() ? std::string() : _ContentType[0];
+			}
+
+			inline Size ContentSize()
+			{
+				return _ContentSize.get_value_or(0);
+			}
 
 
 		private:
