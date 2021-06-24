@@ -49,7 +49,7 @@ namespace Scarlett::Media::ImgurAccess
 				JSON::array images = json.at("data"_u).at("images"_u).as_array();
 				for (auto& elem : images)
 				{
-					URLs.push_back(elem.to_string());
+					URLs.push_back(elem.as_string());
 				}
 			}
 		}
