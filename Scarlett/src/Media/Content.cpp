@@ -22,7 +22,7 @@ Scarlett::StatusCode Scarlett::Media::Content::FetchContent(std::optional<URI> U
 		_ContentSize = Response->headers().content_length();
 		_ContentType = splitString(
 			Response->headers().content_type(),
-			WIDEN('/'));
+			SCARLETT_WIDEN('/'));
 	}
 
 	return Response->status_code();
@@ -34,7 +34,7 @@ Scarlett::String Scarlett::Media::Content::Extension()
 	{
 		if (std::regex_match(Scarlett::toString(_ContentType[1]), std::regex(";.+=.+")))
 		{
-			return splitString(_ContentType[1], WIDEN(';'))[0];
+			return splitString(_ContentType[1], SCARLETT_WIDEN(';'))[0];
 		}
 		else {
 			return _ContentType[1];

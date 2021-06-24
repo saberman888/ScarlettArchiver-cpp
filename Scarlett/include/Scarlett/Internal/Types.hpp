@@ -55,9 +55,9 @@ namespace Scarlett
 	}
 
 #ifdef __SCARLETT_USE_WIDE_STRINGS
-#define WIDEN(x) _XPLATSTR(x)
+#define SCARLETT_WIDEN(x) _XPLATSTR(x)
 #else
-#define WIDEN(x) x
+#define SCARLETT_WIDEN(x) x
 #endif
 	template<class CharT, 
 			 class Traits = std::char_traits<CharT>, 

@@ -29,7 +29,7 @@ namespace Scarlett::Reddit
 
 					String imageExtension = Scarlett::splitString(
 						mediaMetadata,
-						WIDEN('/')
+						SCARLETT_WIDEN('/')
 					)[1];
 
 					Images.push_back(Media::Content(

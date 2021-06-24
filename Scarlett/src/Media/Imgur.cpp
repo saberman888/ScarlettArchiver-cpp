@@ -4,7 +4,7 @@ namespace Scarlett::Media::ImgurAccess
 {
 	const String GetHash(const URI& uri)
 	{
-		if (auto hash = uri.query(); hash[0] == WIDEN('/'))
+		if (auto hash = uri.query(); hash[0] == SCARLETT_WIDEN('/'))
 		{
 			return uri.query().substr(1);
 		}
