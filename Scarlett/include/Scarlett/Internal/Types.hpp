@@ -3,7 +3,7 @@
 #include <cpprest/http_client.h>
 #include <iomanip>
 #include <fstream>
-#include <stringstream>
+#include <sstream>
 #include <string>
 
 #ifdef _WIN32
