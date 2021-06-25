@@ -8,7 +8,7 @@ namespace Scarlett
 		InitLogs();
 
 		Options = ScarlettOptions::ParseOptions(argc, argv);
-		sub = std::make_shared<Reddit::Subreddit>(Options.Subreddit, Options.StartTime, Options.EndTime);
+		sub = std::make_shared<Reddit::Subreddit>(toScarlettString(Options.Subreddit), toScarlettString(Options.StartTime), toScarlettString(Options.EndTime));
 		log = GetGlobalLogger();
 	}
 	void ScarlettCore::Run()
