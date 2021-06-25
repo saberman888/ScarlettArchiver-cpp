@@ -54,6 +54,11 @@ namespace Scarlett
 #endif
 	}
 
+	inline String operator""_u(const char* source, size_t csize)
+	{
+		return utility::conversions::to_string_t(std::string(source, csize));
+	}
+
 #ifdef __SCARLETT_USE_WIDE_STRINGS
 #define SCARLETT_WIDEN(x) _XPLATSTR(x)
 #else
@@ -85,11 +90,6 @@ namespace Scarlett
 			Input.replace(Input.find(ToBeReplaced), ToBeReplaced.size(), Replacement);
 		}
 		return Input;
-	}
-
-	String operator""_u(const char* source, size_t csize)
-	{
-		return utility::conversions::to_string_t(std::string(source, csize));
 	}
 
 	// Other
