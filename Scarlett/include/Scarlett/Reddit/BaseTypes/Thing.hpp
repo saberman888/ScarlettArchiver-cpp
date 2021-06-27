@@ -22,6 +22,7 @@ namespace Scarlett::Reddit::BaseTypes
 	class Thing
 	{
 	public:
+		Thing{}
 		String Name;
 		String Id;
 		String Author;
