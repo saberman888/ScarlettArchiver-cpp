@@ -11,6 +11,8 @@ namespace Scarlett::Reddit::BaseTypes
 			Permalink = value.at("permalink"_u).as_string();
 			Author = value.at("author"_u).as_string();
 			Kind = value.at("kind"_u).as_string();
+			CreatedUTC = value.at("created_utc").as_integer();
+			CreatedLocal = value.a("created").as_integer();
 		}
 		catch (web::json::json_exception& e) {
 			scarlettNestedThrow(e.what());
