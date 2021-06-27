@@ -2,7 +2,7 @@
 
 #include "../Internal/Helpers.hpp"
 #include "../Internal/Exceptions.hpp"
-#include "../Client/IntervalTracker.hpp"
+#include "../Client/RateTracker.hpp"
 #include <cpprest/http_client.h>
 #include <cpprest/json.h>
 #include <cpprest/http_msg.h>
