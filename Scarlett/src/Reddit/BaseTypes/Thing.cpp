@@ -1,6 +1,6 @@
 #include "Scarlett/Reddit/BaseTypes/Thing.hpp"
-BOOST_SERIALIZATION_ASSUME_ABSTRACT(Scarlett::Reddit::BaseTypes::Thing);
-BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::BaseTypes::Thing);
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(Scarlett::Reddit::BaseTypes::Thing)
+BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::BaseTypes::Thing)
 namespace Scarlett::Reddit::BaseTypes
 {
 	void Thing::Read(const JsonValue& value)
@@ -10,9 +10,8 @@ namespace Scarlett::Reddit::BaseTypes
 			Id = value.at("id"_u).as_string();
 			Permalink = value.at("permalink"_u).as_string();
 			Author = value.at("author"_u).as_string();
-			Kind = value.at("kind"_u).as_string();
 			CreatedUTC = value.at("created_utc").as_integer();
-			CreatedLocal = value.a("created").as_integer();
+			CreatedLocal = value.at("created").as_integer();
 		}
 		catch (web::json::json_exception& e) {
 			scarlettNestedThrow(e.what());
