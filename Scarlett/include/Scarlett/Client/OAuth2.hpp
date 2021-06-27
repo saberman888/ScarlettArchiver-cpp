@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Authenticator.hpp"
-#include "IntervalTracker.hpp"
+#include "RateTracker.hpp"
 #include "cpprest/http_client.h"
 #include "cpprest/http_listener.h"
 #include <type_traits>

@@ -69,7 +69,7 @@ set(SCARLETT_SOURCES
 	src/Reddit/Video.cpp
 	src/Reddit/SubredditMetadata.cpp
 	src/Reddit/Subreddit.cpp
-	src/Client/IntervalTracker.cpp
+	"src/Client/RateTracker.cpp"
 	src/Client/PushShift.cpp
 	src/Client/Reddit.cpp)
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Internal/Helpers.hpp"
-#include "IntervalTracker.hpp"
+#include "RateTracker.hpp"
 #include <cpprest/http_client.h>
 #include <vector>
 #include <string>
