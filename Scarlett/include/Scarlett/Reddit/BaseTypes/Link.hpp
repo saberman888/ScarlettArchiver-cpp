@@ -3,6 +3,7 @@
 #include <optional>
 #include "Thing.hpp"
 #include "../../Media/Imgur.hpp"
+#include "../../Media/Content.hpp"
 #include "../../Internal/Logger.hpp"
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/base_object.hpp>
@@ -42,7 +43,6 @@ namespace Scarlett::Reddit::BaseTypes
 		{
 			using namespace boost::serialization;
 			ar& make_nvp("Thing", base_object<Thing>(*this));
-			ar& make_nvp("Created", base_object<Created>(*this));
 			ar& make_nvp("Domain", Domain);
 			ar& make_nvp("Title", Title);
 			ar& make_nvp("Hint", Hint);

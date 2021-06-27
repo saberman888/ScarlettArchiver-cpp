@@ -5,10 +5,8 @@ BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::BaseTypes::Link)
 
 namespace Scarlett::Reddit::BaseTypes
 {
-	Link::Link(const JsonValue& json, std::optional<String> ImgurClientId) : ImgurClientId(ImgurClientId)
-	{
-		Thing::Read(json);
-	}
+	Link::Link(const JsonValue& json, std::optional<String> ImgurClientId) : ImgurClientId(ImgurClientId), Thing(json)
+	{}
 
 	String Link::GetContent() {
 		using namespace Scarlett::Media;
@@ -27,12 +25,12 @@ namespace Scarlett::Reddit::BaseTypes
 
 	bool Link::operator==(Link& other)
 	{
-		return Linkable::operator==(other) && Postable::operator==(other);
+		return Thing::operator==(other);
 	}
 
 	bool Link::operator!=(Link& other)
 	{
-		return Linkable::operator!=(other) && Postable::operator!=(other);
+		return Thing::operator!=(other);
 	}
 
 	void Link::Read(const JsonValue& json)
