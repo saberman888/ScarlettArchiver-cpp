@@ -1,16 +1,15 @@
 #include "Scarlett/Reddit/BaseTypes/TextPost.hpp"
-BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::BaseTypes::TextPost);
+BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::BaseTypes::TextPost)
 
 namespace Scarlett::Reddit::BaseTypes
 {
-	TextPost::TextPost(const JsonValue& json) : Text("[deleted]"_u) {
-		Thing::Read(json);
+	TextPost::TextPost(const JsonValue& json) : Text("[deleted]"_u), Thing(json) {
 		Read(json);
 	}
 
 	bool TextPost::operator==(TextPost& other)
 	{
-		return Postable::operator==(other) && Text == other.Text;
+		return Thing::operator==(other) && Text == other.Text;
 	}
 
 	bool TextPost::operator!=(TextPost& other)

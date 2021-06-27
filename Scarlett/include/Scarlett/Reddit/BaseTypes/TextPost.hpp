@@ -11,7 +11,7 @@ namespace Scarlett::Reddit::BaseTypes
 	class TextPost : public Thing
 	{
 	public:
-		TextPost() {}
+		
 		TextPost(const JsonValue& json);
 
 		bool operator==(TextPost& other);
@@ -20,6 +20,8 @@ namespace Scarlett::Reddit::BaseTypes
 		String Text;	
 		void Read(const JSON::value& json);
 
+	protected:
+		TextPost() {}
 	private:
 		friend class boost::serialization::access;
 		template<class Archive>
