@@ -17,10 +17,10 @@ namespace Scarlett::Client
 	class reddit_scopes
 	{
 	public:
-#define _REDDITSCOPE
+#define _SCARLETT_REDDIT_SCOPE
 #define DAT(_a, _b) static const reddit_scope _a;
 #include "../Internal/ScarlettConstants.h"
-#undef _REDDITSCOPE
+#undef _SCARLETT_REDDIT_SCOPE
 #undef DAT
 	};
 

@@ -1,4 +1,4 @@
-#ifdef _REDDITSCOPE
+#ifdef _SCARLETT_REDDIT_SCOPE
 DAT(account, "account")
 DAT(ccreddits, "ccredits")
 DAT(identity, "identity")
