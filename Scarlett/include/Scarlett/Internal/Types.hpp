@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cpprest/http_client.h>
+#include <cpprest/json.h>
 #include <iomanip>
 #include <fstream>
 #include <sstream>
@@ -21,8 +22,10 @@ namespace Scarlett
 	using HttpMethod = web::http::methods;
 	using URI = web::uri;
 	using StatusCode = web::http::status_code;
+	using JsonValue = web::json::value;
 	namespace OAuth2 = web::http::oauth2::experimental;
 	namespace conv = utility::conversions;
+	namespace Json = web::json;
 
 	// Time
 	using TimePoint = std::chrono::time_point<std::chrono::system_clock>;
