@@ -1,21 +1,20 @@
 #pragma once
 
 #include <optional>
-#include "Linkable.hpp"
-#include "Postable.hpp"
+#include "Thing.hpp"
 #include "../../Media/Imgur.hpp"
+#include "../../Internal/Logger.hpp"
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/optional.hpp>
-#include "../../Internal/Logger.hpp"
 
 namespace Scarlett::Reddit::BaseTypes
 {
-	class Link : public Linkable, public Postable, protected Logger
+	class Link : public Thing, protected Logger
 	{
 	public:
 		Link() = default;
-		Link(const JSON::value& json, const std::optional<String> ImgurClientId = std::nullopt);
+		Link(const JsonValue& json, const std::optional<String> ImgurClientId = std::nullopt);
 
 		/**
 		* Returns the post's URL if it's a normal image. If it's an image from Imgur, it returns a direct image using the Imgur API
@@ -30,7 +29,10 @@ namespace Scarlett::Reddit::BaseTypes
 		bool operator==(Link& other);
 		bool operator!=(Link& other);
 	protected:
-		void Read(const JSON::value& json);
+		String Domain;
+		String Title;
+		Media::Content URL;
+		void Read(const JsonValue& json);
 		std::optional<String> ImgurClientId{ std::nullopt };
 	private:
 		
@@ -39,8 +41,10 @@ namespace Scarlett::Reddit::BaseTypes
 		void serialize(Archive& ar, const unsigned int version)
 		{
 			using namespace boost::serialization;
-			ar& make_nvp("Linkable", base_object<Linkable>(*this));
-			ar& make_nvp("Postable", base_object<Postable>(*this));
+			ar& make_nvp("Thing", base_object<Thing>(*this));
+			ar& make_nvp("Created", base_object<Created>(*this));
+			ar& make_nvp("Domain", Domain);
+			ar& make_nvp("Title", Title);
 			ar& make_nvp("Hint", Hint);
 		}
 	};

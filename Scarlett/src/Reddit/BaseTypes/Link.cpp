@@ -5,10 +5,9 @@ BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::BaseTypes::Link)
 
 namespace Scarlett::Reddit::BaseTypes
 {
-	Link::Link(const JSON::value& json, std::optional<String> ImgurClientId) : ImgurClientId(ImgurClientId)
+	Link::Link(const JsonValue& json, std::optional<String> ImgurClientId) : ImgurClientId(ImgurClientId)
 	{
-		Linkable::Read(json);
-		Postable::Read(json);
+		Thing::Read(json);
 	}
 
 	String Link::GetContent() {
@@ -36,7 +35,7 @@ namespace Scarlett::Reddit::BaseTypes
 		return Linkable::operator!=(other) && Postable::operator!=(other);
 	}
 
-	void Link::Read(const JSON::value& json)
+	void Link::Read(const JsonValue& json)
 	{
 		try {
 			if (json.has_string_field("post_hint"_u)) {
