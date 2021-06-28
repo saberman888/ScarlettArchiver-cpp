@@ -8,7 +8,7 @@
 #include <optional>
 #include <type_traits>
 
-namespace Scarlett::Reddit::BaseTypes
+namespace Scarlett::Reddit
 {
 	template<typename T, typename U = Client::PushShift>
 	class Listing

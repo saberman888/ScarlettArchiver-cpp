@@ -24,7 +24,7 @@ namespace Scarlett::Reddit
 		}
 	};
 
-	class Video : public BaseTypes::Link
+	class Video : public Link
 	{
 	public:
 		Video(const JSON::value& json);
@@ -67,6 +67,8 @@ namespace Scarlett::Reddit
 		bool operator==(Video& other);
 		bool operator!=(Video& other);
 		String GetContent() = delete;
+
+		inline const Kind getType() { return Kind::Video; }
 
 	private:
 		Video() {};

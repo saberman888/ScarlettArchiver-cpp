@@ -1,9 +1,9 @@
 #include "Scarlett/Reddit/BaseTypes/Link.hpp"
-BOOST_CLASS_EXPORT(Scarlett::Reddit::BaseTypes::Link)
-BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::BaseTypes::Link)
+BOOST_CLASS_EXPORT(Scarlett::Reddit::Link)
+BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::Link)
 
 
-namespace Scarlett::Reddit::BaseTypes
+namespace Scarlett::Reddit
 {
 	Link::Link(const JsonValue& json, std::optional<String> ImgurClientId) : ImgurClientId(ImgurClientId), Thing(json)
 	{}

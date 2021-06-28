@@ -13,6 +13,7 @@ namespace Scarlett::Reddit
 	{
 		TextPost::Read(json);
 	}
+
     void Comment::GetRedditComments()
     {
 		auto data = Download("https://reddit.com/"_u + ParentId.value() + ".json"_u);

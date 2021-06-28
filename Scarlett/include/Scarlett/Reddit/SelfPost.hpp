@@ -9,7 +9,7 @@ namespace Scarlett::Reddit
 	/*
 	* SelfPost takes TextPost with Linkable traits, and that serves as a class for self posts
 	*/
-	class SelfPost : public BaseTypes::TextPost
+	class SelfPost : public TextPost
 	{
 	public:
 		SelfPost(const JSON::value& json);
@@ -19,6 +19,8 @@ namespace Scarlett::Reddit
 			return (json.has_string_field("is_self"_u) && json.at("is_self"_u).as_bool());
 		}
 
+		inline const Kind getType() { return Kind::SelfPost; }
+
 	private:
 		SelfPost() {};
 		friend class boost::serialization::access;
@@ -26,7 +28,7 @@ namespace Scarlett::Reddit
 		void serialize(Archive& ar, const unsigned int version)
 		{
 			using namespace boost::serialization;
-			ar& make_nvp("TextPost", base_object<BaseTypes::TextPost>(*this));
+			ar& make_nvp("TextPost", base_object<TextPost>(*this));
 		}
 
 	};

@@ -9,7 +9,7 @@ namespace Scarlett::Reddit
 	/**
 	 The Gallery class holds images from Reddit Galleries and Imgur Galleries.
 	*/
-	class Gallery : public BaseTypes::Link	{
+	class Gallery : public Link	{
 	public:
 		// Reads the provided json into Gallery, and if the gallery/album is an Imgur album, it retrieves the images.
 		Gallery(const JSON::value& json, const std::optional<String> ImgurClientId = std::nullopt);
@@ -23,6 +23,8 @@ namespace Scarlett::Reddit
 		static bool IsGallery(const JSON::value& json); 
 
 		std::string GetContent() = delete;
+
+		inline const Kind getType() { return Kind::Gallery; }
 	private:
 		/**
 		 Reads Json data into Gallery. If it's a Reddit album then, it reads the provided json. If it's an Imgur album, it justs calls RedditCommon::Read only; 
@@ -38,7 +40,7 @@ namespace Scarlett::Reddit
 		void serialize(Archive& ar, const unsigned int version)
 		{
 			using namespace boost::serialization;
-			ar& make_nvp("Link", base_object<BaseTypes::Link>(*this));
+			ar& make_nvp("Link", base_object<Link>(*this));
 			ar& make_nvp("Images", Images);
 		}
 	};

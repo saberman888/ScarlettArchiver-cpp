@@ -17,7 +17,7 @@
 #include <fstream>
 
 namespace Scarlett::Reddit {
-	class Subreddit : public BaseTypes::Listing<BaseTypes::Postable>, protected Logger
+	class Subreddit : public Listing<BaseTypes::Postable>, protected Logger
 	{
 	public:
 		Subreddit(const String Subreddit, const String Start, const String End);

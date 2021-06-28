@@ -18,6 +18,7 @@ namespace Scarlett::Reddit
 		}
 	}
 
+
 	void Gallery::Read(const JSON::value& json)
 	{
 		if (!ImgurClientId) {

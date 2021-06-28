@@ -3,7 +3,7 @@
 #include "Thing.hpp"
 #include <boost/serialization/base_object.hpp>
 
-namespace Scarlett::Reddit::BaseTypes
+namespace Scarlett::Reddit
 {
 	/*
 	* TextPost serves as a base class for posts and comments with text in them.

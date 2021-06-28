@@ -9,7 +9,7 @@
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/optional.hpp>
 
-namespace Scarlett::Reddit::BaseTypes
+namespace Scarlett::Reddit
 {
 	class Link : public Thing, protected Logger
 	{
@@ -29,6 +29,8 @@ namespace Scarlett::Reddit::BaseTypes
 
 		bool operator==(Link& other);
 		bool operator!=(Link& other);
+
+		virtual inline const Kind getType() { return Kind::Link; }
 	protected:
 		String Domain;
 		String Title;

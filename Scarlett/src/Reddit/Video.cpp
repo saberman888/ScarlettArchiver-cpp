@@ -6,7 +6,7 @@ BOOST_SERIALIZATION_SHARED_PTR(ScarletT::Reddit::Video);
 
 namespace Scarlett::Reddit
 {
-	Video::Video(const JSON::value& json) : BaseTypes::Link(json)
+	Video::Video(const JSON::value& json) : Link(json)
 	{
 		Fetch();
 	}

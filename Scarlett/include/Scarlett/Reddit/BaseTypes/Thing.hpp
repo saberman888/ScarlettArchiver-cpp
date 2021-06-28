@@ -8,18 +8,17 @@
 #include "../../Internal/Helpers.hpp"
 #include "../../Internal/Exceptions.hpp"
 
-namespace Scarlett::Reddit::BaseTypes
+namespace Scarlett::Reddit
 {
-	namespace Internal
+
+	enum class Kind : int
 	{
-		enum class Kind : int
-		{
-			Link,
-			Video,
-			Gallery,
-			Comment,
-			SelfPost
-		};
+		Base,
+		Link,
+		Video,
+		Gallery,
+		Comment,
+		SelfPost
 	};
 
 	class Thing
@@ -29,8 +28,7 @@ namespace Scarlett::Reddit::BaseTypes
 
 		inline bool operator==(const Thing& thing)
 		{
-			return (Name == thing.Name) && (Id == thing.Id) && (Author == thing.Author) && (Permalink == thing.Permalink) && (kind == thing.kind) 
-				&& (CreatedUTC == thing.CreatedUTC) && (CreatedLocal == thing.CreatedLocal);
+			return (Name == thing.Name) && (Id == thing.Id) && (Author == thing.Author) && (Permalink == thing.Permalink) && (CreatedUTC == thing.CreatedUTC) && (CreatedLocal == thing.CreatedLocal);
 		}
 
 		inline bool operator!=(const Thing& thing)
@@ -38,15 +36,16 @@ namespace Scarlett::Reddit::BaseTypes
 			return !this->operator==(thing);
 		}
 
-		const String getName() { return Name; }
-		const String getId() { return Id; }
-		const String getAuthor() { return Author; }
-		const String getPermalink() { return Permalink; }
-		const Timestamp getCreatedUTCTime() { return CreatedUTC; }
-		const Timestamp getCreatedLocalTime() { return CreatedLocal; }
+		inline const String getName() { return Name; }
+		inline const String getId() { return Id; }
+		inline const String getAuthor() { return Author; }
+		inline const String getPermalink() { return Permalink; }
+		inline const Timestamp getCreatedUTCTime() { return CreatedUTC; }
+		inline const Timestamp getCreatedLocalTime() { return CreatedLocal; }
+		virtual inline  const Kind getType() { return Kind::Base; }
 
 	protected:
-		Thing(){}
+		Thing() {}
 		Thing(const JsonValue& value) {
 			Read(value);
 		}
@@ -57,7 +56,6 @@ namespace Scarlett::Reddit::BaseTypes
 		String Permalink;
 		Timestamp CreatedUTC{ 0L };
 		Timestamp CreatedLocal{ 0L };
-		Internal::Kind kind;
 
 	private:
 		virtual void Read(const JsonValue& value);
@@ -69,7 +67,6 @@ namespace Scarlett::Reddit::BaseTypes
 			using namespace boost::serialization;
 			ar& make_nvp("Name", Name);
 			ar& make_nvp("Id", Id);
-			ar& make_nvp("Kind", kind);
 			ar& make_nvp("Permalink", Permalink);
 			ar& make_nvp("Author", Author);
 			ar& make_nvp("Created_UTC", CreatedUTC);

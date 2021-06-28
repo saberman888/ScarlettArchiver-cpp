@@ -1,7 +1,7 @@
 #include "Scarlett/Reddit/BaseTypes/TextPost.hpp"
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::BaseTypes::TextPost)
 
-namespace Scarlett::Reddit::BaseTypes
+namespace Scarlett::Reddit
 {
 	TextPost::TextPost(const JsonValue& json) : Text("[deleted]"_u), Thing(json) {
 		Read(json);
