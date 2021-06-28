@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BaseTypes/TextPost.hpp"
-#include "BaseTypes/Linkable.hpp"
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/base_object.hpp>
 
@@ -10,7 +9,7 @@ namespace Scarlett::Reddit
 	/*
 	* SelfPost takes TextPost with Linkable traits, and that serves as a class for self posts
 	*/
-	class SelfPost : public BaseTypes::TextPost, public BaseTypes::Linkable
+	class SelfPost : public BaseTypes::TextPost
 	{
 	public:
 		SelfPost(const JSON::value& json);
@@ -31,8 +30,7 @@ namespace Scarlett::Reddit
 		void serialize(Archive& ar, const unsigned int version)
 		{
 			using namespace boost::serialization;
-			ar& make_nvp("Linkable", base_object<BaseTypes::Linkable>(*this));
-			ar& make_nvp("Linkable", base_object<BaseTypes::TextPost>(*this));
+			ar& make_nvp("TextPost", base_object<BaseTypes::TextPost>(*this));
 		}
 
 	};
