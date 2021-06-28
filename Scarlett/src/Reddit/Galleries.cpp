@@ -50,15 +50,7 @@ namespace Scarlett::Reddit
 			return true;
 		return false;
 	}
-	bool Gallery::operator==(Gallery& other)
-	{
-		return Linkable::operator==(other) && Postable::operator==(other);
-	}
 
-	bool Gallery::operator!=(Gallery& other)
-	{
-		return Linkable::operator!=(other) && Postable::operator==(other);
-	}
 
 	
 };

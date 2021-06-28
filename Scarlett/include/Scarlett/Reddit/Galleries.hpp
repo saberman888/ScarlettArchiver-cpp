@@ -22,8 +22,6 @@ namespace Scarlett::Reddit
 		}
 		static bool IsGallery(const JSON::value& json); 
 
-		bool operator==(Gallery& other);
-		bool operator!=(Gallery& other);
 		std::string GetContent() = delete;
 	private:
 		/**

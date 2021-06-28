@@ -14,10 +14,6 @@ namespace Scarlett::Reddit
 	public:
 		SelfPost(const JSON::value& json);
 
-		bool operator==(SelfPost& other);
-		bool operator!=(SelfPost& other);
-
-
 		static inline bool IsSelfPost(const JSON::value& json)
 		{
 			return (json.has_string_field("is_self"_u) && json.at("is_self"_u).as_bool());

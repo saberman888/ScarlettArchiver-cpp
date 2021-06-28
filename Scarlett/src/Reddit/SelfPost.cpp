@@ -9,14 +9,4 @@ namespace Scarlett::Reddit
 		TextPost::Read(json);
 	}
 
-	bool SelfPost::operator==(SelfPost& other)
-	{
-		return TextPost::operator==(other);
-	}
-
-	bool SelfPost::operator!=(SelfPost& other)
-	{
-		return TextPost::operator!=(other);
-	}
-
 };
