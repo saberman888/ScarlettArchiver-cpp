@@ -19,7 +19,7 @@ namespace Scarlett::Client {
 		return rt.Send(b.to_uri(), r);
 	}
 
-	const RateTracker& PushShift::GetRateLimiter()
+	RateTracker& PushShift::GetRateLimiter()
 	{
 		static RateTracker rt{ 120 };
 		return rt;

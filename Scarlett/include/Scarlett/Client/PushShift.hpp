@@ -19,7 +19,7 @@ namespace Scarlett::Client {
 		static HttpResponse SearchComments(const std::map<std::string, std::string>& URLComponents);
 	private:
 		static HttpResponse PushShiftGet(std::string endpoint, const std::map<std::string, std::string>& URLComponents);
-		static const RateTracker& GetRateLimiter();
+		static RateTracker& GetRateLimiter();
 	};
 };
 
