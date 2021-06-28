@@ -4,6 +4,7 @@ namespace Scarlett::Client
 {
 	bool RateTracker::TimeUp()
 	{
+		std::lock_guard<std::mutex> guard(mlock);
 		if(!StartTime)
 		{
 			if(StartTime.value() >= (StartTime.value() + std::chrono::hours(1)))
@@ -15,6 +16,7 @@ namespace Scarlett::Client
 	}
 	void RateTracker::UpdateCache()
 	{
+		std::lock_guard<std::mutex> guard(mlock);
 		while (Delta() > minimum_time_interval)
 		{
 			Cache.pop_back();
@@ -24,7 +26,7 @@ namespace Scarlett::Client
 	void RateTracker::waitifnecessary(int n)
 	{
 		// Get an interval if there's any
-        	Millisecond interval = GetLatestInterval();
+        Millisecond interval = GetLatestInterval();
 
 		// Multiply the number of tries by 200ms and make sure it's under 1 hour
 		Millisecond waitTimes = Millisecond(200 * n);
@@ -66,8 +68,7 @@ namespace Scarlett::Client
             		// Next, initiate a request, time it, and push it into cache
 			auto beginTime = Now();
 			hr = cl.request(req).get();
-			Millisecond enddiff = Now() - beginTime;
-			Cache.emplace_front(enddiff);
+			UpdateCache(Now() - beginTime);
 
 			tries++;
 

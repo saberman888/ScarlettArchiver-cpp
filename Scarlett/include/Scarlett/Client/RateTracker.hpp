@@ -9,6 +9,7 @@
 #include <thread>
 #include <algorithm>
 #include <exception>
+#include <mutex>
 #include "../Internal/Helpers.hpp"
 #include "../Internal/Exceptions.hpp"
 namespace Scarlett::Client
@@ -68,6 +69,7 @@ namespace Scarlett::Client
 
 		std::optional<std::chrono::seconds> MaxTime{ std::nullopt };
 		std::optional<TimePoint> StartTime{ std::nullopt };
+		std::mutex mlock;
 
 		bool TimeUp();
 
@@ -81,6 +83,7 @@ namespace Scarlett::Client
 		*/
 		inline Millisecond Delta()
 		{
+			std::lock_guard<std::mutex> guard(mlock);
 			return Cache.empty() ? Millisecond(0) : Millisecond(Now().count() - Cache[0].count());
 		}
 
@@ -89,6 +92,7 @@ namespace Scarlett::Client
 		*/
 		inline Millisecond GetLatestInterval()
 		{
+			std::lock_guard<std::mutex> guard(mlock);
 			UpdateCache();
 			return (minimum_time_interval > Delta()) ? (minimum_time_interval - Delta()) : Millisecond(0);
 		}
@@ -97,6 +101,12 @@ namespace Scarlett::Client
 		* Removes any old data that doesn't break limits
 		*/
 		void UpdateCache();
+
+		inline void UpdateCache(const Millisecond m)
+		{
+			std::lock_guard<std::mutex> guard(mlock);
+			Cache.emplace_back(m);
+		}
 
 		/*
 		* Waits the amount of time if an interval is lower than the minimum, and this goes up the number of requests done represented by n
