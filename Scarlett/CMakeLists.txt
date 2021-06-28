@@ -59,8 +59,7 @@ set(SCARLETT_SOURCES
 	src/Internal/Helpers.cpp
 	src/Media/Content.cpp
 	src/Media/Imgur.cpp
-	src/Reddit/BaseTypes/Postable.cpp
-	src/Reddit/BaseTypes/Linkable.cpp
+	src/Reddit/BaseTypes/Thing.cpp
 	src/Reddit/BaseTypes/Link.cpp
 	src/Reddit/BaseTypes/TextPost.cpp
 	src/Reddit/Comment.cpp
@@ -69,7 +68,7 @@ set(SCARLETT_SOURCES
 	src/Reddit/Video.cpp
 	src/Reddit/SubredditMetadata.cpp
 	src/Reddit/Subreddit.cpp
-	"src/Client/RateTracker.cpp"
+	src/Client/RateTracker.cpp
 	src/Client/PushShift.cpp
 	src/Client/Reddit.cpp)
 
