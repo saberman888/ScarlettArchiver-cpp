@@ -45,7 +45,7 @@ namespace Scarlett::Reddit
 		{
 			if constexpr (std::is_same_v<U, Client::PushShift>)
 			{
-				if constexpr (std::is_same_v<T, Linkable>)
+				if constexpr (std::is_same_v<T, Thing>)
 				{
 					// If T is a non-comment
 					auto response = Client::PushShift::SearchSubmissions(uri_query);
@@ -75,10 +75,7 @@ namespace Scarlett::Reddit
 			{
 				for (auto it = items.cbegin(); it != items.cend(); it++)
 				{
-					// internal creation date
-					auto icd = boost::dynamic_pointer_cast<BaseTypes::Postable>(*it);
-
-					if (Post->CreatedUTC > icd->CreatedUTC)
+					if (Post->getCreatedUTCTime() > (*it)->getCreatedUTCTime())
 					{
 						items.emplace(it, Post);
 						return;
@@ -110,7 +107,7 @@ namespace Scarlett::Reddit
 					Add(potentialPost);
 				}
 				else {
-					auto potentialPost = boost::make_shared<BaseTypes::Link>(element);
+					auto potentialPost = boost::make_shared<Link>(element);
 					Add(potentialPost);
 				}
 			}

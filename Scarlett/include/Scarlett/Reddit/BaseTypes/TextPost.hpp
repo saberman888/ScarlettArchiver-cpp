@@ -17,12 +17,12 @@ namespace Scarlett::Reddit
 		bool operator==(TextPost& other);
 		bool operator!=(TextPost& other);
 
-		String Text;	
 		void Read(const JSON::value& json);
-
+		inline const String getText() { return Text; }
 	protected:
 		TextPost() {}
 	private:
+		String Text;
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version)

@@ -49,7 +49,7 @@ namespace Scarlett::Reddit {
 		for (auto it = posts.cbegin(); it != posts.cend(); it++)
 		{
 			try {
-				if (boost::dynamic_pointer_cast<BaseTypes::Link>(*it)) {
+				if (boost::dynamic_pointer_cast<Link>(*it)) {
 
 					if (boost::dynamic_pointer_cast<Gallery>(*it))
 					{
@@ -64,7 +64,7 @@ namespace Scarlett::Reddit {
 						WriteMedia(vid, location);
 					}
 					else {
-						auto link = boost::dynamic_pointer_cast<BaseTypes::Link>(*it);
+						auto link = boost::dynamic_pointer_cast<Link>(*it);
 						WritePost(link, "Link"_u, location);
 						WriteMedia(link, location);
 					}

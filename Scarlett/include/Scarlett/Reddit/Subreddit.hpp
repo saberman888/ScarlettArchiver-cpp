@@ -17,7 +17,7 @@
 #include <fstream>
 
 namespace Scarlett::Reddit {
-	class Subreddit : public Listing<BaseTypes::Postable>, protected Logger
+	class Subreddit : public Listing<Thing>, protected Logger
 	{
 	public:
 		Subreddit(const String Subreddit, const String Start, const String End);
@@ -55,7 +55,7 @@ namespace Scarlett::Reddit {
 
 			if constexpr (std::is_same<Gallery, T>::value)
 			{
-				const std::filesystem::path galPath = mediaPath / post->Id;
+				const std::filesystem::path galPath = mediaPath / post->getId();
 				std::filesystem::create_directories(galPath);
 				
 				std::vector<Media::Content> images = post->GetImages();
@@ -68,24 +68,24 @@ namespace Scarlett::Reddit {
 						scarlettThrow("Failed to download Gallery image: " + c.GetURLString());
 					}
 					else {
-						auto filename = galPath / (post->Id + "_" + std::to_string(i) + "." + c.Extension());
+						auto filename = galPath / (post->getId() + "_" + std::to_string(i) + "." + c.Extension());
 						std::ofstream out(filename.string(), std::ios::binary | std::ios::out);
 						out << c.GetStringContent();
 					}
 				}
 			}
-			else if constexpr (std::is_same<BaseTypes::Link, T>::value)
+			else if constexpr (std::is_same<Link, T>::value)
 			{
-				auto sc = post->URL.FetchContent();
+				auto sc = post->getURL().FetchContent();
 				if (sc != 200)
 				{
-					scarlettThrow("Failed to download content from Link, " + post->URL.GetURLString());
+					scarlettThrow("Failed to download content from Link, " + post->getURL().GetURLString());
 				}
 
-				if (post->URL.ContentType() == "image") {
-					auto filename = mediaPath / path(post->Id + "." + post->URL.Extension());
+				if (post->getURL().ContentType() == "image") {
+					auto filename = mediaPath / path(post->getId() + "." + post->getURL().Extension());
 					std::ofstream out(filename.string(), std::ios::binary | std::ios::out);
-					out << post->URL.GetStringContent();
+					out << post->getURL().GetStringContent();
 				}
 			}
 		}
@@ -96,12 +96,13 @@ namespace Scarlett::Reddit {
 		{
 			using namespace std::filesystem;
 
-			auto tempTime = *std::gmtime(&post->CreatedUTC);
+			auto time = post->getCreatedUTCTime();
+			auto tempTime = *std::gmtime(&time);
 
 			auto destination = location /  path(formatTime(tempTime, "%Y")) / path(formatTime(tempTime, "%m")) / formatTime(tempTime, "%d");
-			String filename = post->Id + ".xml"_u;
+			String filename = post->getId() + ".xml"_u;
 			std::filesystem::create_directories(destination);
-			ucout << "Writing " << post->Id << " to " << destination.string() << std::endl;
+			ucout << "Writing " << post->getId() << " to " << destination.string() << std::endl;
 			Internal::Serialize<boost::shared_ptr<T>>(destination / filename, post, "obj");
 
 		}

@@ -18,9 +18,7 @@ namespace Scarlett::Reddit
 		{
 			return (json.has_string_field("is_self"_u) && json.at("is_self"_u).as_bool());
 		}
-
 		inline const Kind getType() { return Kind::SelfPost; }
-
 	private:
 		SelfPost() {};
 		friend class boost::serialization::access;

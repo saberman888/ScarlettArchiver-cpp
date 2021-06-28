@@ -30,6 +30,11 @@ namespace Scarlett::Reddit
 		bool operator==(Link& other);
 		bool operator!=(Link& other);
 
+
+		inline const String getDomain() { return Domain; }
+		inline const String getTitle() { return Title; }
+		inline Media::Content getURL() { return URL; }
+
 		virtual inline const Kind getType() { return Kind::Link; }
 	protected:
 		String Domain;
