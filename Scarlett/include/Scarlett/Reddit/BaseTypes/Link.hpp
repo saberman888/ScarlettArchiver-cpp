@@ -35,7 +35,6 @@ namespace Scarlett::Reddit
 		inline const String getTitle() { return Title; }
 		inline Media::Content getURL() { return URL; }
 
-		virtual inline const Kind getType() { return Kind::Link; }
 	protected:
 		String Domain;
 		String Title;

@@ -68,8 +68,6 @@ namespace Scarlett::Reddit
 		bool operator!=(Video& other);
 		String GetContent() = delete;
 
-		inline const Kind getType() { return Kind::Video; }
-
 	private:
 		Video() {};
 

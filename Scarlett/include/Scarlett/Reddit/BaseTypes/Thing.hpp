@@ -10,17 +10,6 @@
 
 namespace Scarlett::Reddit
 {
-
-	enum class Kind : int
-	{
-		Base,
-		Link,
-		Video,
-		Gallery,
-		Comment,
-		SelfPost
-	};
-
 	class Thing
 	{
 	public:
@@ -42,7 +31,6 @@ namespace Scarlett::Reddit
 		inline const String getPermalink() { return Permalink; }
 		inline const Timestamp getCreatedUTCTime() { return CreatedUTC; }
 		inline const Timestamp getCreatedLocalTime() { return CreatedLocal; }
-		virtual inline  const Kind getType() { return Kind::Base; }
 
 	protected:
 		Thing() {}

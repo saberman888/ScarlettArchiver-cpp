@@ -17,7 +17,6 @@ namespace Scarlett::Reddit
 		Comment(const JSON::value& json, boost::optional<String> ParentId = boost::none);
 		std::vector<std::unique_ptr<Comment>> replies; 
 		void GetRedditComments();
-		inline const Kind getType() { return Kind::Comment; }
 
 	private:
 		Comment(){}

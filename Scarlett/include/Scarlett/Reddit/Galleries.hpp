@@ -24,7 +24,6 @@ namespace Scarlett::Reddit
 
 		std::string GetContent() = delete;
 
-		inline const Kind getType() { return Kind::Gallery; }
 	private:
 		/**
 		 Reads Json data into Gallery. If it's a Reddit album then, it reads the provided json. If it's an Imgur album, it justs calls RedditCommon::Read only; 
