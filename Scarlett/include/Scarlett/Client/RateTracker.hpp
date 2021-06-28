@@ -28,6 +28,7 @@ namespace Scarlett::Client
 		* 60,000 to get the time difference between each requests in milliseconds
 		*/
 		RateTracker(const int max_rate_minute_limit, std::optional<int> max_time = std::nullopt);
+		RateTracker(RateTracker& rt);
 
 		/*
 		* This sends the request and makes sure it doesn't exceed any limits. And if the request fails with a code 429,

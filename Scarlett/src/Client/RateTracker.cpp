@@ -2,6 +2,15 @@
 
 namespace Scarlett::Client
 {
+	RateTracker::RateTracker(RateTracker& rt)
+	{
+		rt.Cache = Cache;
+		rt.minimum_time_interval = minimum_time_interval;
+		rt.MaxTries = MaxTries;
+		rt.Tries = Tries;
+		rt.MaxTime = MaxTime;
+		rt.StartTime = StartTime;
+	}
 	bool RateTracker::TimeUp()
 	{
 		std::lock_guard<std::mutex> guard(mlock);
