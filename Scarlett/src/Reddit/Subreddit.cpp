@@ -6,13 +6,13 @@ namespace Scarlett::Reddit {
 	Subreddit::Subreddit(const String Subreddit, const String Start, const String End)
 	{
 		sub = std::make_unique<SubredditMetadata>(Subreddit, Start, End);
-		log->info("{} has been instantiated.", sub->Subreddit());
+		log->info("{} has been instantiated.", toString(sub->Subreddit()));
 	}
 
 	void Subreddit::Next()
 	{
 		try {
-			log->info("Fetching posts from {} between {} and {}.", sub->Subreddit(), sub->Position(), sub->Position() + 86400);
+			log->info("Fetching posts from {} between {} and {}.", toString(sub->Subreddit()), sub->Position(), sub->Position() + 86400);
 			auto currentposition = sub->Position();
 			this->NextItems(StringMap{
 			  {"after", std::to_string(currentposition)},
@@ -26,7 +26,7 @@ namespace Scarlett::Reddit {
 			sub->setPosition(currentposition += 86400);
 			log->info("Incrementing by 24 hours for the next fetch.");
 
-			log->error("Error: Failed to retrieve {} posts between {} and {}", sub->Subreddit(), sub->Position(), sub->Position() + 86400);
+			log->error("Error: Failed to retrieve {} posts between {} and {}", toString(sub->Subreddit()), sub->Position(), sub->Position() + 86400);
 		}
 		catch (ScarlettHTTPException& e) {
 			scarlettNestedThrow(e.what());
@@ -38,7 +38,7 @@ namespace Scarlett::Reddit {
 		using namespace std::filesystem;
 		using namespace boost::serialization;
 
-		log->info("Saving posts from {}.", sub->Subreddit());
+		log->info("Saving posts from {}.", toString(sub->Subreddit()));
 		create_directories(location);
 	
 		Internal::Serialize(location / "metadata.xml", *sub, "metadata");

@@ -55,7 +55,7 @@ namespace Scarlett::Reddit {
 
 			if constexpr (std::is_same<Gallery, T>::value)
 			{
-				const std::filesystem::path galPath = mediaPath / post->getId();
+				const std::filesystem::path galPath = mediaPath / toString(post->getId());
 				std::filesystem::create_directories(galPath);
 				
 				std::vector<Media::Content> images = post->GetImages();
@@ -65,12 +65,17 @@ namespace Scarlett::Reddit {
 					Media::Content& c = images[i];
 					if (c.FetchContent() != 200)
 					{
-						scarlettThrow("Failed to download Gallery image: " + c.GetURLString());
+						scarlettThrow("Failed to download Gallery image: " + toString(c.GetURLString()));
 					}
 					else {
-						auto filename = galPath / (post->getId() + "_" + std::to_string(i) + "." + c.Extension());
+						auto filename = galPath / (toString(post->getId()) + "_" + std::to_string(i) + "." + toString(c.Extension()));
 						std::ofstream out(filename.string(), std::ios::binary | std::ios::out);
-						out << c.GetStringContent();
+
+						auto data_vec = c.GetContent();
+						for(auto& data : data_vec)
+						{
+							out << data;
+						}
 					}
 				}
 			}
@@ -79,13 +84,18 @@ namespace Scarlett::Reddit {
 				auto sc = post->getURL().FetchContent();
 				if (sc != 200)
 				{
-					scarlettThrow("Failed to download content from Link, " + post->getURL().GetURLString());
+					scarlettThrow("Failed to download content from Link, " + toString(post->getURL().GetURLString()));
 				}
 
-				if (post->getURL().ContentType() == "image") {
-					auto filename = mediaPath / path(post->getId() + "." + post->getURL().Extension());
+				if (post->getURL().ContentType() == "image"_u) {
+					auto filename = mediaPath / path(toString(post->getId() + "."_u + post->getURL().Extension()));
 					std::ofstream out(filename.string(), std::ios::binary | std::ios::out);
-					out << post->getURL().GetStringContent();
+
+					auto data_vec = post->getURL().GetContent();
+					for(auto& data : data_vec)
+					{
+						out << data;
+					}
 				}
 			}
 		}
@@ -98,12 +108,12 @@ namespace Scarlett::Reddit {
 
 			auto time = post->getCreatedUTCTime();
 			auto tempTime = *std::gmtime(&time);
-
 			auto destination = location /  path(formatTime(tempTime, "%Y")) / path(formatTime(tempTime, "%m")) / formatTime(tempTime, "%d");
 			String filename = post->getId() + ".xml"_u;
+
 			std::filesystem::create_directories(destination);
-			ucout << "Writing " << post->getId() << " to " << destination.string() << std::endl;
-			Internal::Serialize<boost::shared_ptr<T>>(destination / filename, post, "obj");
+			//scout << "Writing "_u << post->getId() << " to "_u << toScarlettString(destination.string()) << "\n"_u;
+			Internal::Serialize<boost::shared_ptr<T>>(destination / toString(filename), post, toString(tag));
 
 		}
 	};

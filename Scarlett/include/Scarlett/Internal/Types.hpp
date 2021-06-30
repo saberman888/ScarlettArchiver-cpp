@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <iosfwd>
 #include "Scarlett_def.hpp"
 
 namespace Scarlett
@@ -37,6 +38,14 @@ namespace Scarlett
 	using istringstream = utility::istringstream_t;
 	using ostringstream = utility::ostringstream_t;
 	using stringstream = utility::stringstream_t;
+
+#ifdef __SCARLETT_USE_WIDE_STRINGS
+#define scout std::wcout;
+#define scerr = std::wcerr;
+#else
+#define scout = std::cout;
+#define scerr = std::cerr;
+#endif
 
 	inline String toScarlettString(const std::string source) {
 #ifdef __SCARLETT_USE_WIDE_STRINGS
