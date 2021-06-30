@@ -44,7 +44,9 @@ namespace Scarlett::Reddit
 					
 					if (mimeType == "audio/mp4")
 					{
-						audio.emplace(Rep->FirstChildElement("BaseURL")->GetText());
+						audio.emplace(
+                            toScarlettString(Rep->FirstChildElement("BaseURL")->GetText())
+                            );
 					}
 					else {
 
@@ -86,12 +88,12 @@ namespace Scarlett::Reddit
 
 	bool Video::operator==(Video& other)
 	{
-		return (Link::operator==(other) && audio.value_or("null") == other.audio.value_or("null"));
+		return (Link::operator==(other) && audio.value_or("null"_u) == other.audio.value_or("null"_u));
 	}
 
 	bool Video::operator!=(Video& other)
 	{
-		return (Link::operator!=(other) && audio.value_or("null") != other.audio.value_or("null"));
+		return (Link::operator!=(other) && audio.value_or("null"_u) != other.audio.value_or("null"_u));
 	}
 
 	void Video::AddVideo(const VideoInfo video)

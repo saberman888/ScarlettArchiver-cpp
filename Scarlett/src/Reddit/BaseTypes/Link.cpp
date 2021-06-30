@@ -11,14 +11,14 @@ namespace Scarlett::Reddit
 	String Link::GetContent() {
 		using namespace Scarlett::Media;
 
-		log->info(Id, ": Getting Image");
+		log->info("{}: Getting Image", toString(Id));
 		if (ImgurClientId) {
-			log->info(Id, ": Resolving the URL through the Imgur API");
+			log->info("{}: Resolving the URL through the Imgur API", toString(Id));
 			return ImgurAccess::GetImage(URL.GetURLString(),
 				ImgurClientId.value());
 		}
 		else {
-			log->info(Id, ": Image returned");
+			log->info("{]: Image returned", toString(Id));
 			return URL.GetURLString();
 		}
 	}

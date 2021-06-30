@@ -10,8 +10,8 @@ namespace Scarlett::Reddit
 			Id = value.at("id"_u).as_string();
 			Permalink = value.at("permalink"_u).as_string();
 			Author = value.at("author"_u).as_string();
-			CreatedUTC = value.at("created_utc").as_integer();
-			CreatedLocal = value.at("created").as_integer();
+			CreatedUTC = static_cast<time_t>(value.at("created_utc"_u).as_integer());
+			CreatedLocal = static_cast<time_t>(value.at("created"_u).as_integer());
 		}
 		catch (web::json::json_exception& e) {
 			scarlettNestedThrow(e.what());
