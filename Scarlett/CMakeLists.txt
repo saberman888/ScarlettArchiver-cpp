@@ -132,12 +132,24 @@ target_compile_definitions(
 		${SCARLETT_COMPILE_DEFINITIONS}
 )
 
+target_precompile_headers(
+        Scarlett
+        PRIVATE
+        ${Scarlett_SOURCE_DIR}/include/Scarlett/Internal/pch.h
+)
+
 target_link_libraries(
 	Scarlett
 	INTERFACE
 	${SCARLETT_LINK_LIBRARIES})
 
 if(SCARLETT_TESTS)
+        target_precompile_headers(
+                Scarlett
+                PRIVATE
+                ${Scarlett_SOURCE_DIR}/include/Scarlett/Internal/pch.h
+        )
+
 	target_sources(
 		Scarlett_tests
 		PRIVATE
