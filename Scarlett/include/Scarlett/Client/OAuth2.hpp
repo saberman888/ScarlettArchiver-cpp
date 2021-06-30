@@ -54,17 +54,17 @@ namespace Scarlett::Client
 
 
     template<typename T>
-    class OAuth2Helper : public RateTracker
+    class OAuth2Authorization : public RateTracker
     {
     public:
 
-        OAuth2Helper(const String client_key, const String secret, const String redirect_uri, const String useragent) : RateTracker(60)
+        OAuth2Authorization(const String client_key, const String secret, const String redirect_uri, const String useragent) : RateTracker(60)
         {
             init(client_key, secret, redirect_uri, useragent);
 	        RateTracker::SetMaxTries(600);
         }
 
-        OAuth2Helper(const String username, const String password, const String client_key, const String secret, const String redirect_uri, const String useragent) : RateTracker(60)
+        OAuth2Authorization(const String username, const String password, const String client_key, const String secret, const String redirect_uri, const String useragent) : RateTracker(60)
         {
             setUserCredentials(username, password);
             init(client_key, secret, redirect_uri, useragent);
