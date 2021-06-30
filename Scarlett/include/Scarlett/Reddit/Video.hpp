@@ -24,7 +24,7 @@ namespace Scarlett::Reddit
 		}
 	};
 
-	class Video : public Link
+    class SCDLL Video : public Link
 	{
 	public:
 		Video(const JSON::value& json);
