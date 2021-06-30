@@ -24,7 +24,7 @@ namespace Scarlett {
 
 
 	namespace Media {
-		class Content
+        class SCDLL Content
 		{
 		public:
 			Content() {}

@@ -6,10 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-
-#ifdef _WIN32
-#define __SCARLETT_USE_WIDE_STRINGS
-#endif
+#include "Scarlett_def.hpp"
 
 namespace Scarlett
 {
@@ -62,11 +59,6 @@ namespace Scarlett
 		return utility::conversions::to_string_t(std::string(source, csize));
 	}
 
-#ifdef __SCARLETT_USE_WIDE_STRINGS
-#define SCARLETT_WIDEN(x) _XPLATSTR(x)
-#else
-#define SCARLETT_WIDEN(x) x
-#endif
 	template<class CharT, 
 			 class Traits = std::char_traits<CharT>, 
 			 class Allocator = std::allocator<CharT>>

@@ -13,7 +13,7 @@
 #include <thread>
 
 namespace Scarlett::Client {
-	class PushShift {
+    class SCDLL PushShift {
 	public:
 		static HttpResponse SearchSubmissions(const std::map<std::string, std::string>& URLComponents);
 		static HttpResponse SearchComments(const std::map<std::string, std::string>& URLComponents);

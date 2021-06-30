@@ -10,7 +10,7 @@
 namespace Scarlett::Reddit
 {
 	
-	class Comment : public TextPost
+    class SCDLL Comment : public TextPost
 	{
 	public:
 		Comment(const String& ParentId);

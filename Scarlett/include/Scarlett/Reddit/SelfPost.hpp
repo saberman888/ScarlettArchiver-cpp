@@ -9,7 +9,7 @@ namespace Scarlett::Reddit
 	/*
 	* SelfPost takes TextPost with Linkable traits, and that serves as a class for self posts
 	*/
-	class SelfPost : public TextPost
+    class SCDLL SelfPost : public TextPost
 	{
 	public:
 		SelfPost(const JSON::value& json);

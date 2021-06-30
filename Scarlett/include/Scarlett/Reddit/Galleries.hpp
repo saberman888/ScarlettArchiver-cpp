@@ -9,7 +9,7 @@ namespace Scarlett::Reddit
 	/**
 	 The Gallery class holds images from Reddit Galleries and Imgur Galleries.
 	*/
-	class Gallery : public Link	{
+    class SCDLL Gallery : public Link	{
 	public:
 		// Reads the provided json into Gallery, and if the gallery/album is an Imgur album, it retrieves the images.
 		Gallery(const JSON::value& json, const std::optional<String> ImgurClientId = std::nullopt);

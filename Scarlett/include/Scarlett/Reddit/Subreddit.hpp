@@ -17,7 +17,7 @@
 #include <fstream>
 
 namespace Scarlett::Reddit {
-	class Subreddit : public Listing<Thing>, protected Logger
+    class SCDLL Subreddit : public Listing<Thing>, protected Logger
 	{
 	public:
 		Subreddit(const String Subreddit, const String Start, const String End);

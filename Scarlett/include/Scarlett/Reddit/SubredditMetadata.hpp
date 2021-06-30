@@ -14,7 +14,7 @@ namespace Scarlett::Reddit
 	/*
 		SubredditMetadata holds information regarding the date, position, statistics and functions manipulating around a Subreddit
 	*/
-	class SubredditMetadata : protected Logger
+    class SCDLL SubredditMetadata : protected Logger
 	{
 	public:
 

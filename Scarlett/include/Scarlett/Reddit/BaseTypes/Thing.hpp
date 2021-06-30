@@ -10,7 +10,7 @@
 
 namespace Scarlett::Reddit
 {
-	class Thing
+    class SCDLL Thing
 	{
 	public:
 		using Timestamp = time_t;

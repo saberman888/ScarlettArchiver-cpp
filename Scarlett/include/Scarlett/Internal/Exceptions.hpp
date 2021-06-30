@@ -13,7 +13,7 @@
 
 namespace Scarlett
 {
-	class ScarlettException : public std::runtime_error
+    class SCDLL ScarlettException : public std::runtime_error
 	{
 	public:
 		ScarlettException(const std::string& message, unsigned int line, const std::string& func);
@@ -40,7 +40,7 @@ namespace Scarlett
 	};
 
 
-	class ScarlettHTTPException : public ScarlettException
+    class SCDLL ScarlettHTTPException : public ScarlettException
 	{
 	public:
 		ScarlettHTTPException(const HttpResponse& response, unsigned int line, const std::string& func);
@@ -60,8 +60,8 @@ namespace Scarlett
 	};
 
 
-	void printException(const std::exception& e, int level = 0);
-	void printException(ScarlettException& se, int level = 0);
+    void SCDLL printException(const std::exception& e, int level = 0);
+    void SCDLL printException(ScarlettException& se, int level = 0);
 
 #define scarlettThrow(msg) throw ScarlettException(msg, __LINE__, __func__);
 #define scarlettNestedThrow(msg) std::throw_with_nested(ScarlettException(msg, __LINE__, __func__));

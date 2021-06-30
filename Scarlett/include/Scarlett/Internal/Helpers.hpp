@@ -18,12 +18,12 @@ namespace Scarlett
 	* @author Sai Vazquez
 	* @params Date in string format, the date's format and a struct tm*
 	*/
-	char* strptime(const char* s, const char* f, struct tm* tm);
+    SCDLL char* strptime(const char* s, const char* f, struct tm* tm);
 
-	std::string formatTime(tm& _time, std::string format);
+    SCDLL std::string formatTime(tm& _time, std::string format);
 
 	// Converts anything in data to a var1=data&var2=data format
-	std::string GenerateParamData(const StringMap& data);
+    SCDLL std::string GenerateParamData(const StringMap& data);
 
 	inline bool contains(const std::string& lhs, const std::string rhs)
 	{

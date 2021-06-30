@@ -19,7 +19,7 @@ namespace Scarlett::Client
 	* 
 	* TODO: Re-implement things like total requests, total time and more to handle things like refreshing tokens and etc.
 	*/
-	class RateTracker
+    class SCDLL RateTracker
 	{
 	public:
 

@@ -27,8 +27,8 @@ namespace Scarlett::Media::ImgurAccess
 		return std::regex_match(toString(uri.to_string()), std::regex("https?://i.imgur.com/[A-Za-z0-9]+"));
 	}
 
-	static const String GetHash(const URI& uri);
-	const std::vector<String> GetAlbum(const URI& URL, const String& ClientId);
-	const String GetImage(const String& ImageHash, const String& ClientId);
+    SCDLL static const String GetHash(const URI& uri);
+    SCDLL const std::vector<String> GetAlbum(const URI& URL, const String& ClientId);
+    SCDLL const String GetImage(const String& ImageHash, const String& ClientId);
 
 }

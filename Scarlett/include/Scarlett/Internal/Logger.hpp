@@ -8,14 +8,15 @@
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_sinks.h"
 #include <string>
+#include "Scarlett_def.hpp"
 
 namespace Scarlett
 {
-	void InitLogs();
+    SCDLL void InitLogs();
 
-	const std::shared_ptr<spdlog::logger> GetGlobalLogger();
+    SCDLL const std::shared_ptr<spdlog::logger> GetGlobalLogger();
 
-	struct Logger
+    struct SCDLL Logger
 	{
 		Logger();
 		std::shared_ptr<spdlog::logger> log;

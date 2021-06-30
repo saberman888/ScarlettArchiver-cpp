@@ -8,7 +8,7 @@ namespace Scarlett::Reddit
 	/*
 	* TextPost serves as a base class for posts and comments with text in them.
 	*/
-	class TextPost : public Thing
+    class SCDLL TextPost : public Thing
 	{
 	public:
 		

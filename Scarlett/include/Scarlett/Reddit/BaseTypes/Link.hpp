@@ -11,7 +11,7 @@
 
 namespace Scarlett::Reddit
 {
-	class Link : public Thing, protected Logger
+    class SCDLL Link : public Thing, protected Logger
 	{
 	public:
 		Link() = default;

@@ -14,7 +14,7 @@
 namespace Scarlett::Client
 {
 	using reddit_scope = String;
-	class reddit_scopes
+    class SCDLL reddit_scopes
 	{
 	public:
 #define _SCARLETT_REDDIT_SCOPE
@@ -38,7 +38,7 @@ namespace Scarlett::Client
 		RedditClient(struct AccessData& acd)
 		{
 
-			oauth2handle = std::make_shared< OAuth2Helper<T> >(
+			oauth2handle = std::make_shared< OAuth2Authorization<T> >(
 				acd.username, 
 				acd.password, 
 				acd.client_key, 
@@ -111,7 +111,7 @@ namespace Scarlett::Client
 			return oauth2handle->Send(ub.to_uri(), r);
 		}
 
-		std::shared_ptr< OAuth2Helper<T> > oauth2handle;
+		std::shared_ptr< OAuth2Authorization<T> > oauth2handle;
 	};
 	using AuthClient = RedditClient<Authorization>;
 	using SimpleClient = RedditClient<PasswordGrant>;
