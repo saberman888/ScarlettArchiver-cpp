@@ -34,11 +34,17 @@ set(CPPREST_EXCLUDE_COMPRESSION INTERNAL CACHE BOOL ON)
 set(CPPREST_EXCLUDE_BROTLI INTERNAL CACHE BOOL ON)
 set(CPPREST_INSTALL_HEADERS INTERNAL CACHE BOOL OFF)
 set(CPPREST_INSTALL INTERNAL CACHE BOOL OFF)
-set(Boost_USE_STATIC_LIBS INTERNAL CACHE BOOL ON)
 
 set(BUILD_SHARED_LIBS CACHE BOOL OFF)
 set(BUILD_TESTS CACHE BOOL OFF)
 set(BUILD_SAMPLES CACHE BOOL OFF)
+
+if(BUILD_SHARED_LIBS)
+    set(Boost_USE_STATIC_LIBS INTERNAL CACHE BOOL OFF)
+else()
+    set(Boost_USE_STATIC_LIBS INTERNAL CACHE BOOL ON)
+endif()
+
 
 message(NOTICE "Cloning submodule: cpprestsdk")
 set(git_cmd git submodule update --init)
@@ -46,6 +52,7 @@ execute_process(COMMAND ${git_cmd})
 add_subdirectory(${Scarlett_SOURCE_DIR}/submodule/cpprestsdk)
 
 include_directories("${Scarlett_SOURCE_DIR}/include")
+
 set(SCARLETT_TESTS CACHE BOOL OFF)
 
 set(SCARLETT_COMPILE_DEFINITIONS
@@ -93,7 +100,19 @@ if(Boost_FOUND)
 	set(SCARLETT_INCLUDES ${SCARLETT_INCLUDES} ${Boost_INCLUDE_DIRS})
 endif()
 
-add_library(Scarlett STATIC)
+if(BUILD_SHARED_LIBS)
+    set(SCARLETT_COMPILE_DEFINITIONS ${SCARLETT_COMPILE_DEFINITIONS} SCARLETT_EXPORT_LIB)
+    add_library(Scarlett SHARED)
+    if(SCARLETT_TESTS)
+        add_library(Scarlett_tests SHARED)
+    endif()
+else()
+    add_library(Scarlett STATIC)
+    if(SCARLETT_TESTS)
+        add_library(Scarlett_tests STATIC)
+    endif()
+endif()
+
 
 
 target_include_directories(
@@ -119,8 +138,6 @@ target_link_libraries(
 	${SCARLETT_LINK_LIBRARIES})
 
 if(SCARLETT_TESTS)
-	add_library(Scarlett_tests STATIC)
-
 	target_sources(
 		Scarlett_tests
 		PRIVATE
