@@ -1,6 +1,6 @@
 #include "Scarlett/Reddit/Comment.hpp"
-BOOST_CLASS_EXPORT(Scarlett::Reddit::Comment)
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::Comment)
+BOOST_CLASS_EXPORT_IMPLEMENT(Scarlett::Reddit::Comment)
 
 namespace Scarlett::Reddit
 {

@@ -1,6 +1,6 @@
 #include "Scarlett/Reddit/Galleries.hpp"
-BOOST_CLASS_EXPORT(Scarlett::Reddit::Gallery);
-BOOST_SERIALIZATION_SHARED_PTR(ScarletT::Reddit::Gallery);
+BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::Gallery);
+BOOST_CLASS_EXPORT_IMPLEMENT(Scarlett::Reddit::Gallery)
 
 
 namespace Scarlett::Reddit

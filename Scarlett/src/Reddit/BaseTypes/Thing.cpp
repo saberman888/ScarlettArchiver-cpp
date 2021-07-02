@@ -1,6 +1,7 @@
 #include "Scarlett/Reddit/BaseTypes/Thing.hpp"
 BOOST_SERIALIZATION_ASSUME_ABSTRACT(Scarlett::Reddit::Thing)
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::Thing)
+BOOST_CLASS_EXPORT_IMPLEMENT(Scarlett::Reddit::Thing)
 namespace Scarlett::Reddit
 {
 	void Thing::Read(const JsonValue& value)

@@ -1,7 +1,7 @@
 #include "Scarlett/Reddit/Video.hpp"
 #include <iostream>
-BOOST_CLASS_EXPORT(Scarlett::Reddit::Video);
 BOOST_SERIALIZATION_SHARED_PTR(ScarletT::Reddit::Video);
+BOOST_CLASS_EXPORT_IMPLEMENT(Scarlett::Reddit::Video);
 
 
 namespace Scarlett::Reddit

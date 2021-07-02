@@ -1,6 +1,7 @@
 #include "Scarlett/Reddit/SubredditMetadata.hpp"
 #include <iostream>
-BOOST_CLASS_EXPORT_KEY2(Scarlett::Reddit::SubredditMetadata, "metadata");
+//BOOST_CLASS_EXPORT_KEY2(Scarlett::Reddit::SubredditMetadata, "metadata")
+BOOST_CLASS_EXPORT_IMPLEMENT(Scarlett::Reddit::SubredditMetadata)
 
 namespace Scarlett::Reddit
 { 
