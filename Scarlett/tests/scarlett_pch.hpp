@@ -39,14 +39,14 @@ namespace Scarlett::Tests
 			return acd;
 		}
 	private:
-		inline bool try_get_element(tinyxml2::XMLElement* parent, const std::string& tag, std::string& dest)
+		inline bool try_get_element(tinyxml2::XMLElement* parent, const std::string& tag, Scarlett::String& dest)
 		{
 			auto elem = parent->FirstChildElement(tag.c_str());
 			if(elem)
 			{
 				if(elem->GetText())
 				{
-					dest = std::string(elem->GetText());
+					dest = Scarlett::toScarlettString(elem->GetText());
 					return true;
 				} 
 				return false;
@@ -54,9 +54,9 @@ namespace Scarlett::Tests
 				return false;
 			}
 		}
-		inline std::string get_element(tinyxml2::XMLElement* parent, const std::string& tag)
+		inline Scarlett::String get_element(tinyxml2::XMLElement* parent, const std::string& tag)
 		{
-			std::string dest;
+			Scarlett::String dest;
 			auto result = try_get_element(parent, tag, dest);
 			if(!result)
 			{
