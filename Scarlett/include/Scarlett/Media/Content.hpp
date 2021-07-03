@@ -108,15 +108,7 @@ namespace Scarlett {
 
 			friend class boost::serialization::access;
 			template<class Archive>
-			void serialize(Archive& ar, const unsigned int version)
-			{
-				using namespace boost::serialization;
-				ar& make_nvp("ContentInfo", _ContentType);
-				ar& make_nvp("ContentSize", _ContentSize);
-				auto url = URL.to_string();
-				ar& make_nvp("URL", url);
-			}
-
+			void serialize(Archive& ar, const unsigned int version);
 
 			std::optional<HttpResponse> Response{ std::nullopt };
 			std::vector<String> _ContentType;

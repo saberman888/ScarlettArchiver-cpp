@@ -1,9 +1,18 @@
 #include "Scarlett/Reddit/Comment.hpp"
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::Comment)
-BOOST_CLASS_EXPORT_IMPLEMENT(Scarlett::Reddit::Comment)
+BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::Comment, Comment)
 
 namespace Scarlett::Reddit
 {
+	template<class Archive>
+	void Comment::serialize(Archive& ar, const unsigned int version)
+	{
+		using namespace boost::serialization;
+		ar& make_nvp("TextPost", base_object<TextPost>(*this));
+		ar& make_nvp("parent_id", ParentId);
+	}
+	template void Comment::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
+	template void Comment::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
 
     Comment::Comment(const String& ParentId)
     {

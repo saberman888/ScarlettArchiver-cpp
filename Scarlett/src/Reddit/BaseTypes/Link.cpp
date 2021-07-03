@@ -1,10 +1,24 @@
 #include "Scarlett/Reddit/BaseTypes/Link.hpp"
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::Link)
-BOOST_CLASS_EXPORT_IMPLEMENT(Scarlett::Reddit::Link)
+BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::Link, "Link")
 
 
 namespace Scarlett::Reddit
 {
+	template<class Archive>
+	void Link::serialize(Archive& ar, const unsigned int version)
+	{
+			using namespace boost::serialization;
+			ar& make_nvp("Thing", base_object<Thing>(*this));
+			ar& make_nvp("Domain", Domain);
+			ar& make_nvp("Title", Title);
+			ar& make_nvp("Hint", Hint);
+	}
+
+
+	template void Link::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
+	template void Link::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
+
 	Link::Link(const JsonValue& json, std::optional<String> ImgurClientId) : ImgurClientId(ImgurClientId), Thing(json)
 	{}
 

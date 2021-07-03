@@ -70,14 +70,7 @@ namespace Scarlett::Reddit
 		time_t StartDate{ 0 }, EndDate{ 0 }, DatePointer{ 0 };
 		friend boost::serialization::access;
 		template<class Archive>
-		void serialize(Archive& ar, const unsigned int version)
-		{
-			using namespace boost::serialization;
-			ar& make_nvp("TargetSubreddit", _Subreddit);
-			ar& make_nvp("StartDate", StartDate);
-			ar& make_nvp("EndDate", EndDate);
-			ar& make_nvp("DatePointer", DatePointer);
-		}
+		void serialize(Archive& ar, const unsigned int version);
 
 		/**
 		 Scans the provided dates in string format into a Time Structure , and assigns them to

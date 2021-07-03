@@ -1,7 +1,17 @@
 #include "Scarlett/Media/Content.hpp"
 BOOST_CLASS_EXPORT_GUID(Scarlett::Media::Content, "ContentInfo");
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Media::Content);
-
+template<class Archive>
+void Scarlett::Media::Content::serialize(Archive& ar, const unsigned int version)
+{
+	using namespace boost::serialization;
+	ar& make_nvp("ContentInfo", _ContentType);
+	ar& make_nvp("ContentSize", _ContentSize);
+	auto url = URL.to_string();
+	ar& make_nvp("URL", url);
+}
+template void Scarlett::Media::Content::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
+template void Scarlett::Media::Content::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
 Scarlett::Media::Content::Content(const String& URL)
 {
 	try {

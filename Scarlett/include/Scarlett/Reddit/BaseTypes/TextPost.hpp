@@ -25,13 +25,7 @@ namespace Scarlett::Reddit
 		String Text;
 		friend class boost::serialization::access;
 		template<class Archive>
-		void serialize(Archive& ar, const unsigned int version)
-		{
-			using namespace boost::serialization;
-			ar& make_nvp("Thing", base_object<Thing>(*this));
-			ar& make_nvp("Text", Text);
-		}
-
+		void serialize(Archive& ar, const unsigned int version);
 	};
 
 };

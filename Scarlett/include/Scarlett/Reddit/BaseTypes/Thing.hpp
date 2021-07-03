@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/shared_ptr.hpp>
@@ -50,15 +51,6 @@ namespace Scarlett::Reddit
 
 		friend class boost::serialization::access;
 		template<class Archive>
-		void serialize(Archive& ar, const unsigned int version)
-		{
-			using namespace boost::serialization;
-			ar& make_nvp("Name", Name);
-			ar& make_nvp("Id", Id);
-			ar& make_nvp("Permalink", Permalink);
-			ar& make_nvp("Author", Author);
-			ar& make_nvp("Created_UTC", CreatedUTC);
-			ar& make_nvp("Created_Local", CreatedLocal);
-		}
+		void serialize(Archive& ar, const unsigned int version);
 	};
 }

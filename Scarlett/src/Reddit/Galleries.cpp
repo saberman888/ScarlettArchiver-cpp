@@ -1,10 +1,23 @@
 #include "Scarlett/Reddit/Galleries.hpp"
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::Gallery);
-BOOST_CLASS_EXPORT_IMPLEMENT(Scarlett::Reddit::Gallery)
+BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::Gallery, "Gallery")
 
 
 namespace Scarlett::Reddit
 {
+
+	template<class Archive>
+	void Gallery::serialize(Archive& ar, const unsigned int version)
+	{
+		using namespace boost::serialization;
+		using namespace boost::serialization;
+		ar& make_nvp("Link", base_object<Link>(*this));
+		ar& make_nvp("Images", Images);
+	}
+
+	template void Gallery::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
+	template void Gallery::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
+
 	Gallery::Gallery(const JSON::value& json, const std::optional<String> ImgurClientId) : Link(json, ImgurClientId)	{
 		Read(json);	
 

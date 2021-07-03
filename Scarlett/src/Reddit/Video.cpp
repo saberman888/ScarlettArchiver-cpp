@@ -1,11 +1,32 @@
 #include "Scarlett/Reddit/Video.hpp"
 #include <iostream>
 BOOST_SERIALIZATION_SHARED_PTR(ScarletT::Reddit::Video);
-BOOST_CLASS_EXPORT_IMPLEMENT(Scarlett::Reddit::Video);
+BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::Video, "Video");
 
 
 namespace Scarlett::Reddit
 {
+	template<class Archive>
+	void VideoInfo::serialize(Archive& ar, const unsigned int version)
+	{
+		using namespace boost::serialization;
+		ar& make_nvp("Height", Height);
+		ar& make_nvp("BaseURL", BaseURL);
+	}
+	template void VideoInfo::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
+	template void VideoInfo::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
+
+	template<class Archive>
+	void Video::serialize(Archive& ar, const unsigned int version)
+	{
+		using namespace boost::serialization;
+		ar& make_nvp("Link", base_object<Link>(*this));
+		ar& make_nvp("Audio", audio);
+		ar& make_nvp("VideoInformation", videos);
+	}
+	template void Video::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
+	template void Video::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
+
 	Video::Video(const JSON::value& json) : Link(json)
 	{
 		Fetch();
@@ -65,7 +86,7 @@ namespace Scarlett::Reddit
 
 		}
 		else {
-			scarlettThrow("Failed to retrieve dash playlist data! Code: " + dashData.status_code());
+			scarlettThrow("Failed to retrieve dash playlist data! Code: " + std::to_string(dashData.status_code()));
 		}
 	}
 	 

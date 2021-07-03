@@ -1,11 +1,21 @@
 #include "Scarlett/Reddit/SubredditMetadata.hpp"
 #include <iostream>
-//BOOST_CLASS_EXPORT_KEY2(Scarlett::Reddit::SubredditMetadata, "metadata")
-BOOST_CLASS_EXPORT_IMPLEMENT(Scarlett::Reddit::SubredditMetadata)
+BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::SubredditMetadata, "Metadata")
 
 namespace Scarlett::Reddit
 { 
 	
+	template<class Archive>
+	void SubredditMetadata::serialize(Archive& ar, const unsigned int version)
+	{
+		using namespace boost::serialization;
+		ar& make_nvp("TargetSubreddit", _Subreddit);
+		ar& make_nvp("StartDate", StartDate);
+		ar& make_nvp("EndDate", EndDate);
+		ar& make_nvp("DatePointer", DatePointer);
+	}
+	template void SubredditMetadata::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
+	template void SubredditMetadata::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
 	SubredditMetadata::SubredditMetadata(const String Subreddit, const String StartTime, const String EndTime)
 	{
 		InitializeDates(StartTime, EndTime);

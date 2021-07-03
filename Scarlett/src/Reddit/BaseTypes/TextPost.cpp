@@ -1,9 +1,19 @@
 #include "Scarlett/Reddit/BaseTypes/TextPost.hpp"
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::TextPost)
-BOOST_CLASS_EXPORT_IMPLEMENT(Scarlett::Reddit::TextPost)
+BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::TextPost, "TextPost")
 
 namespace Scarlett::Reddit
 {
+	template<class Archive>
+	void TextPost::serialize(Archive& ar, const unsigned int version)
+	{
+		using namespace boost::serialization;
+		ar& make_nvp("Thing", base_object<Thing>(*this));
+		ar& make_nvp("Text", Text);
+	}
+	template void TextPost::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
+	template void TextPost::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
+
 	TextPost::TextPost(const JsonValue& json) : Text("[deleted]"_u), Thing(json) {
 		Read(json);
 	}

@@ -22,12 +22,7 @@ namespace Scarlett::Reddit
 		SelfPost() {};
 		friend class boost::serialization::access;
 		template<class Archive>
-		void serialize(Archive& ar, const unsigned int version)
-		{
-			using namespace boost::serialization;
-			ar& make_nvp("TextPost", base_object<TextPost>(*this));
-		}
-
+		void serialize(Archive& ar, const unsigned int version);
 	};
 
 };

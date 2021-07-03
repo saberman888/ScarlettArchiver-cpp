@@ -1,5 +1,5 @@
 #pragma once
-
+#include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/nvp.hpp>
 #include "Video.hpp"
@@ -23,14 +23,7 @@ namespace Scarlett::Reddit
 
 		friend class boost::serialization::access;
 		template<class Archive>
-		void serialize(Archive& ar, const unsigned int version)
-		{
-			using namespace boost::serialization;
-			ar& make_nvp("Videos", Videos);
-			ar& make_nvp("Links", Links);
-			ar& make_nvp("SelfPosts", SelfPosts);
-			ar& make_nvp("Galleries", Galleries);
-		}
+		void serialize(Archive& ar, const unsigned int version);
 	};
 
 	template<class T>

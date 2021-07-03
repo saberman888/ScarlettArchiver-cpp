@@ -22,12 +22,7 @@ namespace Scarlett::Reddit
 		Comment(){}
 		friend class boost::serialization::access;
 		template<class Archive>
-		void serialize(Archive& ar, const unsigned int version)
-		{
-			using namespace boost::serialization;
-			ar& make_nvp("TextPost", base_object<TextPost>(*this));
-			ar& make_nvp("ParentId", ParentId);
-		}
+		void serialize(Archive& ar, const unsigned int version);
 
 		boost::optional<String> ParentId{ boost::none };
 		void Read(const JSON::value& json);
