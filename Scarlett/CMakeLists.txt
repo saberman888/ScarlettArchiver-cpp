@@ -76,6 +76,7 @@ set(SCARLETT_SOURCES
 	src/Reddit/SubredditMetadata.cpp
 	src/Reddit/Subreddit.cpp
 	src/Client/RateTracker.cpp
+	src/Client/OAuth2.cpp
 	src/Client/PushShift.cpp
 	src/Client/Reddit.cpp)
 
