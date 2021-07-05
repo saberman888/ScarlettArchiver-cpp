@@ -1,13 +1,10 @@
 #pragma once
 
-#include "cpprest/http_client.h"
-#include "cpprest/http_listener.h"
-#include <type_traits>
-#include <utility>
+#include "cpprest/oauth2.h"
+#include "../Internal/Types.hpp"
+#include "AccessData.hpp"
 #include <memory>
-#include <mutex>
-#include "../Internal/Helpers.hpp"
-#include "../Internal/Exceptions.hpp"
+
 
 #if defined(_WIN32) && !defined(__cplusplus_winrt)
 // Extra includes for Windows desktop.
@@ -19,21 +16,13 @@
 
 namespace Scarlett::Client
 {
-    struct AccessData
-    {
-        Scarlett::String client_key, client_secret, useragent, redirect_uri;
-        Scarlett::String username, password;
-    };
-
-
-    class OAuth2Authorization
+    class SCDLL OAuth2Authorization
     {
     private:
         class _impl;
         std::unique_ptr<_impl> impl;
     public:
         using oauth2_config = web::http::oauth2::experimental::oauth2_config;
-        using http_client_config = web::http::client::http_client_config;
 
         OAuth2Authorization();
         OAuth2Authorization(const String client_key, const String client_secret, const String redirect_uri, const String useragent);

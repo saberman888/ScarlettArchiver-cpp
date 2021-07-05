@@ -1,5 +1,9 @@
 #include "Scarlett/Client/OAuth2.hpp"
 #include "Scarlett/Client/RateTracker.hpp"
+#include "cpprest/http_listener.h"
+#include <mutex>
+#include <utility>
+
 namespace Scarlett::Client
 {
 
