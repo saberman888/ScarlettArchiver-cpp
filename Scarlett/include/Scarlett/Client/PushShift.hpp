@@ -1,25 +1,14 @@
 #pragma once
 
-#include "../Internal/Helpers.hpp"
-#include "RateTracker.hpp"
-#include <cpprest/http_client.h>
-#include <vector>
+#include "../Internal/Types.hpp"
 #include <string>
 #include <map>
-#include <iosfwd>
-#include <exception>
-#include <ctime>
-#include <chrono>
-#include <thread>
 
 namespace Scarlett::Client {
     class SCDLL PushShift {
 	public:
 		static HttpResponse SearchSubmissions(const std::map<std::string, std::string>& URLComponents);
 		static HttpResponse SearchComments(const std::map<std::string, std::string>& URLComponents);
-	private:
-		static HttpResponse PushShiftGet(std::string endpoint, const std::map<std::string, std::string>& URLComponents);
-		static RateTracker& GetRateLimiter();
 	};
 };
 

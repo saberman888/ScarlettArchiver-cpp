@@ -1,9 +1,17 @@
 #include "Scarlett/Client/PushShift.hpp"
+#include "Scarlett/Client/RateTracker.hpp"
+#include "Scarlett/Internal/Helpers.hpp"
 #include <fstream>
 #include <iostream>
+#include <exception>
+#include <ctime>
+#include <chrono>
+#include <thread>
+#include <cpprest/http_client.h>
+#include <vector>
 namespace Scarlett::Client {
 
-	HttpResponse PushShift::PushShiftGet(std::string endpoint, const std::map<std::string, std::string>& URLComponents)
+	HttpResponse PushShiftGet(std::string endpoint, const std::map<std::string, std::string>& URLComponents)
 	{
 		web::uri_builder b;
 
@@ -19,7 +27,7 @@ namespace Scarlett::Client {
 		return rt.Send(b.to_uri(), r);
 	}
 
-	RateTracker& PushShift::GetRateLimiter()
+	RateTracker& GetRateLimiter()
 	{
 		static RateTracker rt{ 120 };
 		return rt;
