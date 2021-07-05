@@ -24,12 +24,8 @@ namespace Scarlett::Client
 #undef DAT
 	};
 
-	struct AccessData
-	{
-		Scarlett::String client_key, client_secret, useragent, redirect_uri;
-		Scarlett::String username, password;
-	};
 
+	class PasswordGrant, AuthorizationGrant;
 
 	template<typename T>
 	class RedditClient
@@ -111,9 +107,9 @@ namespace Scarlett::Client
 			return oauth2handle->Send(ub.to_uri(), r);
 		}
 
-		std::shared_ptr< OAuth2Authorization<T> > oauth2handle;
+		std::shared_ptr< OAuth2Authorization > oauth2handle;
 	};
-	using AuthClient = RedditClient<Authorization>;
+	using AuthClient = RedditClient<AuthorizationGrant>;
 	using SimpleClient = RedditClient<PasswordGrant>;
 
 };
