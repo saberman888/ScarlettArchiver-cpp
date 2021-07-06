@@ -58,7 +58,8 @@ set(SCARLETT_TESTS CACHE BOOL OFF)
 set(SCARLETT_COMPILE_DEFINITIONS
 	SPDLOG_FMT_EXTERNAL
 	CRT_SECURE_NO_WARNINGS
-	_TURN_OFF_PLATFORM_STRING)
+	_TURN_OFF_PLATFORM_STRING
+)
 
 set(SCARLETT_SOURCES
 	src/Internal/Logger.cpp
@@ -90,7 +91,7 @@ set(SCARLETT_LINK_LIBRARIES
 set(SCARLETT_INCLUDES
 	${Scarlett_SOURCE_DIR}/include
 	${Scarlett_SOURCE_DIR}/submodule/cpprestsdk/Release/include
-	)
+)
 
 if(Boost_FOUND)
 	if(DEBUG)
@@ -115,7 +116,6 @@ else()
 endif()
 
 
-
 target_include_directories(
 	Scarlett
 	PUBLIC
@@ -127,11 +127,26 @@ target_sources(
 	${SCARLETT_SOURCES}
 )
 
-target_compile_definitions(
-        Scarlett
-        PRIVATE
-		${SCARLETT_COMPILE_DEFINITIONS}
-)
+if(BUILD_SHARED_LIBS)
+	target_compile_definitions(
+			Scarlett
+			PRIVATE
+			${SCARLETT_COMPILE_DEFINITIONS}
+			SCARLETT_EXPORT_LIB
+	)
+else()
+	target_compile_definitions(
+		Scarlett
+		PRIVATE 
+		${SCARLETT_COMPILE_DEFINITIONS} 
+	)
+
+	target_compile_definitions(
+		Scarlett 
+		PUBLIC 
+		SCARLETT_STATIC_LIB
+	)
+endif()
 
 target_precompile_headers(
         Scarlett
@@ -163,11 +178,26 @@ if(SCARLETT_TESTS)
 		${SCARLETT_INCLUDES}
 	)
 
-	target_compile_definitions(
-		Scarlett_tests
-		PRIVATE
-		${SCARLETT_COMPILE_DEFINITIONS}
-	)
+	if(BUILD_SHARED_LIBS)
+		target_compile_definitions(
+				Scarlett_tests
+				PRIVATE
+				${SCARLETT_COMPILE_DEFINITIONS}
+				SCARLETT_EXPORT_LIB
+		)
+	else()
+		target_compile_definitions(
+			Scarlett_tests
+			PRIVATE 
+			${SCARLETT_COMPILE_DEFINITIONS} 
+		)
+
+		target_compile_definitions(
+			Scarlett_tests
+			PUBLIC 
+			SCARLETT_STATIC_LIB
+		)
+	endif()
 
 	target_link_libraries(
 		Scarlett_tests

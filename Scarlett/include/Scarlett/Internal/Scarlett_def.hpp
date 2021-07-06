@@ -11,17 +11,14 @@
 #define SCARLETT_WIDEN(x) x
 #endif
 
-
-#if defined(BUILD_SHARED_LIBS)
-    #if defined(WIN32)
-        #if defined(SCARLETT_EXPORT_LIB)
-            #define SCDLL __declspec(dllexport)
-        #else
-            #define SDCDLL __declspec(dllimport)
-        #endif
-    #elif defined(__GNUC__)
-        #define SCDLL __attribute__ ((__visibility__("default")))
-    #endif
-#else
+#ifdef SCARLETT_STATIC_LIB
 #define SCDLL
+#elif defined(SCARLETT_EXPORT_LIB)
+#if defined(WIN32)
+#define SCDLL __declspec(dllexport)
+#else
+#define SCDLL __attribute__ ((__visibility__("default")))
+#endif
+#else
+#define SCDLL __declspec(dllimport)
 #endif
