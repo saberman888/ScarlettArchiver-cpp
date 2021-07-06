@@ -23,6 +23,8 @@ namespace Scarlett::Client
 			minimum_time_interval = Millisecond(60000 / mmr);
 		}
 
+		~_rtImpl() = default;
+
 		// A temporary storage to keep our intervals
 		std::deque<Millisecond> Cache;
 		Millisecond minimum_time_interval{ 0 };
@@ -161,11 +163,6 @@ namespace Scarlett::Client
 	RateTracker::RateTracker(const MinuteRate mmr)
 	{
 		impl = std::make_unique<_rtImpl>(mmr);
-	}
-
-	RateTracker::RateTracker(const MinuteRate mmr, const Second mht)
-	{
-		impl = std::make_unique<_rtImpl>(mmr, mht);
 	}
 
 	RateTracker::RateTracker(RateTracker& rt)

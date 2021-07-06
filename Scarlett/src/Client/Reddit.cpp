@@ -31,12 +31,6 @@ namespace Scarlett::Client
 	}
 
 	template<typename T>
-	RedditClient<T>::RedditClient(RedditClient<T>& other)
-	{
-		impl->reset(other.impl.get());
-	}
-
-	template<typename T>
 	bool RedditClient<T>::AuthorizeWithReddit()
 	{
 		return impl->AuthorizeWithReddit();
@@ -62,7 +56,9 @@ namespace Scarlett::Client
 			oauth2handle = std::make_shared<OAuth2Authorization>(client_key, client_secret, redirect_uri, useragent);
 		}
 
-		void AuthorizeWithReddit()
+		~_rcImpl() = default;
+
+		bool AuthorizeWithReddit()
 		{
 			if constexpr (std::is_same_v<T, PasswordGrant>)
 			{

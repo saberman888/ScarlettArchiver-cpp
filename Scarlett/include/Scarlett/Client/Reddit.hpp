@@ -33,13 +33,14 @@ namespace Scarlett::Client
 		RedditClient(RedditClient&& other);
 		RedditClient(const String client_key, const String client_secret, const String redirect_uri, const String useragent);
 		RedditClient(const String username, const String password, const String client_key, const String client_secret, const String redirect_uri, const String useragent);
+		~RedditClient() = default;
 
 		bool AuthorizeWithReddit();
 
 		RedditClient& operator<<(const reddit_scope& scope);
 	private:
 		class _rcImpl;
-		std::unique_ptr<_rcImpl> impl;
+		std::shared_ptr<_rcImpl> impl;
 	};
 	using AuthClient = RedditClient<AuthorizationGrant>;
 	using SimpleClient = RedditClient<PasswordGrant>;

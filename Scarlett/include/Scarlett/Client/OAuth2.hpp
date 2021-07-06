@@ -20,15 +20,14 @@ namespace Scarlett::Client
     {
     private:
         class _impl;
-        std::unique_ptr<_impl> impl;
+        std::shared_ptr<_impl> impl;
     public:
         using oauth2_config = web::http::oauth2::experimental::oauth2_config;
 
         OAuth2Authorization();
         OAuth2Authorization(const String client_key, const String client_secret, const String redirect_uri, const String useragent);
         OAuth2Authorization(const struct AccessData& ad);
-        OAuth2Authorization(OAuth2Authorization& other);
-        OAuth2Authorization(OAuth2Authorization&& other);
+        ~OAuth2Authorization() = default;
 
 
         void setUserCredentials(const String& username, const String& password);

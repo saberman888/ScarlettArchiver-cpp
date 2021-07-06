@@ -10,6 +10,11 @@
 #include <cpprest/http_client.h>
 #include <vector>
 namespace Scarlett::Client {
+	RateTracker& GetRateLimiter()
+	{
+		static RateTracker rt{ 120 };
+		return rt;
+	}
 
 	HttpResponse PushShiftGet(std::string endpoint, const std::map<std::string, std::string>& URLComponents)
 	{
@@ -27,11 +32,7 @@ namespace Scarlett::Client {
 		return rt.Send(b.to_uri(), r);
 	}
 
-	RateTracker& GetRateLimiter()
-	{
-		static RateTracker rt{ 120 };
-		return rt;
-	}
+	
 	
 	HttpResponse PushShift::SearchSubmissions(const std::map<std::string, std::string>& URLComponents)
 	{

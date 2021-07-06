@@ -1,6 +1,7 @@
 #include "Scarlett/Client/OAuth2.hpp"
 #include "Scarlett/Client/RateTracker.hpp"
 #include "cpprest/http_listener.h"
+#include "Scarlett/Internal/Exceptions.hpp"
 #include <mutex>
 #include <utility>
 
@@ -75,11 +76,6 @@ namespace Scarlett::Client
 		impl = std::make_unique<OAuth2Authorization::_impl>();
 	}
 
-	OAuth2Authorization::OAuth2Authorization(const struct AccessData& acd)
-	{
-		impl.reset(new _impl(acd));
-	}
-
 	OAuth2Authorization::OAuth2Authorization(const String client_key, const String client_secret, const String redirect_uri, const String useragent)
 	{
 		impl = std::make_unique<_impl>(
@@ -90,21 +86,12 @@ namespace Scarlett::Client
 			);
 	}
 
-	OAuth2Authorization::OAuth2Authorization(OAuth2Authorization& other)
-	{
-		impl.reset(other.impl.get());
-	}
-
-	OAuth2Authorization::OAuth2Authorization(OAuth2Authorization&& other)
-	{
-		impl.reset(std::move(other.impl.get()));
-	}
-
-
 	void OAuth2Authorization::setUserCredentials(const String& Username, const String& Password)
 	{
-		impl->Username = std::move(Username);
-		impl->Password = std::move(Password);
+		if (impl) {
+			impl->Username = std::move(Username);
+			impl->Password = std::move(Password);
+		}
 	}
 
 	const String OAuth2Authorization::Username() { return impl->Username; }
@@ -160,13 +147,14 @@ namespace Scarlett::Client
 			m_oauth2_config->set_bearer_auth(true);
 		}
 
+		~_impl() = default;
 
 		void GetTimeAndTrack()
 		{
-			SetMaxTime(
+			setMaxTime(
 				std::chrono::seconds(m_oauth2_config->token().expires_in())
 			);
-			SetMaxTries(600);
+			setMaxTries(600);
 			Track();
 		}
 		
