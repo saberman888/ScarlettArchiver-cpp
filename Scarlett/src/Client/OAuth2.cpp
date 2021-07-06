@@ -4,6 +4,7 @@
 #include "Scarlett/Internal/Exceptions.hpp"
 #include <mutex>
 #include <utility>
+#include <memory>
 
 namespace Scarlett::Client
 {
@@ -20,7 +21,7 @@ namespace Scarlett::Client
 			using status_codes = web::http::status_codes;
 
 
-			oauth2_code_listener(URI listen_uri, std::shared_ptr<oauth2_config>& config)
+			oauth2_code_listener(URI listen_uri, std::shared_ptr<oauth2_config>& config) 
 				: m_listener(new http_listener(listen_uri)), m_config(config)
 			{
 				if (!config)
@@ -71,47 +72,6 @@ namespace Scarlett::Client
 		};
 	};
 
-	OAuth2Authorization::OAuth2Authorization()
-	{
-		impl = std::make_unique<OAuth2Authorization::_impl>();
-	}
-
-	OAuth2Authorization::OAuth2Authorization(const String client_key, const String client_secret, const String redirect_uri, const String useragent)
-	{
-		impl = std::make_unique<_impl>(
-			client_key,
-			client_secret,
-			redirect_uri,
-			useragent
-			);
-	}
-
-	void OAuth2Authorization::setUserCredentials(const String& Username, const String& Password)
-	{
-		if (impl) {
-			impl->Username = std::move(Username);
-			impl->Password = std::move(Password);
-		}
-	}
-
-	const String OAuth2Authorization::Username() { return impl->Username; }
-	const String OAuth2Authorization::Password() { return impl->Password; }
-	
-	void OAuth2Authorization::setClientKey(const String& client_key) { impl->m_oauth2_config->set_client_key(std::move(client_key)); }
-
-	const String OAuth2Authorization::ClientKey() { return impl->m_oauth2_config->client_key(); }
-
-	const String OAuth2Authorization::ClientSecret() { return impl->m_oauth2_config->client_secret(); }
-	void OAuth2Authorization::setClientSecret(const String& client_secret) { impl->m_oauth2_config->set_client_secret(std::move(client_secret)); }
-
-	const String OAuth2Authorization::UserAgent() { return impl->m_oauth2_config->user_agent(); }
-	void OAuth2Authorization::setUserAgent(const String& useragent) { impl->m_oauth2_config->set_user_agent(std::move(useragent)); }
-
-	const String OAuth2Authorization::Scope() { return impl->m_oauth2_config->scope(); }
-	void OAuth2Authorization::setScope(const String& scope) { impl->m_oauth2_config->set_scope(std::move(scope)); }
-
-	bool OAuth2Authorization::RequestTokenFromPassword() { return impl->GetTokenFromPassword(); }
-	bool OAuth2Authorization::RequestTokenFromCode() { return impl->GetTokenFromCode(); }
 
 	class OAuth2Authorization::_impl : RateTracker
 	{
@@ -134,13 +94,26 @@ namespace Scarlett::Client
 
 		}
 
+		_impl(const String client_key, const String client_secret, const String redirect_uri, const String useragent) : RateTracker(60)
+		{
+			m_oauth2_config = std::make_shared<oauth2_config>(
+				std::move(client_key),
+				std::move(client_secret),
+				"https://www.reddit.com/api/v1/authorize"_u,
+				"https://www.reddit.com/api/v1/access_token"_u,
+				std::move(redirect_uri)
+				);
+			m_oauth2_config->set_user_agent(useragent);
+			m_oauth2_config->set_bearer_auth(true);
+		}
+
 		_impl(const struct AccessData& acd) : RateTracker(60)
 		{
 			m_oauth2_config = std::make_shared<oauth2_config>(
-				std::move(acd.client_key), 
-				std::move(acd.client_secret), 
-				"https://www.reddit.com/api/v1/authorize"_u, 
-				"https://www.reddit.com/api/v1/access_token"_u, 
+				std::move(acd.client_key),
+				std::move(acd.client_secret),
+				"https://www.reddit.com/api/v1/authorize"_u,
+				"https://www.reddit.com/api/v1/access_token"_u,
 				std::move(acd.redirect_uri)
 				);
 			m_oauth2_config->set_user_agent(std::move(acd.useragent));
@@ -157,7 +130,7 @@ namespace Scarlett::Client
 			setMaxTries(600);
 			Track();
 		}
-		
+
 
 
 		bool GetTokenFromPassword() {
@@ -165,7 +138,7 @@ namespace Scarlett::Client
 				!m_oauth2_config->client_key().empty() &&
 				!m_oauth2_config->client_secret().empty() &&
 				!Username.empty() && !Password.empty() &&
-				!m_oauth2_config->user_agent().empty()				
+				!m_oauth2_config->user_agent().empty()
 				) {
 				try {
 					m_oauth2_config->set_http_basic_auth(true);
@@ -216,9 +189,9 @@ namespace Scarlett::Client
 		}
 
 		bool GetTokenFromCode() {
-			if (!m_oauth2_config->client_key().empty() && 
+			if (!m_oauth2_config->client_key().empty() &&
 				!m_oauth2_config->user_agent().empty()) {
-				if(!m_listener)
+				if (!m_listener)
 					m_listener = std::make_unique<Internal::oauth2_code_listener>(m_oauth2_config->redirect_uri(), m_oauth2_config);
 
 				if (Authorize().get())
@@ -241,4 +214,39 @@ namespace Scarlett::Client
 			return false;
 		}
 	};
+
+	OAuth2Authorization::OAuth2Authorization() : impl{new OAuth2Authorization::_impl()}{}
+
+	OAuth2Authorization::OAuth2Authorization(const String client_key, const String client_secret, const String redirect_uri, const String useragent) : impl{ new OAuth2Authorization::_impl{
+	client_key,
+	client_secret,
+	redirect_uri,
+	useragent}}{}
+
+	void OAuth2Authorization::setUserCredentials(const String& Username, const String& Password)
+	{
+		impl->Username = std::move(Username);
+		impl->Password = std::move(Password);
+	}
+
+	const String OAuth2Authorization::Username() { return impl->Username; }
+	const String OAuth2Authorization::Password() { return impl->Password; }
+	
+	void OAuth2Authorization::setClientKey(const String& client_key) { impl->m_oauth2_config->set_client_key(std::move(client_key)); }
+
+	const String OAuth2Authorization::ClientKey() { return impl->m_oauth2_config->client_key(); }
+
+	const String OAuth2Authorization::ClientSecret() { return impl->m_oauth2_config->client_secret(); }
+	void OAuth2Authorization::setClientSecret(const String& client_secret) { impl->m_oauth2_config->set_client_secret(std::move(client_secret)); }
+
+	const String OAuth2Authorization::UserAgent() { return impl->m_oauth2_config->user_agent(); }
+	void OAuth2Authorization::setUserAgent(const String& useragent) { impl->m_oauth2_config->set_user_agent(std::move(useragent)); }
+
+	const String OAuth2Authorization::Scope() { return impl->m_oauth2_config->scope(); }
+	void OAuth2Authorization::setScope(const String& scope) { impl->m_oauth2_config->set_scope(std::move(scope)); }
+
+	bool OAuth2Authorization::RequestTokenFromPassword() { return impl->GetTokenFromPassword(); }
+	bool OAuth2Authorization::RequestTokenFromCode() { return impl->GetTokenFromCode(); }
+
+
 }

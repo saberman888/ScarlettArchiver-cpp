@@ -27,8 +27,6 @@ namespace Scarlett::Client
         OAuth2Authorization();
         OAuth2Authorization(const String client_key, const String client_secret, const String redirect_uri, const String useragent);
         OAuth2Authorization(const struct AccessData& ad);
-        ~OAuth2Authorization() = default;
-
 
         void setUserCredentials(const String& username, const String& password);
 
