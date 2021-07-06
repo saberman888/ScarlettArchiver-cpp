@@ -13,17 +13,17 @@
 namespace Scarlett::Client
 {
 
-	class RateTracker::_rtImpl
+	class RateTracker::PImpl
 	{
 	public:
 		using Millisecond = std::chrono::milliseconds;
 
-		_rtImpl(const MinuteRate mmr, std::optional<Second> max_time = std::nullopt)
+		PImpl(const MinuteRate mmr, std::optional<Second> max_time = std::nullopt)
 		{
 			minimum_time_interval = Millisecond(60000 / mmr);
 		}
 
-		~_rtImpl() = default;
+		~PImpl() = default;
 
 		// A temporary storage to keep our intervals
 		std::deque<Millisecond> Cache;
@@ -162,13 +162,15 @@ namespace Scarlett::Client
 
 	RateTracker::RateTracker(const MinuteRate mmr)
 	{
-		impl = std::make_unique<_rtImpl>(mmr);
+		impl = std::make_unique<PImpl>(mmr);
 	}
 
-	RateTracker::RateTracker(RateTracker& rt)
+	RateTracker::RateTracker(const MinuteRate mmr, const Second mht)
 	{
-		impl.reset(rt.impl.get());
+		impl = std::make_unique<PImpl>(mmr, mht);
 	}
+
+	RateTracker::~RateTracker() = default;
 
 	void RateTracker::setMaxTries(int n)
 	{

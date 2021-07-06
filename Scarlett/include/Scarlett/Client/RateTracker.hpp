@@ -19,8 +19,7 @@ namespace Scarlett::Client
 		*/
 		RateTracker(const MinuteRate mmr);
 		RateTracker(const MinuteRate mmr, const Second mht);
-		~RateTracker() = default;
-
+		~RateTracker();
 		HttpResponse Send(const URI& source, const HttpRequest& hr);
 
 		/*
@@ -33,7 +32,7 @@ namespace Scarlett::Client
 		void Track();
 
 	private:
-		class _rtImpl;
-		std::shared_ptr<_rtImpl> impl;
+		class PImpl;
+		std::unique_ptr<PImpl> impl;
 	};
 };
