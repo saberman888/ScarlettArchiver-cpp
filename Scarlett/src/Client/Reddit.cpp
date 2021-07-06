@@ -5,58 +5,31 @@
 namespace Scarlett::Client
 {
 
-#define _SCARLETT_REDDIT_SCOPE
-#define DAT(a_, b_) const reddit_scope reddit_scopes::a_(SCARLETT_WIDEN(b_));
-#include "Scarlett/Internal/ScarlettConstants.h"
-#undef _SCARLETT_REDDIT_SCOPE
-#undef DAT
-
-	template<typename T>
-	RedditClient<T>::RedditClient(const struct AccessData& acd)
-	{
-		impl = std::make_unique<_rcImpl>(acd);
-	}
-
-	template<typename T>
-	RedditClient<T>::RedditClient(const String client_key, const String client_secret, const String redirect_uri, const String useragent)
-	{
-		impl = std::make_unique<_rcImpl>(client_key, client_secret, redirect_uri, useragent);
-	}
-
-	template<typename T>
-	RedditClient<T>::RedditClient(const String username, const String password, const String client_key, const String client_secret, const String redirect_uri, const String useragent)
-	{
-		impl = std::make_unique<_rcImpl>(client_key, client_secret, redirect_uri, useragent);
-		impl->oauth2handle->setUserCredentials(username, password);
-	}
-
-	template<typename T>
-	bool RedditClient<T>::AuthorizeWithReddit()
-	{
-		return impl->AuthorizeWithReddit();
-	}
 
 
 
 	template<typename T>
-	class RedditClient<T>::_rcImpl
+	class RedditClient<T>::Impl
 	{
 	public:
 		std::shared_ptr<OAuth2Authorization> oauth2handle;
 		std::vector<reddit_scope> scopes;
 
 
-		_rcImpl(const struct AccessData& acd)
+		Impl(const struct AccessData& acd)
 		{
 			oauth2handle = std::make_shared<OAuth2Authorization>(acd);
 		}
 
-		_rcImpl(const String client_key, const String client_secret, const String redirect_uri, const String useragent)
+		Impl(const String client_key, const String client_secret, const String redirect_uri, const String useragent)
 		{
 			oauth2handle = std::make_shared<OAuth2Authorization>(client_key, client_secret, redirect_uri, useragent);
 		}
 
-		~_rcImpl() = default;
+		Impl(Impl& other) = default;
+		Impl(Impl&& other) = default;
+
+		~Impl() = default;
 
 		bool AuthorizeWithReddit()
 		{
@@ -70,12 +43,6 @@ namespace Scarlett::Client
 			return false;
 		}
 
-
-		RedditClient<T>& operator<<(const reddit_scope& scope)
-		{
-			scopes.push_back(scope);
-			return *this;
-		}
 
 		void GenerateScopes()
 		{
@@ -112,7 +79,62 @@ namespace Scarlett::Client
 
 	};
 
+#define _SCARLETT_REDDIT_SCOPE
+#define DAT(a_, b_) const reddit_scope reddit_scopes::a_(SCARLETT_WIDEN(b_));
+#include "Scarlett/Internal/ScarlettConstants.h"
+#undef _SCARLETT_REDDIT_SCOPE
+#undef DAT
+
+	template<typename T>
+	RedditClient<T>::RedditClient(const struct AccessData& acd)
+	{
+		impl = std::make_unique<Impl>(acd);
+	}
+
+	template<typename T>
+	RedditClient<T>::RedditClient(const String client_key, const String client_secret, const String redirect_uri, const String useragent)
+	{
+		impl = std::make_unique<Impl>(client_key, client_secret, redirect_uri, useragent);
+	}
+
+	template<typename T>
+	RedditClient<T>::RedditClient(const String username, const String password, const String client_key, const String client_secret, const String redirect_uri, const String useragent)
+	{
+		impl = std::make_unique<Impl>(client_key, client_secret, redirect_uri, useragent);
+		impl->oauth2handle->setUserCredentials(username, password);
+	}
+
+	template<typename T>
+	RedditClient<T>::RedditClient(RedditClient&& other) = default;
+
+	template<typename T>
+	RedditClient<T>::RedditClient(const RedditClient& other)
+	{
+		impl = std::make_unique<Impl>(*other.impl);
+	}
+
+	template<typename T>
+	RedditClient<T>& RedditClient<T>::operator=(const RedditClient& other)
+	{
+		impl = std::make_unique<Impl>(*other.impl);
+		return *this;
+	}
+
+	template<typename T>
+	RedditClient<T>::~RedditClient() = default;
+
+	template<typename T>
+	bool RedditClient<T>::AuthorizeWithReddit()
+	{
+		return impl->AuthorizeWithReddit();
+	}
+
+	template<typename T>
+	RedditClient<T>& RedditClient<T>::operator<<(const reddit_scope& scope)
+	{
+		impl->scopes.push_back(scope);
+		return *this;
+	}
 	template class RedditClient<PasswordGrant>;
 	template class RedditClient<AuthorizationGrant>;
-
 }

@@ -29,18 +29,21 @@ namespace Scarlett::Client
 	{
 	public:
 		RedditClient(const struct AccessData& acd);
-		RedditClient(RedditClient& other);
-		RedditClient(RedditClient&& other);
 		RedditClient(const String client_key, const String client_secret, const String redirect_uri, const String useragent);
 		RedditClient(const String username, const String password, const String client_key, const String client_secret, const String redirect_uri, const String useragent);
-		~RedditClient() = default;
+		RedditClient(RedditClient& other);
+		RedditClient(RedditClient&& other);
+		RedditClient(const RedditClient& other);
+		~RedditClient();
+
+		RedditClient& operator=(const RedditClient& other);
 
 		bool AuthorizeWithReddit();
 
 		RedditClient& operator<<(const reddit_scope& scope);
 	private:
-		class _rcImpl;
-		std::shared_ptr<_rcImpl> impl;
+		class Impl;
+		std::unique_ptr<Impl> impl;
 	};
 	using AuthClient = RedditClient<AuthorizationGrant>;
 	using SimpleClient = RedditClient<PasswordGrant>;
