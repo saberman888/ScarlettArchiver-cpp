@@ -6,6 +6,14 @@
 #include <utility>
 #include <memory>
 
+#if defined(_WIN32) && !defined(__cplusplus_winrt)
+// Extra includes for Windows desktop.
+#include <windows.h>
+
+#include <Shellapi.h>
+#endif
+
+
 namespace Scarlett::Client
 {
 
