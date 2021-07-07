@@ -1,4 +1,8 @@
 #include "Scarlett/Internal/Helpers.hpp"
+#include <iomanip>
+#include <filesystem>
+#include <fstream>
+#include <cpprest/http_client.h>
 
 namespace Scarlett
 {
@@ -32,5 +36,21 @@ namespace Scarlett
 			);
 		}
 		return returnData;
+	}
+
+	bool contains(const std::string& lhs, const std::string rhs)
+	{
+		return (lhs.rfind(rhs) != std::string::npos);
+	}
+
+	HttpResponse Download(URI source)
+	{
+		HttpClient cl(source);
+		return cl.request(web::http::methods::GET).get();
+	}
+
+	HttpResponse Download(std::string&& source)
+	{
+		return Download(conv::to_string_t(source));
 	}
 }

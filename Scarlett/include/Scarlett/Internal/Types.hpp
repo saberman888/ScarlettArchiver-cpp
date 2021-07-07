@@ -1,13 +1,8 @@
 #pragma once
 
+#include "Scarlett_def.hpp"
 #include <cpprest/http_client.h>
 #include <cpprest/json.h>
-#include <iomanip>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <iosfwd>
-#include "Scarlett_def.hpp"
 
 namespace Scarlett
 {
@@ -47,54 +42,21 @@ namespace Scarlett
 #define scerr = std::cerr;
 #endif
 
-	inline String toScarlettString(const std::string source) {
-#ifdef __SCARLETT_USE_WIDE_STRINGS
-		return conv::to_string_t(source);
-#else
-		return source;
-#endif
-	}
+	SCDLL String toScarlettString(const std::string source);
 
-	inline std::string toString(const String& source) {
-#ifdef __SCARLETT_USE_WIDE_STRINGS
-		return utility::conversions::to_utf8string(source);
-#else
-		return source;
-#endif
-	}
+	SCDLL std::string toString(const String& source);
 
-	inline String operator""_u(const char* source, size_t csize)
-	{
-		return utility::conversions::to_string_t(std::string(source, csize));
-	}
+	SCDLL String operator""_u(const char* source, size_t csize);
 
-	template<class CharT, 
-			 class Traits = std::char_traits<CharT>, 
-			 class Allocator = std::allocator<CharT>>
-	std::vector<std::basic_string<CharT, Traits, Allocator>> splitString(std::basic_string<CharT, Traits, Allocator> data, CharT delimeter)
-	{
-		decltype(data) temp;
-		std::vector<decltype(data)> returnList;
-		std::basic_stringstream<CharT, Traits, Allocator> ss(data);
+	template<class CharT,
+		class Traits = std::char_traits<CharT>,
+		class Allocator = std::allocator<CharT>>
+		SCDLL std::vector<std::basic_string<CharT, Traits, Allocator>> splitString(std::basic_string<CharT, Traits, Allocator> data, CharT delimeter);
 
-		while (std::getline(ss, temp, delimeter))
-		{
-			returnList.push_back(temp);
-		}
-		return returnList;
-	}
-
-	template<class CharT, 
-			 class Traits = std::char_traits<CharT>, 
-			 class Allocator = std::allocator<CharT>>
-	std::basic_string<CharT, Traits, Allocator> SearchAndReplace(std::basic_string<CharT, Traits, Allocator> Input, const std::basic_string<CharT, Traits, Allocator> ToBeReplaced, const std::basic_string<CharT, Traits, Allocator> Replacement)
-	{
-		if (Input.find(ToBeReplaced) != std::basic_string<CharT, Traits, Allocator>::npos)
-		{
-			Input.replace(Input.find(ToBeReplaced), ToBeReplaced.size(), Replacement);
-		}
-		return Input;
-	}
+	template<class CharT,
+		class Traits = std::char_traits<CharT>,
+		class Allocator = std::allocator<CharT>>
+		SCDLL std::basic_string<CharT, Traits, Allocator> SearchAndReplace(std::basic_string<CharT, Traits, Allocator> Input, const std::basic_string<CharT, Traits, Allocator> ToBeReplaced, const std::basic_string<CharT, Traits, Allocator> Replacement);
 
 	// Other
 	using Size = utility::size64_t;
