@@ -1,4 +1,12 @@
 #include "Scarlett/Media/Imgur.hpp"
+#include <cpprest/http_client.h>
+#include <cpprest/json.h>
+#include <cpprest/http_msg.h>
+#include <cpprest/http_headers.h>
+#include <cpprest/oauth2.h>
+#include "Scarlett/Internal/Helpers.hpp"
+#include "Scarlett/Internal/Exceptions.hpp"
+#include <regex>
 
 namespace Scarlett::Media::ImgurAccess
 {
@@ -42,7 +50,7 @@ namespace Scarlett::Media::ImgurAccess
 		return client.request(req).get();
 	}
 
-	static const String ParseImage(const JSON::value& json)
+	static const String ParseImage(const JsonValue& json)
 	{
 		try {
 			if (json.has_field("data"_u))
@@ -56,7 +64,7 @@ namespace Scarlett::Media::ImgurAccess
 		return String();
 	}
 
-	static const std::vector<String> ParseAlbum(const JSON::value& json)
+	static const std::vector<String> ParseAlbum(const JsonValue& json)
 	{
 		std::vector<String> URLs;
 		try {

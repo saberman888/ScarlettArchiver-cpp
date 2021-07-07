@@ -1,15 +1,6 @@
 #pragma once
 
-#include "../Internal/Helpers.hpp"
-#include "../Internal/Exceptions.hpp"
-#include "../Client/RateTracker.hpp"
-#include <cpprest/http_client.h>
-#include <cpprest/json.h>
-#include <cpprest/http_msg.h>
-#include <cpprest/http_headers.h>
-#include <cpprest/oauth2.h>
-#include <regex>
-
+#include "../Internal/Types.hpp"
 namespace Scarlett::Media::ImgurAccess
 {
 	SCDLL bool IsAlbum(const URI& uri);
