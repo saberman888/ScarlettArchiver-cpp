@@ -2,11 +2,9 @@
 
 #include <iosfwd>
 #include <optional>
-#include <regex>
-#include "Video.hpp"
-#include "SelfPost.hpp"
-#include "Galleries.hpp"
-
+#include <boost/serialization/access.hpp>
+#include "../Internal/Types.hpp"
+#include "../Internal/Logger.hpp"
 
 namespace Scarlett::Reddit
 {
@@ -17,53 +15,25 @@ namespace Scarlett::Reddit
     class SCDLL SubredditMetadata : protected Logger
 	{
 	public:
-
+		using Timestamp = time_t;
 		/*
 			Pass Boost program options to the constructor
 		*/
 		SubredditMetadata(const String Subreddit, const String StartTime, const String EndTime);
-		SubredditMetadata() = default;
+		SubredditMetadata();
 
+		void setSubreddit(const String& name);
+		const String Subreddit();
+		
+		void setStart(const Timestamp date);
+		const Timestamp Start();
 
-		inline void setSubreddit(const String& name)
-		{
-			_Subreddit = name;
-		}
+		void setEnd(const Timestamp date);
+		const Timestamp End();
 
-		inline const String Subreddit()
-		{
-			return _Subreddit;
-		}
-
-		inline void setStart(const time_t date)
-		{
-			StartDate = date;
-		}
-
-		inline const time_t Start()
-		{
-			return StartDate;
-		}
-
-		inline void setEnd(const time_t date)
-		{
-			EndDate = date;
-		}
-
-		inline const time_t End()
-		{
-			return EndDate;
-		}
-
-		inline const time_t Position()
-		{
-			return DatePointer;
-		}
-
-		inline void setPosition(const time_t date)
-		{
-			DatePointer = date;
-		}
+		void setPosition(const Timestamp date);
+		const Timestamp Position();
+	
 
 	private:
 		String _Subreddit;

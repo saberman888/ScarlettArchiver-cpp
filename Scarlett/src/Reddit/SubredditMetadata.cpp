@@ -1,4 +1,11 @@
 #include "Scarlett/Reddit/SubredditMetadata.hpp"
+#include "Scarlett/Reddit/Video.hpp"
+#include "Scarlett/Reddit/SelfPost.hpp"
+#include "Scarlett/Reddit/Galleries.hpp"
+#include <boost/serialization/export.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <regex>
 #include <iostream>
 BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::SubredditMetadata, "Metadata")
 
@@ -16,10 +23,53 @@ namespace Scarlett::Reddit
 	}
 	template void SubredditMetadata::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
 	template void SubredditMetadata::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
+
+	SubredditMetadata::SubredditMetadata() = default;
+
 	SubredditMetadata::SubredditMetadata(const String Subreddit, const String StartTime, const String EndTime)
 	{
 		InitializeDates(StartTime, EndTime);
 		this->_Subreddit = Subreddit;
+	}
+
+	void SubredditMetadata::setSubreddit(const String& name)
+	{
+		_Subreddit = name;
+	}
+
+	const String SubredditMetadata::Subreddit()
+	{
+		return _Subreddit;
+	}
+
+	void SubredditMetadata::setStart(const Timestamp date)
+	{
+		StartDate = date;
+	}
+
+	const Timestamp SubredditMetadata::Start()
+	{
+		return StartDate;
+	}
+
+	void SubredditMetadata::setEnd(const Timestamp date)
+	{
+		EndDate = date;
+	}
+
+	const Timestamp SubredditMetadata::End()
+	{
+		return EndDate;
+	}
+
+	const Timestamp SubredditMetadata::Position()
+	{
+		return DatePointer;
+	}
+
+	void SubredditMetadata::setPosition(const Timestamp date)
+	{
+		DatePointer = date;
 	}
 
 	void SubredditMetadata::InitializeDates(std::optional<String> Start, std::optional<String> End)
