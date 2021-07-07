@@ -2,6 +2,22 @@
 
 namespace Scarlett::Media::ImgurAccess
 {
+
+	bool IsAlbum(const URI& uri)
+	{
+		return std::regex_match(toString(uri.to_string()), std::regex("https?://imgur.com/a/[A-Za-z0-9]+"));
+	}
+
+	bool IsImgurLink(const URI& uri)
+	{
+		return std::regex_match(toString(uri.to_string()), std::regex("https?://(i.)?imgur.com(/|/a/)?[A-Za-z0-9]+"));
+	}
+
+	bool IsDirect(const URI& uri)
+	{
+		return std::regex_match(toString(uri.to_string()), std::regex("https?://i.imgur.com/[A-Za-z0-9]+"));
+	}
+
 	const String GetHash(const URI& uri)
 	{
 		if (auto hash = uri.query(); hash[0] == SCARLETT_WIDEN('/'))

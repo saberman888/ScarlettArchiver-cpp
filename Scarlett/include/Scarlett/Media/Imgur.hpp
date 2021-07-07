@@ -12,22 +12,12 @@
 
 namespace Scarlett::Media::ImgurAccess
 {
-	inline bool IsAlbum(const URI& uri)
-	{
-		return std::regex_match(toString(uri.to_string()), std::regex("https?://imgur.com/a/[A-Za-z0-9]+"));
-	}
+	SCDLL bool IsAlbum(const URI& uri);
 
-	inline bool IsImgurLink(const URI& uri)
-	{
-		return std::regex_match(toString(uri.to_string()), std::regex("https?://(i.)?imgur.com(/|/a/)?[A-Za-z0-9]+"));
-	}
+	SCDLL bool IsImgurLink(const URI& uri);
 
-	inline bool IsDirect(const URI& uri)
-	{
-		return std::regex_match(toString(uri.to_string()), std::regex("https?://i.imgur.com/[A-Za-z0-9]+"));
-	}
+	SCDLL bool IsDirect(const URI& uri);
 
-    SCDLL static const String GetHash(const URI& uri);
     SCDLL const std::vector<String> GetAlbum(const URI& URL, const String& ClientId);
     SCDLL const String GetImage(const String& ImageHash, const String& ClientId);
 
