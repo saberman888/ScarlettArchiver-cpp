@@ -47,11 +47,6 @@ namespace Scarlett
 	template void Serialize<boost::shared_ptr<Reddit::RedditStatistics>>(const std::filesystem::path destination, boost::shared_ptr<Reddit::RedditStatistics>& sourceObj, const std::string Tag);
 	template void Serialize<Reddit::SubredditMetadata>(const std::filesystem::path destination, Reddit::SubredditMetadata& sourceObj, const std::string Tag);
 	template void Serialize<Reddit::RedditStatistics>(const std::filesystem::path destination, Reddit::RedditStatistics& sourceObj, const std::string Tag);
-	template void Serialize<std::unique_ptr<Reddit::SubredditMetadata>>(const std::filesystem::path destination, std::unique_ptr<Reddit::SubredditMetadata>& sourceObj, const std::string Tag);
-
-
-
-
 
 
 	template<typename T>
