@@ -1,107 +1,52 @@
 #pragma once
 
 #include <boost/optional.hpp>
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/serialization/optional.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/export.hpp>
-#include <boost/serialization/shared_ptr.hpp>
-#include <cpprest/http_client.h>
-#include <cpprest/base_uri.h>
-#include <cstddef>
+#include <boost/serialization/access.hpp>
 #include <optional>
 #include <string>
-#include <regex>
 #include <utility>
 #include <filesystem>
-#include <fstream>
-#include "../Internal/Exceptions.hpp"
-#include "../Internal/Helpers.hpp"
-
+#include "../Internal/Types.hpp"
 namespace Scarlett {
 
 
 
 	namespace Media {
-        class SCDLL Content
+		class SCDLL Content
 		{
 		public:
-			Content() {}
+			Content();
 			Content(const String& URL);
-			Content(const URI& URL)
-			{
-				this->URL = URL;
-			}
+			Content(const URI& URL);
+			Content(const URI& uri, const std::filesystem::path destination);
+			~Content();
 
-			Content(const URI& uri, const std::filesystem::path destination)
-			{
-				this->URL = uri;
-				this->location = destination;
-			}
+			const auto GetContent();
 
-			inline const auto GetContent()
-			{
-				return Response->extract_vector().get();
-			}
+			const std::string GetStringContent(bool ignore_content_type = true);
 
-			inline const String GetStringContent(bool ignore_content_type = true)
-			{
-				return Response->extract_string(ignore_content_type).get();
-			}
+			const auto GetJSONContent();
 
-			inline const auto GetJSONContent()
-			{
-				return Response->extract_json().get();
-			}
+			const String GetURLString();
 
-			inline const String GetURLString()
-			{
-				return URL.to_string();
-			}
+			void SetURL(const URI& uri);
 
-			inline void SetURL(const URI& uri)
-			{
-				URL = uri;
-			}
+			const URI GetURL();
 
-			inline const URI GetURL()
-			{
-				return URL;
-			}
+			const std::filesystem::path GetPath();
 
-			inline const std::filesystem::path GetPath()
-			{
-				return location;
-			}
+			void SetPath(const std::filesystem::path destination);
 
-			inline void SetPath(const std::filesystem::path destination)
-			{
-				location = destination;
-			}
-
-			inline void Write(const String& filename)
-			{
-				auto full_path = location / filename;
-				Scarlett::ofstream out(full_path, std::ios::binary | std::ios::out);
-				for (auto& data : GetContent())
-					out << data;
-			}
+			void Write(const String& filename);
 
 
-			StatusCode FetchContent(std::optional<URI> URL = std::nullopt);
+			const StatusCode FetchContent(std::optional<URI> URL = std::nullopt);
 
-			String Extension();
+			const String Extension();
 
-			inline String ContentType()
-			{
-				return _ContentType.empty() ? String() : _ContentType[0];
-			}
+			const String ContentType();
 
-			inline Size ContentSize()
-			{
-				return _ContentSize.get_value_or(0);
-			}
+			const Size ContentSize();
 
 
 		private:
