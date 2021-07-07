@@ -1,4 +1,11 @@
 #include "Scarlett/Reddit/RedditStatistics.hpp"
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/nvp.hpp>
+#include "Scarlett/Reddit/Video.hpp"
+#include "Scarlett/Reddit/SelfPost.hpp"
+#include "Scarlett/Reddit/Galleries.hpp"
+
 BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::RedditStatistics, "RedditStatistics")
 namespace Scarlett::Reddit
 {

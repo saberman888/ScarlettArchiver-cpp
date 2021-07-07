@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BaseTypes/TextPost.hpp"
-
+#include "../Internal/Serializable.hpp"
 namespace Scarlett::Reddit
 {
 	/*
@@ -10,10 +10,17 @@ namespace Scarlett::Reddit
     class SCDLL SelfPost : public TextPost
 	{
 	public:
-		SelfPost(const JSON::value& json);
+		SelfPost(const JsonValue& json);
 
 		static bool IsSelfPost(const JsonValue& json);
 	private:
+		template<typename T>
+		friend void Serialize(const std::filesystem::path destination, T& sourceObj, const std::string Tag);
+
+		template<typename T>
+		T DeSerialize(const std::filesystem::path source, const std::string Tag);
+
+
 		SelfPost();
 		friend class boost::serialization::access;
 		template<class Archive>

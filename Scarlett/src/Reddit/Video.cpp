@@ -6,6 +6,8 @@
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/serialization/shared_ptr.hpp>
+#include <tinyxml2.h>
+#include <utility>
 BOOST_SERIALIZATION_SHARED_PTR(ScarletT::Reddit::Video);
 BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::Video, "Video");
 

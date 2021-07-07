@@ -5,6 +5,7 @@
 #include "Thing.hpp"
 #include "../../Media/Content.hpp"
 #include "../../Internal/Logger.hpp"
+#include "../../Internal/Serializable.hpp"
 
 
 namespace Scarlett::Reddit
@@ -40,7 +41,7 @@ namespace Scarlett::Reddit
 		void Read(const JsonValue& json);
 		std::optional<String> ImgurClientId{ std::nullopt };
 	private:
-		
+
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version);

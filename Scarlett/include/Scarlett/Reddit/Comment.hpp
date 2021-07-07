@@ -3,6 +3,7 @@
 #include <memory>
 #include <optional>
 #include "../Internal/Types.hpp"
+#include "../Internal/Serializable.hpp"
 #include "BaseTypes/TextPost.hpp"
 #include <boost/serialization/optional.hpp>
 
@@ -18,6 +19,12 @@ namespace Scarlett::Reddit
 		void GetRedditComments();
 
 	private:
+		template<typename T>
+		friend void Serialize(const std::filesystem::path destination, T& sourceObj, const std::string Tag);
+
+		template<typename T>
+		T DeSerialize(const std::filesystem::path source, const std::string Tag);
+
 		Comment();
 		friend class boost::serialization::access;
 		template<class Archive>

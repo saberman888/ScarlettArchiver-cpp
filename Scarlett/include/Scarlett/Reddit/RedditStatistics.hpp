@@ -1,10 +1,7 @@
 #pragma once
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/serialization/nvp.hpp>
-#include "Video.hpp"
-#include "SelfPost.hpp"
-#include "Galleries.hpp"
+#include <boost/serialization/access.hpp>
+#include "../Internal/Serializable.hpp"
+
 
 namespace Scarlett::Reddit
 {
@@ -16,6 +13,12 @@ namespace Scarlett::Reddit
 		void Append();
 
 		const int Sum();
+
+		template<typename T>
+		friend void Serialize(const std::filesystem::path destination, T& sourceObj, const std::string Tag);
+
+		template<typename T>
+		T DeSerialize(const std::filesystem::path source, const std::string Tag);
 
 		friend class boost::serialization::access;
 		template<class Archive>

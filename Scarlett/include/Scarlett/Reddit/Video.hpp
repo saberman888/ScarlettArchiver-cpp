@@ -1,10 +1,6 @@
 #pragma once
 
 #include "BaseTypes/Link.hpp"
-#include "Comment.hpp"
-#include <tinyxml2.h>
-#include <utility>
-
 
 namespace Scarlett::Reddit
 {
@@ -56,6 +52,13 @@ namespace Scarlett::Reddit
 		String GetContent();
 
 	private:
+		template<typename T>
+		friend void Serialize(const std::filesystem::path destination, T& sourceObj, const std::string Tag);
+
+		template<typename T>
+		T DeSerialize(const std::filesystem::path source, const std::string Tag);
+
+
 		Video();
 
 		/*
