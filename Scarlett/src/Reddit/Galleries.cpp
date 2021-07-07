@@ -18,6 +18,8 @@ namespace Scarlett::Reddit
 	template void Gallery::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
 	template void Gallery::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
 
+	Gallery::Gallery() = default;
+	const std::vector<Media::Content> Gallery::GetImages() { return Images;  }
 	Gallery::Gallery(const JSON::value& json, const std::optional<String> ImgurClientId) : Link(json, ImgurClientId)	{
 		Read(json);	
 

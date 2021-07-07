@@ -1,20 +1,18 @@
 #pragma once
 
+#include <boost/serialization/optional.hpp>
 #include <optional>
 #include "Thing.hpp"
-#include "../../Media/Imgur.hpp"
 #include "../../Media/Content.hpp"
 #include "../../Internal/Logger.hpp"
-#include <boost/serialization/export.hpp>
-#include <boost/serialization/base_object.hpp>
-#include <boost/serialization/optional.hpp>
+
 
 namespace Scarlett::Reddit
 {
     class SCDLL Link : public Thing, protected Logger
 	{
 	public:
-		Link() = default;
+		Link();
 		Link(const JsonValue& json, const std::optional<String> ImgurClientId = std::nullopt);
 
 		/**
@@ -31,9 +29,9 @@ namespace Scarlett::Reddit
 		bool operator!=(Link& other);
 
 
-		inline const String getDomain() { return Domain; }
-		inline const String getTitle() { return Title; }
-		inline Media::Content getURL() { return URL; }
+		const String getDomain();
+		const String getTitle();
+		const Media::Content getURL();
 
 	protected:
 		String Domain;

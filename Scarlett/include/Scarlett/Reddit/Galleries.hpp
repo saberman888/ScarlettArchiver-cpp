@@ -16,10 +16,8 @@ namespace Scarlett::Reddit
 		/**
 		 This simply returns a vector full of Image URLs.
 		*/
-		inline const std::vector<Media::Content> GetImages()
-		{
-			return Images;
-		}
+		const std::vector<Media::Content> GetImages();
+
 		static bool IsGallery(const JSON::value& json); 
 
 		std::string GetContent() = delete;
@@ -33,7 +31,7 @@ namespace Scarlett::Reddit
 		// Where all the images will be stored
 		std::vector<Media::Content> Images;
 		
-		Gallery(){}
+		Gallery();
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version);

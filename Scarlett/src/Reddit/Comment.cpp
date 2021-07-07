@@ -1,4 +1,11 @@
 #include "Scarlett/Reddit/Comment.hpp"
+#include "Scarlett/Internal/Exceptions.hpp"
+#include "Scarlett/Internal/Helpers.hpp"
+#include <boost/serialization/export.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/optional.hpp>
+#include <boost/serialization/shared_ptr.hpp>
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::Comment)
 BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::Comment, "Comment")
 
@@ -14,11 +21,13 @@ namespace Scarlett::Reddit
 	template void Comment::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
 	template void Comment::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
 
+	Comment::Comment() = default;
+
     Comment::Comment(const String& ParentId)
     {
 		this->ParentId.emplace(ParentId);
     }
-	Comment::Comment(const JSON::value& json, boost::optional<String> ParentId)
+	Comment::Comment(const JsonValue& json, boost::optional<String> ParentId)
 	{
 		TextPost::Read(json);
 	}

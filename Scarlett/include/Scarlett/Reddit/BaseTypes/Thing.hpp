@@ -1,13 +1,9 @@
 #pragma once
 
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/serialization/nvp.hpp>
-#include <boost/serialization/export.hpp>
-#include <boost/serialization/shared_ptr.hpp>
+
+#include <boost/serialization/access.hpp>
 #include <ctime>
-#include "../../Internal/Helpers.hpp"
-#include "../../Internal/Exceptions.hpp"
+#include "../../Internal/Types.hpp"
 
 namespace Scarlett::Reddit
 {
@@ -16,28 +12,19 @@ namespace Scarlett::Reddit
 	public:
 		using Timestamp = time_t;
 
-		inline bool operator==(const Thing& thing)
-		{
-			return (Name == thing.Name) && (Id == thing.Id) && (Author == thing.Author) && (Permalink == thing.Permalink) && (CreatedUTC == thing.CreatedUTC) && (CreatedLocal == thing.CreatedLocal);
-		}
+		bool operator==(const Thing& thing);
+		bool operator!=(const Thing& thing);
 
-		inline bool operator!=(const Thing& thing)
-		{
-			return !this->operator==(thing);
-		}
-
-		inline const String getName() { return Name; }
-		inline const String getId() { return Id; }
-		inline const String getAuthor() { return Author; }
-		inline const String getPermalink() { return Permalink; }
-		inline const Timestamp getCreatedUTCTime() { return CreatedUTC; }
-		inline const Timestamp getCreatedLocalTime() { return CreatedLocal; }
+		const String getName();
+		const String getId();
+		const String getAuthor();
+		const String getPermalink();
+		const Timestamp getCreatedUTCTime();
+		const Timestamp getCreatedLocalTime();
 
 	protected:
-		Thing() {}
-		Thing(const JsonValue& value) {
-			Read(value);
-		}
+		Thing();
+		Thing(const JsonValue& value);
 
 		String Name;
 		String Id;

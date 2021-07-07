@@ -14,4 +14,31 @@ namespace Scarlett::Reddit
 
 	template void RedditStatistics::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
 	template void RedditStatistics::serialize<boost::archive:xml_iarchive>(boost::archive:xml_iarchive& ar, const unsigned int version);
+
+	template<typename T>
+	void RedditStatistics::Append()
+	{
+		if constexpr (std::is_same<Gallery, T>::value)
+		{
+			Galleries += 1;
+		}
+		else if constexpr (std::is_same<SelfPost, T>::value) {
+			SelfPosts += 1;
+		}
+		else if constexpr (std::is_same<Video, T>::value) {
+			Videos += 1;
+		}
+		else {
+			Links += 1;
+		}
+	}
+
+	const int RedditStatistics::Sum() {
+		return Videos + Links + SelfPosts + Galleries;
+	}
+
+	template class RedditStatistics::Append<Gallery>();
+	template class RedditStatistics::Append<SelfPost>();
+	template class RedditStatistics::Append<Video>();
+	template class RedditStatistics::Append<Link>();
 };

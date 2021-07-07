@@ -1,4 +1,6 @@
 #include "Scarlett/Reddit/SelfPost.hpp"
+#include <boost/serialization/export.hpp>
+#include <boost/serialization/base_object.hpp>
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::SelfPost);
 BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::SelfPost, "SelfPost");
 
@@ -17,5 +19,12 @@ namespace Scarlett::Reddit
 	{
 		TextPost::Read(json);
 	}
+
+	bool SelfPost::IsSelfPost(const JsonValue& json)
+	{
+		return (json.has_string_field("is_self"_u) && json.at("is_self"_u).as_bool());
+	}
+
+	SelfPost::SelfPost() = default;
 
 };

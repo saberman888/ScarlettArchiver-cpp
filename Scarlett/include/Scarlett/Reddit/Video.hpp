@@ -4,7 +4,6 @@
 #include "Comment.hpp"
 #include <tinyxml2.h>
 #include <utility>
-#include <boost/serialization/vector.hpp>
 
 
 namespace Scarlett::Reddit
@@ -23,49 +22,41 @@ namespace Scarlett::Reddit
     class SCDLL Video : public Link
 	{
 	public:
-		Video(const JSON::value& json);
+		Video(const JsonValue& json);
 		
 		/**
 		* Checks if the provided json has an is_video tag, and if it is in fact: a boolean.
 		* It checks for the values: is_value and post_hint.
 		*/
-		static bool IsVideo(const JSON::value& json);
+		static bool IsVideo(const JsonValue& json);
 
 		/*
 			Glue video and audio together into one file using ffmpeg with Mux
 		*/
 		void Mux(std::filesystem::path destination);
 		
-		inline const size_t TotalVideos()
-		{
-			return videos.size();
-		}
+		const size_t TotalVideos();
 		/*
 		* Returns a list of the same video, but in different qualities.
 		* Returns a vector of structs consisting of: 
 		*	int Height
 		*	std::string BaseURL
 		*/
-		inline const std::vector<VideoInfo> GetVideos()
-		{
-			return videos;
-		}
+		const std::vector<VideoInfo> GetVideos();
+
 
 		/*
 		*	Returns a full URL of the video's audio, if it's there.
 		*/
 		const String GetAudioURL();
-		inline const bool HasAudio()
-		{
-			return audio.has_value();
-		}
+		const bool HasAudio();
 
 		bool operator==(Video& other);
 		bool operator!=(Video& other);
-		String GetContent() = delete;
+		String GetContent();
 
 	private:
-		Video() {};
+		Video();
 
 		/*
 		* Using the information from PushShift, Fetch() downloads the dash manifest or dash file, and 

@@ -1,5 +1,11 @@
 #include "Scarlett/Reddit/Video.hpp"
+#include "Scarlett/Internal/Exceptions.hpp"
 #include <iostream>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/export.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/serialization/shared_ptr.hpp>
 BOOST_SERIALIZATION_SHARED_PTR(ScarletT::Reddit::Video);
 BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::Video, "Video");
 
@@ -27,11 +33,15 @@ namespace Scarlett::Reddit
 	template void Video::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
 	template void Video::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
 
-	Video::Video(const JSON::value& json) : Link(json)
+	Video::Video(const JsonValue& json) : Link(json)
 	{
 		Fetch();
 	}
 
+	const size_t Video::TotalVideos() { return videos.size(); }
+	const std::vector<VideoInfo> Video::GetVideos() { return videos; }
+	const bool Video::HasAudio() { return audio.has_value(); }
+	String Video::GetContent() = delete;
 	void Video::Fetch()
 	{
 		audio.emplace();
@@ -90,7 +100,7 @@ namespace Scarlett::Reddit
 		}
 	}
 	 
-	bool Video::IsVideo(const JSON::value& json)
+	bool Video::IsVideo(const JsonValue& json)
 	{
 		return (json.has_boolean_field("is_video"_u) && json.at("is_video"_u).as_bool() && json.at("post_hint"_u).as_string() == "hosted:video"_u);
 	}

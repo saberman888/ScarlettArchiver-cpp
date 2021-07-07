@@ -1,4 +1,11 @@
 #include "Scarlett/Reddit/BaseTypes/Link.hpp"
+#include "Scarlett/Media/Imgur.hpp"
+#include <boost/serialization/shared_ptr.hpp>
+#include <boost/serialization/export.hpp>
+#include <boost/serialization/base_object.hpp>
+#include <boost/serialization/optional.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::Link)
 BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::Link, "Link")
 
@@ -19,8 +26,13 @@ namespace Scarlett::Reddit
 	template void Link::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
 	template void Link::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
 
+	Link::Link() = default;
 	Link::Link(const JsonValue& json, std::optional<String> ImgurClientId) : ImgurClientId(ImgurClientId), Thing(json)
 	{}
+
+	const String Link::getDomain() { return Domain; }
+	const String Link::getTitle() { return Title; }
+	const Media::Content Link::getURL() { return URL; }
 
 	String Link::GetContent() {
 		using namespace Scarlett::Media;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Thing.hpp"
-#include <boost/serialization/base_object.hpp>
+#include "../../Internal/Types.hpp"
 
 namespace Scarlett::Reddit
 {
@@ -17,10 +17,10 @@ namespace Scarlett::Reddit
 		bool operator==(TextPost& other);
 		bool operator!=(TextPost& other);
 
-		void Read(const JSON::value& json);
-		inline const String getText() { return Text; }
+		void Read(const JsonValue& json);
+		const String getText();
 	protected:
-		TextPost() {}
+		TextPost();
 	private:
 		String Text;
 		friend class boost::serialization::access;

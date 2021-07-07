@@ -2,11 +2,10 @@
 
 #include <memory>
 #include <optional>
-#include "../Internal/Helpers.hpp"
+#include "../Internal/Types.hpp"
 #include "BaseTypes/TextPost.hpp"
-#include <boost/serialization/export.hpp>
-#include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/optional.hpp>
+
 namespace Scarlett::Reddit
 {
 	
@@ -14,18 +13,18 @@ namespace Scarlett::Reddit
 	{
 	public:
 		Comment(const String& ParentId);
-		Comment(const JSON::value& json, boost::optional<String> ParentId = boost::none);
+		Comment(const JsonValue& json, boost::optional<String> ParentId = boost::none);
 		std::vector<std::unique_ptr<Comment>> replies; 
 		void GetRedditComments();
 
 	private:
-		Comment(){}
+		Comment();
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version);
 
 		boost::optional<String> ParentId{ boost::none };
-		void Read(const JSON::value& json);
+		void Read(const JsonValue& json);
 	};	
 	using CommentTree = std::vector<std::unique_ptr<Comment>>;
 };

@@ -1,4 +1,10 @@
 #include "Scarlett/Reddit/BaseTypes/TextPost.hpp"
+#include "Scarlett/Internal/Exceptions.hpp"
+#include <boost/serialization/base_object.hpp>
+#include <boost/serialization/export.hpp>
+#include <boost/archive/xml_iarchive.hpp>
+#include <boost/archive/xml_oarchive.hpp>
+#include <boost/serialization/shared_ptr.hpp>
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::TextPost)
 BOOST_CLASS_EXPORT_GUID(Scarlett::Reddit::TextPost, "TextPost")
 
@@ -14,6 +20,8 @@ namespace Scarlett::Reddit
 	template void TextPost::serialize<boost::archive::xml_oarchive>(boost::archive::xml_oarchive& ar, const unsigned int version);
 	template void TextPost::serialize<boost::archive::xml_iarchive>(boost::archive::xml_iarchive& ar, const unsigned int version);
 
+	TextPost::TextPost() = default;
+
 	TextPost::TextPost(const JsonValue& json) : Text("[deleted]"_u), Thing(json) {
 		Read(json);
 	}
@@ -27,8 +35,10 @@ namespace Scarlett::Reddit
 	{
 		return Thing::operator!=(other) && other.Text != Text;
 	}
+	
+	const String TextPost::getText() { return Text; }
 
-	void TextPost::Read(const JSON::value& json) {
+	void TextPost::Read(const JsonValue& json) {
 		try {
 			if (json.has_string_field("selftext"_u)) {
 				Text = json.at("selftext"_u).as_string();
