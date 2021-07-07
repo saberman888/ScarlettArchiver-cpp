@@ -62,6 +62,8 @@ set(SCARLETT_COMPILE_DEFINITIONS
 )
 
 set(SCARLETT_SOURCES
+	src/Internal/Types.cpp
+	src/Internal/Serializable.cpp
 	src/Internal/Logger.cpp
 	src/Internal/Exceptions.cpp
 	src/Internal/Helpers.cpp
