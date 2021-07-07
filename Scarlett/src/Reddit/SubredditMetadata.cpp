@@ -1,4 +1,5 @@
 #include "Scarlett/Reddit/SubredditMetadata.hpp"
+#include "Scarlett/Internal/Helpers.hpp"
 #include "Scarlett/Reddit/Video.hpp"
 #include "Scarlett/Reddit/SelfPost.hpp"
 #include "Scarlett/Reddit/Galleries.hpp"
@@ -47,7 +48,7 @@ namespace Scarlett::Reddit
 		StartDate = date;
 	}
 
-	const Timestamp SubredditMetadata::Start()
+	const SubredditMetadata::Timestamp SubredditMetadata::Start()
 	{
 		return StartDate;
 	}
@@ -57,12 +58,12 @@ namespace Scarlett::Reddit
 		EndDate = date;
 	}
 
-	const Timestamp SubredditMetadata::End()
+	const SubredditMetadata::Timestamp SubredditMetadata::End()
 	{
 		return EndDate;
 	}
 
-	const Timestamp SubredditMetadata::Position()
+	const SubredditMetadata::Timestamp SubredditMetadata::Position()
 	{
 		return DatePointer;
 	}
