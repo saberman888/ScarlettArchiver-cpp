@@ -5,114 +5,49 @@
 #include "../../Client/OAuth2.hpp"
 #include "../../Client/PushShift.hpp"
 #include "../RedditStatistics.hpp"
+#include "../../Internal/Exceptions.hpp"
+#include "../../Internal/Types.hpp"
 #include <optional>
 #include <type_traits>
-
+#include <functional>
+#include <boost/serialization/shared_ptr.hpp>
 namespace Scarlett::Reddit
 {
 	template<typename T, typename U = Client::PushShift>
 	class Listing
 	{
 	public:
-		Listing() = default;
+		
+		~Listing();
 
-		virtual void Next() {};
-		virtual bool HasNext() { return false; };
+		void Next();
+		bool HasNext();
 
-		inline const auto Posts() const noexcept
-		{
-			return items;
-		}
+		const auto Posts() const noexcept;
 
-		inline const auto Statistics() const noexcept
-		{
-			return statistics;
-		}
+		const auto Statistics() const noexcept;
 
-    inline void Clear()
-    {
-      items.clear();
-      items.shrink_to_fit();
-    }
+		void Clear();
 
-    inline const Size size() const noexcept
-    {
-      return items.size();
-    }
+		const Size Size() const noexcept;
 
 	protected:
-		void NextItems(const StringMap& uri_query)
-		{
-			if constexpr (std::is_same_v<U, Client::PushShift>)
-			{
-				if constexpr (std::is_same_v<T, Thing>)
-				{
-					// If T is a non-comment
-					auto response = Client::PushShift::SearchSubmissions(uri_query);
-					if (response.status_code() != 200)
-					{
-						scarlettHTTPThrow(response);
-					}
-					else {
-						Read(
-							response.extract_json().get()
-						);
-					}
 
-				}
-				else if constexpr(std::is_same_v<T, Comment>){
-					// if T is a non-post or comment
-				}
-			}
-		}
 
-		void NextItems(const std::string& endpoint, const StringMap& uri_query) {};
+		void setEndpoint(const std::string& endpoint);
 
-		void Add(boost::shared_ptr<T> Post)
-		{
-			statistics.Append<T>();
-			if (items.size() > 0)
-			{
-				for (auto it = items.cbegin(); it != items.cend(); it++)
-				{
-					if (Post->getCreatedUTCTime() > (*it)->getCreatedUTCTime())
-					{
-						items.emplace(it, Post);
-						return;
-					}
-				}
-				items.push_back(Post);
-			}
-			else {
-				items.push_back(Post);
-			}
-		}
+		void NextItems(const StringMap& uri_query);
+
+		void NextItems(const std::string& endpoint, const StringMap& uri_query);
+
+		void Add(boost::shared_ptr<T> Post);
 
 	private:
-		void Read(const JSON::value& source)
-		{
-			for (auto element : source.at("data"_u).as_array())
-			{
-				if (Gallery::IsGallery(element))
-				{
-					auto potentialPost = boost::make_shared<Gallery>(element);
-					Add(potentialPost);
-				}
-				else if (Reddit::Video::IsVideo(element)) {
-					auto potentialPost = boost::make_shared<Video>(element);
-					Add(potentialPost);
-				}
-				else if (Reddit::SelfPost::IsSelfPost(element)) {
-					auto potentialPost = boost::make_shared<SelfPost>(element);
-					Add(potentialPost);
-				}
-				else {
-					auto potentialPost = boost::make_shared<Link>(element);
-					Add(potentialPost);
-				}
-			}
-		}
-		std::vector< boost::shared_ptr<T> > items;
-		struct RedditStatistics statistics;
+		Listing();
+		Listing(const std::string& endpoint);
+		Listing(const std::string& endpoint, const StringMap& query_params, std::function<URI(const URI)> next, std::function<bool(const Listing<T, U>&)> hasnext);
+
+		class ListingImpl;
+		std::unique_ptr<ListingImpl> impl;
 	};
 };
