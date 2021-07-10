@@ -1,4 +1,11 @@
 #include "Scarlett/Reddit/BaseTypes/Listing.hpp"
+#include <optional>
+#include <type_traits>
+#include <functional>
+#include <boost/serialization/shared_ptr.hpp>
+#include "Scarlett/Internal/Exceptions.hpp"
+#include "Scarlett/Internal/Helpers.hpp"
+#include "Scarlett/Internal/Serializable.hpp"
 
 namespace Scarlett::Reddit
 {
@@ -106,13 +113,13 @@ namespace Scarlett::Reddit
 	Listing::Listing() = default;
 
 	template<typename T, typename U>
-	Listing(const std::string& endpoint)
+	Listing::Listing(const std::string& endpoint)
 	{
 		impl = std::make_unique<T, U>();
 	}
 
 	template<typename T, typename U>
-	Listing(const std::string& endpoint, const StringMap& query_params, std::function<URI(const URI)> nextupdate, std::function<bool(const Listing<T, U>&)> hasnext)
+	Listing::Listing(const std::string& endpoint, const StringMap& query_params, std::function<URI(const URI)> nextupdate, std::function<bool(const Listing<T, U>&)> hasnext)
 	{
 		impl = std::make_unique<T, U>();
 		impl->HasNext = hasnext;
@@ -123,10 +130,13 @@ namespace Scarlett::Reddit
 	Listing::~Listing() = default;
 
 	template<typename T, typename U>
-	const auto Listing::Posts() noexcept { return items; }
+	bool Liusting::Next() { return impl->Next(); }
 
 	template<typename T, typename U>
-	const auto Listing::Statistics() const noexcept { return Statistics; }
+	const auto Listing::Posts() noexcept { return impl->items; }
+
+	template<typename T, typename U>
+	const auto Listing::Statistics() const noexcept { return impl->Statistics; }
 
 	template<typename T, typename U>
 	void Listing::Clear()
@@ -136,20 +146,11 @@ namespace Scarlett::Reddit
 	}
 
 	template<typename T, typename U>
-	const Listing::Size Size() const noexcept
+	const Size Listing::Size() const noexcept
 	{
-		return items.size();
+		return impl->items.size();
 	}
 
-	template<typename T, typename U>
-	void Listing::NextItems(const StringMap& uri_query)
-	{
-	}
-
-	template<typename T, typename U>
-	void Listing::Add(boost::shared_ptr<T> Post)
-	{
-	}
 
 
 }
