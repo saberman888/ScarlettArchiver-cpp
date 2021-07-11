@@ -19,11 +19,7 @@ namespace Scarlett::Reddit
 		void GetRedditComments();
 
 	private:
-		template<typename T>
-		friend void Serialize(const std::filesystem::path destination, T& sourceObj, const std::string Tag);
-
-		template<typename T>
-		T DeSerialize(const std::filesystem::path source, const std::string Tag);
+        friend class Scarlett::Serializable<Comment>;
 
 		Comment();
 		friend class boost::serialization::access;

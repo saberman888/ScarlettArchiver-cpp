@@ -23,11 +23,7 @@ namespace Scarlett::Reddit
 		std::string GetContent() = delete;
 
 	private:
-		template<typename T>
-		friend void Serialize(const std::filesystem::path destination, T& sourceObj, const std::string Tag);
-
-		template<typename T>
-		T DeSerialize(const std::filesystem::path source, const std::string Tag);
+        friend class Scarlett::Serializable<Gallery>;
 
 		/**
 		 Reads Json data into Gallery. If it's a Reddit album then, it reads the provided json. If it's an Imgur album, it justs calls RedditCommon::Read only; 

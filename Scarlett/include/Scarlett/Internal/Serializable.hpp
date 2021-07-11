@@ -2,12 +2,14 @@
 #include <filesystem>
 #include "Scarlett/Internal/Types.hpp"
 
-namespace Scarlett::Internal
+namespace Scarlett
 {
-	template<typename T>
-	SCDLL void Serialize(const std::filesystem::path destination, T& sourceObj, const std::string Tag);
-
-	template<typename T>
-	SCDLL T DeSerialize(const std::filesystem::path source, const std::string Tag);
+    template<typename T>
+    class SCDLL Serializable
+    {
+    public:
+        static void Serialize(const std::filesystem::path destination, T& sourceObj, const std::string Tag);
+        static T DeSerialize(const std::filesystem::path source, const std::string Tag);
+    };
 
 };

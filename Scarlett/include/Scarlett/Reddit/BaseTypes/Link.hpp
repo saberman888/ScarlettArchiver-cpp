@@ -41,7 +41,7 @@ namespace Scarlett::Reddit
 		void Read(const JsonValue& json);
 		std::optional<String> ImgurClientId{ std::nullopt };
 	private:
-
+        friend class Scarlett::Serializable<Link>;
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version);

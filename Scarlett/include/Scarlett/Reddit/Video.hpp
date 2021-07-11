@@ -9,6 +9,7 @@ namespace Scarlett::Reddit
 		int Height;
 		String BaseURL;
 
+        friend class Scarlett::Serializable<struct VideoInfo>;
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version);
@@ -49,16 +50,9 @@ namespace Scarlett::Reddit
 
 		bool operator==(Video& other);
 		bool operator!=(Video& other);
-		String GetContent();
+		String GetContent()=delete;
 
 	private:
-		template<typename T>
-		friend void Serialize(const std::filesystem::path destination, T& sourceObj, const std::string Tag);
-
-		template<typename T>
-		T DeSerialize(const std::filesystem::path source, const std::string Tag);
-
-
 		Video();
 
 		/*
@@ -71,6 +65,7 @@ namespace Scarlett::Reddit
 		boost::optional<String> audio{ boost::none };
 		std::vector<VideoInfo> videos;
 
+        friend class Scarlett::Serializable<Video>;
 		friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version);

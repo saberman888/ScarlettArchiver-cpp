@@ -38,17 +38,6 @@ namespace Scarlett
 		}
 	}
 
-	template void Serialize<boost::shared_ptr<Reddit::Video>>(const std::filesystem::path destination, boost::shared_ptr<Reddit::Video>& sourceObj, const std::string Tag);
-	template void Serialize<boost::shared_ptr<Reddit::SelfPost>>(const std::filesystem::path destination, boost::shared_ptr<Reddit::SelfPost>& sourceObj, const std::string Tag);
-	template void Serialize<boost::shared_ptr<Reddit::Gallery>>(const std::filesystem::path destination, boost::shared_ptr<Reddit::Gallery>& sourceObj, const std::string Tag);
-	template void Serialize<boost::shared_ptr<Reddit::Link>>(const std::filesystem::path destination, boost::shared_ptr<Reddit::Link>& sourceObj, const std::string Tag);
-	template void Serialize<boost::shared_ptr<Reddit::Comment>>(const std::filesystem::path destination, boost::shared_ptr<Reddit::Comment>& sourceObj, const std::string Tag);
-	template void Serialize<boost::shared_ptr<Reddit::SubredditMetadata>>(const std::filesystem::path destination, boost::shared_ptr<Reddit::SubredditMetadata>& sourceObj, const std::string Tag);
-	template void Serialize<boost::shared_ptr<Reddit::RedditStatistics>>(const std::filesystem::path destination, boost::shared_ptr<Reddit::RedditStatistics>& sourceObj, const std::string Tag);
-	template void Serialize<Reddit::SubredditMetadata>(const std::filesystem::path destination, Reddit::SubredditMetadata& sourceObj, const std::string Tag);
-	template void Serialize<Reddit::RedditStatistics>(const std::filesystem::path destination, Reddit::RedditStatistics& sourceObj, const std::string Tag);
-
-
 	template<typename T>
 	T DeSerialize(const std::filesystem::path source, const std::string Tag)
 	{
@@ -83,13 +72,4 @@ namespace Scarlett
 			scarlettNestedThrow(e.what());
 		}
 	}
-
-
-	template Reddit::Video* DeSerialize(const std::filesystem::path source, const std::string Tag);
-	template Reddit::Comment* DeSerialize(const std::filesystem::path source, const std::string Tag);
-	template Reddit::Gallery* DeSerialize(const std::filesystem::path source, const std::string Tag);
-	template Reddit::Link* DeSerialize(const std::filesystem::path source, const std::string Tag);
-	template Reddit::SelfPost* DeSerialize(const std::filesystem::path source, const std::string Tag);
-	template Reddit::RedditStatistics* DeSerialize(const std::filesystem::path source, const std::string Tag);
-	template Reddit::SubredditMetadata* DeSerialize(const std::filesystem::path source, const std::string Tag);
 };

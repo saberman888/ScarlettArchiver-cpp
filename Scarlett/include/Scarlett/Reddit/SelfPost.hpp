@@ -14,13 +14,7 @@ namespace Scarlett::Reddit
 
 		static bool IsSelfPost(const JsonValue& json);
 	private:
-		template<typename T>
-		friend void Serialize(const std::filesystem::path destination, T& sourceObj, const std::string Tag);
-
-		template<typename T>
-		T DeSerialize(const std::filesystem::path source, const std::string Tag);
-
-
+        friend class Scarlett::Serializable<SelfPost>;
 		SelfPost();
 		friend class boost::serialization::access;
 		template<class Archive>
