@@ -94,8 +94,8 @@ namespace Scarlett::Reddit
 					auto potentialPost = boost::make_shared<Video>(element);
 					Add(potentialPost);
 				}
-				else if (Reddit::SelfPost::IsSelfPost(element)) {
-					auto potentialPost = boost::make_shared<SelfPost>(element);
+				else if (Reddit::IsSelf(element)) {
+					auto potentialPost = boost::make_shared<TextPost>(element);
 					Add(potentialPost);
 				}
 				else {

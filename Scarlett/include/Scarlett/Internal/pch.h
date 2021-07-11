@@ -72,6 +72,5 @@
 #include "../Reddit/BaseTypes/TextPost.hpp"
 #include "../Reddit/RedditStatistics.hpp"
 #include "../Reddit/Comment.hpp"
-#include "../Reddit/SelfPost.hpp"
 
 #endif //PCH_H

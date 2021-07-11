@@ -1,7 +1,6 @@
 #include "Scarlett/Reddit/Subreddit.hpp"
 #include "Scarlett/Client/PushShift.hpp"
 #include "Scarlett/Reddit/Video.hpp"
-#include "Scarlett/Reddit/SelfPost.hpp"
 #include "Scarlett/Reddit/Galleries.hpp"
 #include "Scarlett/Media/Content.hpp"
 #include "Scarlett/Internal/Serializable.hpp"
@@ -91,9 +90,9 @@ namespace Scarlett::Reddit {
 					}
 
 				}
-				else if (boost::dynamic_pointer_cast<SelfPost>(*it)) {
-					auto selfpost = boost::dynamic_pointer_cast<SelfPost>(*it);
-					WritePost(selfpost, "SelfPost"_u, location);
+				else if (boost::dynamic_pointer_cast<TextPost>(*it)) {
+					auto selfpost = boost::dynamic_pointer_cast<TextPost>(*it);
+					WritePost(selfpost, "TextPost"_u, location);
 				}
 			}
 			catch (ScarlettException& e) {
@@ -187,7 +186,6 @@ namespace Scarlett::Reddit {
 		std::filesystem::create_directories(destination);
 		//scout << "Writing "_u << post->getId() << " to "_u << toScarlettString(destination.string()) << "\n"_u;
 		Internal::Serialize<boost::shared_ptr<T>>(destination / toString(filename), post, toString(tag));
-
 	}
 
 	template void Subreddit::WriteMedia(const boost::shared_ptr<Link> post, const std::filesystem::path location);
@@ -196,6 +194,6 @@ namespace Scarlett::Reddit {
 	template void Subreddit::WritePost(boost::shared_ptr<Link> post, const String tag, const std::filesystem::path location);
 	template void Subreddit::WritePost(boost::shared_ptr<Gallery> post, const String tag, const std::filesystem::path location);
 	template void Subreddit::WritePost(boost::shared_ptr<Comment> post, const String tag, const std::filesystem::path location);
-	template void Subreddit::WritePost(boost::shared_ptr<SelfPost> post, const String tag, const std::filesystem::path location);
+	template void Subreddit::WritePost(boost::shared_ptr<TextPost> post, const String tag, const std::filesystem::path location);
 	template void Subreddit::WritePost(boost::shared_ptr<Video> post, const String tag, const std::filesystem::path location);
 }

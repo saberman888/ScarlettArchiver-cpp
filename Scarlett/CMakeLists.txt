@@ -74,7 +74,6 @@ set(SCARLETT_SOURCES
 	src/Reddit/BaseTypes/TextPost.cpp
 	src/Reddit/Comment.cpp
 	src/Reddit/Galleries.cpp
-	src/Reddit/SelfPost.cpp
 	src/Reddit/Video.cpp
 	src/Reddit/SubredditMetadata.cpp
 	src/Reddit/Subreddit.cpp

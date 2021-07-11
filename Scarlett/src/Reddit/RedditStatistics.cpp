@@ -3,7 +3,6 @@
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/nvp.hpp>
 #include "Scarlett/Reddit/Video.hpp"
-#include "Scarlett/Reddit/SelfPost.hpp"
 #include "Scarlett/Reddit/Galleries.hpp"
 #include <boost/serialize/shared_ptr.hpp>
 
@@ -32,7 +31,7 @@ namespace Scarlett
             {
                 Galleries += 1;
             }
-            else if constexpr (std::is_same<SelfPost, T>::value) {
+            else if constexpr (std::is_same<TextPost, T>::value) {
                 SelfPosts += 1;
             }
             else if constexpr (std::is_same<Video, T>::value) {
@@ -48,7 +47,7 @@ namespace Scarlett
         }
 
         template class RedditStatistics::Append<Gallery>();
-        template class RedditStatistics::Append<SelfPost>();
+        template class RedditStatistics::Append<TextPost>();
         template class RedditStatistics::Append<Video>();
         template class RedditStatistics::Append<Link>();
     }

@@ -1,7 +1,6 @@
 #include "Scarlett/Reddit/SubredditMetadata.hpp"
 #include "Scarlett/Internal/Helpers.hpp"
 #include "Scarlett/Reddit/Video.hpp"
-#include "Scarlett/Reddit/SelfPost.hpp"
 #include "Scarlett/Reddit/Galleries.hpp"
 #include <boost/serialization/export.hpp>
 #include <boost/archive/xml_iarchive.hpp>

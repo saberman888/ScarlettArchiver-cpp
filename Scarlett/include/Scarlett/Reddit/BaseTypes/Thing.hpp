@@ -41,4 +41,6 @@ namespace Scarlett::Reddit
 		template<class Archive>
 		void serialize(Archive& ar, const unsigned int version);
 	};
+
+    bool IsSelf(const JsonValue val);
 }
