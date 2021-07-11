@@ -197,6 +197,5 @@ namespace Scarlett::Reddit {
 	template void Subreddit::WritePost(boost::shared_ptr<Gallery> post, const String tag, const std::filesystem::path location);
 	template void Subreddit::WritePost(boost::shared_ptr<Comment> post, const String tag, const std::filesystem::path location);
 	template void Subreddit::WritePost(boost::shared_ptr<SelfPost> post, const String tag, const std::filesystem::path location);
-	template void Subreddit::WritePost(boost::shared_ptr<RedditStatistics> post, const String tag, const std::filesystem::path location);
 	template void Subreddit::WritePost(boost::shared_ptr<Video> post, const String tag, const std::filesystem::path location);
 }
