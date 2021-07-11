@@ -4,7 +4,7 @@
 #include <boost/serialization/nvp.hpp>
 #include <boost/serialization/export.hpp>
 #include <boost/serialization/shared_ptr.hpp>
-#include "../../Internal/Exceptions.hpp"
+#include "Scarlett/Internal/Exceptions.hpp"
 
 BOOST_SERIALIZATION_ASSUME_ABSTRACT(Scarlett::Reddit::Thing)
 BOOST_SERIALIZATION_SHARED_PTR(Scarlett::Reddit::Thing)

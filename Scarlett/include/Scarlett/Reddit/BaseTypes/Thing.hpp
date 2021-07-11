@@ -3,6 +3,7 @@
 
 #include <boost/serialization/access.hpp>
 #include <ctime>
+#include "../../Internal/Serializable.hpp"
 #include "../../Internal/Types.hpp"
 
 namespace Scarlett::Reddit
