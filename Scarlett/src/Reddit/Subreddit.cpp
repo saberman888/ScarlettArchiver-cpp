@@ -3,6 +3,7 @@
 #include "Scarlett/Reddit/Video.hpp"
 #include "Scarlett/Reddit/Galleries.hpp"
 #include "Scarlett/Media/Content.hpp"
+#include "Scarlett/Reddit/BaseTypes/TextPost.hpp"
 #include "Scarlett/Internal/Serializable.hpp"
 #include "Scarlett/Internal/Exceptions.hpp"
 #include <iostream>
@@ -16,20 +17,14 @@
 
 namespace Scarlett::Reddit {
 
-	Subreddit::Subreddit(const String Subreddit, const String Start, const String End)
+	Subreddit::Subreddit(const String Subreddit, const String Start, const String End) :
+		Listing()
 	{
 		sub = std::make_unique<SubredditMetadata>(Subreddit, Start, End);
 		log->info("{} has been instantiated.", toString(sub->Subreddit()));
 	}
 
-	bool Subreddit::HasNext()
-	{
-		return !(
-			(sub->End() - sub->Position()) <= 0
-			);
-	}
-
-	void Subreddit::Next()
+	bool Subreddit::Next()
 	{
 		try {
 			log->info("Fetching posts from {} between {} and {}.", toString(sub->Subreddit()), sub->Position(), sub->Position() + 86400);
@@ -51,6 +46,7 @@ namespace Scarlett::Reddit {
 		catch (ScarlettHTTPException& e) {
 			scarlettNestedThrow(e.what());
 		}
+		return true;
 	}
 
 	void Subreddit::Save(const std::filesystem::path location, bool clear)
@@ -61,7 +57,7 @@ namespace Scarlett::Reddit {
 		log->info("Saving posts from {}.", toString(sub->Subreddit()));
 		create_directories(location);
 	
-		Internal::Serialize(location / "metadata.xml", *sub, "metadata");
+		Serializable<SubredditMetadata>::Serialize(location / "metadata.xml", *sub, "metadata");
 		log->info("Serialized metadata.");
 
 		log->info("Writing media...");
@@ -109,7 +105,7 @@ namespace Scarlett::Reddit {
 		log->info("Loading existing data from {}", location.string());
 		if (std::filesystem::exists(location / "metadata.xml"))
 		{
-			sub.reset(Internal::DeSerialize<SubredditMetadata*>(location / "metadata.xml", "metadata"));
+			sub.reset(Serializable<SubredditMetadata*>::DeSerialize(location / "metadata.xml", "metadata"));
 			log->info("Metadata loaded");
 		}
 		else {

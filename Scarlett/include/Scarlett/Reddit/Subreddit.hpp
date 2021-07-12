@@ -10,16 +10,8 @@ namespace Scarlett::Reddit {
 	public:
 		Subreddit(const String Subreddit, const String Start, const String End);
 
-		/*
-			Retrieves the posts from the next 24 hours, and increments StartDate by 24 hours for another iteration.
-		*/
-		void Next() override;
+		bool Next();
 
-		/*
-		*	HasNext checks if there are any potential posts we could fetch.
-		*	It does this by getting the differrence of the end date and current position in time
-		*/
-		bool HasNext() override;
 
 		void Save(const std::filesystem::path location, bool clear = true);
 		void Load(const std::filesystem::path location);
